@@ -108,7 +108,7 @@
                 ["Görögsaláta", 3190, "paradicsom, uborka, paprikák, lilahagyma, olivabogyó, feta sajt, olivaolaj"]
             ]
         },
-        {
+                {
             cat: "TÉSZTÁK",
             items: [
                 ["Lasagne", 3990, "kemencében sült húsos tészta, sok sajttal"],
@@ -116,12 +116,13 @@
                 ["Klasszik Bolognai spagetti", 3590, "lassan főzött marharagu, parmezán"],
                 ["Eredeti Carbonara spagetti", 4190, "guanciale (olasz toka szalonna), pecorino, tojássárgája, bors"],
                 ["Alfredo penne csirkével", 4190, "tejszínes-fokhagymás mártás, grillezett csirke, parmezán"],
-                ["Gambero tagliatelle", 4990, "garnélarák, házi vörös pesto, tejszín, fokhagyma"]
-                ["Pollo di Crema", 3990, "gorgonzola, póréhagyma, csirke, tejszín"]
-                ["Milanese", 4190, "sonka, gomba, paradicsomszósz, sajt"]
+                ["Gambero tagliatelle", 4990, "garnélarák, házi vörös pesto, tejszín, fokhagyma"],
+                ["Pollo di Crema", 3990, "gorgonzola, póréhagyma, csirke, tejszín"],
+                ["Milanese", 4190, "sonka, gomba, paradicsomszósz, sajt"],
                 ["Alfredo penne garnélával", 4990, "penne, tejszín, garnéla"]
             ]
         },
+
         {
             cat: "FŐÉTELEK",
             items: [
@@ -188,7 +189,7 @@
         },
 ];
     
-        function render() {
+        function render() 
         const div = document.getElementById('main-menu');
         div.innerHTML = menuData.map(section => `
             <h2>${section.cat}</h2>
