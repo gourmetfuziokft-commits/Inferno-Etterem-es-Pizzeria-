@@ -45,7 +45,7 @@
                 <th style="padding: 8px;">Min. rendelés</th>
             </tr>
             <tr style="border-bottom: 1px solid #222;">
-                <td style="padding: 8px;">Helyben (Budapest 4.kerület)</td>
+                <td style="padding: 8px;">Budapest 4.kerület</td>
                 <td style="padding: 8px;">390 Ft</td>
                 <td style="padding: 8px;">5.000 Ft</td>
             </tr>
@@ -59,6 +59,9 @@
                 <td style="padding: 8px;">390 Ft</td>
                 <td style="padding: 8px;">5.000 Ft</td>
             </tr>
+            <tr style="border-button: 1px solid #222;">
+                <td style="padding: 8px;">Helyben Elvitel </td>
+                
         </table>
     </div>
     <p style="text-align: center; font-size: 0.75rem; color: #888; margin-top: 10px;">* A szállítási díj egységesen 390 Ft minden megadott területre.</p>
@@ -76,6 +79,14 @@
     <div class="cart-box">
         <h3 style="margin-top:0;">🛒 Kosarad</h3>
         <button class="clear-btn" onclick="clearCart()">Kosár ürítése</button>
+       <div class="selection">
+    <p style="margin:0 0 5px 0;">📍 Átvétel módja / Helyszín:</p>
+    <select id="delivery-option" onchange="up()" style="width: 100%; padding: 10px; background: #222; color: white; border: 1px solid #444; border-radius: 6px;">
+        <option value="0" data-type="pickup">Helyben átvétel (0 Ft)</option>
+        <option value="390" data-type="delivery" selected>Házhozszállítás (390 Ft)</option>
+    </select>
+</div>
+
         <div id="cart-content">Üres...</div>
         <div style="margin-top:15px; border-top: 1px solid #444; padding-top:10px;">
             <div class="cart-item">Dobozdíj (200 Ft/étel): <span id="box-fee">0</span> Ft</div>
@@ -241,7 +252,29 @@
         let sub = cart.reduce((s, i) => s + i.p, 0);
         let box = cart.length * 200;
         document.getElementById('box-fee').innerText = box;
-        document.getElementById('total-price').innerText = (sub + box + 390).toLocaleString();
+        function up() {
+    const c = document.getElementById('cart-content');
+    const totalPriceElement = document.getElementById('total-price');
+    
+    if(!cart.length) { 
+        c.innerHTML = "Üres..."; 
+        totalPriceElement.innerText = 0; 
+        document.getElementById('box-fee').innerText = 0; 
+        return; 
+    }
+    
+    c.innerHTML = cart.map((i, x) => `<div class="cart-item">${i.n} <span>${i.p} Ft <b class="remove-btn" onclick="del(${x})">X</b></span></div>`).join('');
+    
+    let sub = cart.reduce((s, i) => s + i.p, 0);
+    let box = cart.length * 200;
+    
+    // Itt dől el a szállítási díj:
+    let deliveryFee = parseInt(document.getElementById('delivery-option').value);
+    
+    document.getElementById('box-fee').innerText = box;
+    document.getElementById('total-price').innerText = (sub + box + deliveryFee).toLocaleString();
+}
+
     }
 
     function send() {
@@ -253,7 +286,19 @@
         const mode = document.querySelector('input[name="mode"]:checked').value;
         if(!cart.length || !name || !addr || !tel) return alert("Kérlek tölts ki minden adatot!");
 
-        let txt = `🔥 INFERNO RENDELÉS 🔥\n👤 ${name}\n📍 ${addr}\n📞 ${tel}\n💳 ${pay}\n📝 ${note || '-'}\n\n🛒:\n` + cart.map(i => `- ${i.n}`).join('\n') + `\n\n💰 Össz: ${document.getElementById('total-price').innerText} Ft`;
+       let deliveryOption = document.getElementById('delivery-option');
+let deliveryText = deliveryOption.options[deliveryOption.selectedIndex].text;
+
+let txt = `🔥 INFERNO RENDELÉS 🔥\n` +
+          `MOD: ${deliveryText}\n` + // Itt fog látszani, ha elvitel
+          `👤 ${name}\n` +
+          `📍 ${addr}\n` +
+          `📞 ${tel}\n` +
+          `💳 ${pay}\n` +
+          `📝 ${note || '-'}\n\n` +
+          `🛒:\n` + cart.map(i => `- ${i.n}`).join('\n') + 
+          `\n\n💰 Össz: ${document.getElementById('total-price').innerText} Ft`;
+ let txt = `🔥 INFERNO RENDELÉS 🔥\n👤 ${name}\n📍 ${addr}\n📞 ${tel}\n💳 ${pay}\n📝 ${note || '-'}\n\n🛒:\n` + cart.map(i => `- ${i.n}`).join('\n') + `\n\n💰 Össz: ${document.getElementById('total-price').innerText} Ft`;
         
         if(mode === 'msg') window.open(`https://m.me/InfernoEtteremEsPizzeria?text=${encodeURIComponent(txt)}`);
         else window.open(`sms:+36707430049?body=${encodeURIComponent(txt)}`);
