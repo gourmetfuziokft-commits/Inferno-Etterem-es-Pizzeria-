@@ -177,7 +177,7 @@
                 ["Nem vagyok éhes...", 2700, "Szezámmagos csirkecsíkok kukoricás rizzsel"]
             ]
         },
-        {
+            {
             cat: "DESSZERTEK",
             items: [
                 ["Házi Tiramisu", 2190, "olasz recept alapján, kávéval és mascarponéval"],
@@ -185,10 +185,10 @@
                 ["Sajttorta", 2190, "karamell vagy eper öntettel"],
                 ["Habos Gesztenyepüré", 2190, "tejszínhabbal"]
             ]
-        }
-
-
-    function render() {
+        },
+];
+    
+        function render() {
         const div = document.getElementById('main-menu');
         div.innerHTML = menuData.map(section => `
             <h2>${section.cat}</h2>
