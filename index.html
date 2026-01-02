@@ -19,8 +19,14 @@
         .card p { font-size: 0.85rem; color: #aaa; margin: 0 0 15px 0; min-height: 45px; }
         .price { color: var(--orange); font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
         .add-btn { background: var(--red); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; text-transform: uppercase; }
+        
+        /* KOSÁR STÍLUSOK */
         .cart-box { background: #111; padding: 25px; border-radius: 15px; border: 2px solid var(--red); position: sticky; top: 20px; height: fit-content; }
-        .cart-item { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 8px 0; border-bottom: 1px solid #222; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; padding: 8px 0; border-bottom: 1px solid #222; }
+        .remove-item { color: #ff4444; cursor: pointer; font-weight: bold; margin-left: 10px; border: 1px solid #444; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; }
+        .clear-cart { background: transparent; color: #888; border: 1px solid #444; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.7rem; width: 100%; margin-bottom: 15px; }
+        .clear-cart:hover { color: white; border-color: white; }
+
         input[type="text"], input[type="tel"], textarea { width: 100%; padding: 12px; margin-top: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
         textarea { height: 80px; resize: none; }
         .selection-group { margin-top: 15px; background: #1a1a1a; padding: 12px; border-radius: 8px; border: 1px solid #333; }
@@ -41,7 +47,10 @@
     <div id="menu-sections"></div>
 
     <div class="cart-box">
-        <h3 style="margin-top:0;">🛒 Rendelés leadása</h3>
+        <h3 style="margin-top:0; display: flex; justify-content: space-between; align-items: center;">
+            🛒 Kosarad
+        </h3>
+        <button class="clear-cart" onclick="clearBasket()">KOSÁR ÜRÍTÉSE</button>
         <div id="cart-content">A kosarad üres...</div>
         
         <div style="margin-top:15px; border-top: 1px solid #444; padding-top:10px;">
@@ -73,13 +82,15 @@
 </div>
 
 <script>
-    // AZ ÉTLAP ADATOK (Ugyanazok mint eddig)
+    // AZ ÉTLAP ADATOK (MINDEN ÉTEL)
     const menuData = [
         { cat: "Előételek", items: [["Olasz-magyar vegyes ízelítő", 3590, "pármai sonka, olasz pikáns szalámi, prosciutto cotto, pizzakenyér"], ["Padlizsánkrém", 3190, "pizzakenyérrel, friss zöldségekkel"], ["Bruschetta pizzakenyérrel", 2990, "paradicsom, bazsalikom, fokhagyma"]]},
-        { cat: "Levesek", items: [["Húsleves gazdagon", 2590, "csirke, zöldségek"], ["Toszkán Paradicsomleves", 2590, "mozzarella golyó, pizzakenyér"], ["Sütőtök krémleves", 2590, "pirított mandulával"], ["Gulyásleves", 3700, "marhahúsból"], ["Meleg szilvaleves", 2790, "tejszínhabbal"]]},
-        { cat: "Pizzák (32cm)", items: [["Margherita", 3290, "paradicsomszósz, mozzarella"], ["Prosciutto", 3590, "sonkás"], ["Funghi", 3290, "gombás"], ["Bolognese", 4190, "marharagus"], ["Inferno", 4090, "pikáns szalámi, pepperóni"], ["Vespa", 4290, "bacon, sonka, szalámi, hegyes erős"], ["Dolce Vita", 4590, "kecskesajt, füge, pármai sonka"]]},
-        { cat: "Főételek", items: [["Juhtúrós sztrapacska", 3990, "eredeti recept alapján"], ["Brassói aprópecsenye", 4090, "sertés szűzből"], ["Cordon Bleu", 3390, "sajttal-sonkával töltve"], ["Óriás bécsi szelet", 3590, "sertés karajból"]]},
-        { cat: "Gyermek Menü", items: [["'Nem tudom...'", 2500, "Rántott sajt rizzsel"], ["'Nem szeretem...'", 2700, "Bolognai spagetti"]]}
+        { cat: "Levesek", items: [["Húsleves gazdagon", 2590, "csirke, zöldségek"], ["Toszkán Paradicsomleves", 2590, "mozzarella golyó, pizzakenyér"], ["Gulyásleves (marhahúsból)", 3700, "gazdagon fűszerezve"], ["Sütőtök krémleves", 2590, "pirított mandulával"], ["Meleg szilvaleves", 2790, "tejszínhabbal"]]},
+        { cat: "Pizzák (32cm)", items: [["Margherita", 3290, "paradicsomszósz, mozzarella"], ["Prosciutto", 3590, "sonkás"], ["Funghi", 3290, "gombás"], ["Prosciutto e Funghi", 3650, "sonka, gomba"], ["Tonno", 3990, "tonhal, lilahagyma"], ["Inferno", 4090, "pikáns szalámi, pepperóni"], ["Dolce Vita", 4590, "füge, kecskesajt, pármai sonka, méz"]]},
+        { cat: "Főételek", items: [["Brassói aprópecsenye", 4090, "sertés szűzből"], ["Harcsapaprikás túrógombóccal", 5490, "tejfölösen"], ["Cordon Bleu", 3390, "csirke vagy sertés"], ["Óriás bécsi szelet", 3590, "karajból"]]},
+        { cat: "Bőségtálak", items: [["Inferno Tál (4 személyes)", 23490, "a legnépszerűbb fogásainkból"], ["Vega Tál (4 személyes)", 17990, "rántott sajtok, gomba, zöldségek"]]},
+        { cat: "Gyermek Menü", items: [["'Nem tudom...'", 2500, "Rántott sajt rizzsel"], ["'Nem szeretem...'", 2700, "Bolognai spagetti"]]},
+        { cat: "Desszertek", items: [["Házi Tiramisu", 2190, "eredeti recept"], ["Palacsinta (2db)", 1490, "kakaós, túrós vagy ízes"]]}
     ];
 
     function renderMenu() {
@@ -100,11 +111,43 @@
     }
 
     let basket = [];
-    function addToCart(name, price) { basket.push({name, price}); updateCart(); }
+
+    function addToCart(name, price) {
+        basket.push({name, price});
+        updateCart();
+    }
+
+    function removeFromCart(index) {
+        basket.splice(index, 1); // Törli az adott sorszámú elemet
+        updateCart();
+    }
+
+    function clearBasket() {
+        if(confirm("Biztosan kiüríted a kosarat?")) {
+            basket = [];
+            updateCart();
+        }
+    }
+
     function updateCart() {
         const cartDiv = document.getElementById('cart-content');
-        if(basket.length === 0) { cartDiv.innerHTML = "A kosarad üres..."; return; }
-        cartDiv.innerHTML = basket.map(i => `<div class="cart-item">${i.name} <span>${i.price} Ft</span></div>`).join('');
+        if(basket.length === 0) {
+            cartDiv.innerHTML = "A kosarad üres...";
+            document.getElementById('box-fee').innerText = "0";
+            document.getElementById('total-price').innerText = "0";
+            return;
+        }
+        
+        cartDiv.innerHTML = basket.map((i, index) => `
+            <div class="cart-item">
+                <span>${i.name}</span>
+                <span>
+                    ${i.price} Ft 
+                    <span class="remove-item" onclick="removeFromCart(${index})">X</span>
+                </span>
+            </div>
+        `).join('');
+        
         let subtotal = basket.reduce((s, i) => s + i.price, 0);
         let fees = basket.length * 200;
         document.getElementById('box-fee').innerText = fees;
@@ -124,10 +167,8 @@
         let text = `🔥 RENDELÉS - INFERNO 🔥\n👤 Név: ${n}\n📍 Cím: ${a}\n📞 Tel: ${p}\n💳 Fizetés: ${pay}\n📝 Megjegyzés: ${note || 'Nincs'}\n\n🛒 Tételek:\n` + basket.map(i => `- ${i.name}`).join('\n') + `\n\n💰 Összesen: ${document.getElementById('total-price').innerText} Ft`;
 
         if(method === "messenger") {
-            // Cseréld ki ezt a számot a saját Page ID-dra!
             window.open(`https://m.me/InfernoEtteremEsPizzeria?text=${encodeURIComponent(text)}`);
         } else {
-            // SMS küldés az étterem számárára (+36707430049)
             window.open(`sms:+36707430049?body=${encodeURIComponent(text)}`);
         }
     }
