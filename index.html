@@ -21,7 +21,10 @@
         .add-btn { background: var(--red); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; text-transform: uppercase; }
         .cart-box { background: #111; padding: 25px; border-radius: 15px; border: 2px solid var(--red); position: sticky; top: 20px; height: fit-content; }
         .cart-item { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 8px 0; border-bottom: 1px solid #222; }
-        input { width: 100%; padding: 12px; margin-top: 12px; background: #222; border: 1px solid #444; color: white; border-radius: 6px; box-sizing: border-box; }
+        input[type="text"], input[type="tel"] { width: 100%; padding: 12px; margin-top: 12px; background: #222; border: 1px solid #444; color: white; border-radius: 6px; box-sizing: border-box; }
+        .payment-methods { margin-top: 20px; background: #1a1a1a; padding: 15px; border-radius: 8px; border: 1px solid #333; }
+        .payment-methods label { display: block; margin-bottom: 10px; cursor: pointer; font-size: 0.9rem; }
+        .payment-methods input { margin-right: 10px; accent-color: var(--red); }
         .order-btn { background: #28a745; color: white; width: 100%; border: none; padding: 18px; margin-top: 20px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; }
         .vat-info { font-size: 0.8rem; color: #777; text-align: center; margin-top: 15px; font-style: italic; }
     </style>
@@ -44,11 +47,18 @@
             <div class="cart-item">Szállítás: 390 Ft</div>
             <h3 style="color:var(--orange)">Összesen: <span id="total-price">0</span> Ft</h3>
         </div>
+
+        <div class="payment-methods">
+            <p style="margin:0 0 10px 0; font-weight:bold; font-size:0.9rem;">Fizetési mód a futárnál:</p>
+            <label><input type="radio" name="payment" value="Készpénz" checked> Készpénz</label>
+            <label><input type="radio" name="payment" value="Bankkártya"> Bankkártya (Terminál)</label>
+        </div>
+
         <input type="text" id="cust-name" placeholder="Neved">
         <input type="text" id="cust-addr" placeholder="Pontos címed">
         <input type="tel" id="cust-phone" placeholder="Telefonszámod">
         <button class="order-btn" onclick="sendOrder()">MEGRENDELÉS MESSENGEREN</button>
-        <p class="vat-info">Áraink tartalmazzák a 27% ÁFA-t!</p>
+        <p class="vat-info">Áraink tartalmazzák a 27% ÁFA-t.</p>
     </div>
 </div>
 
@@ -165,9 +175,12 @@
         const n = document.getElementById('cust-name').value;
         const a = document.getElementById('cust-addr').value;
         const p = document.getElementById('cust-phone').value;
+        const pay = document.querySelector('input[name="payment"]:checked').value;
+        
         if(basket.length === 0 || !n || !a || !p) return alert("Kérlek adj meg minden adatot!");
-        let text = `🔥 RENDELÉS - INFERNO ÚJPEST 🔥\n👤 Név: ${n}\n📍 Cím: ${a}\n📞 Tel: ${p}\n\n🛒 Tételek:\n` + basket.map(i => `- ${i.name}`).join('\n') + `\n\n💰 Összesen: ${document.getElementById('total-price').innerText} Ft`;
-        window.open(`https://m.me/61552541416715?text=${encodeURIComponent(text)}`);
+        
+        let text = `🔥 RENDELÉS - INFERNO ÚJPEST 🔥\n👤 Név: ${n}\n📍 Cím: ${a}\n📞 Tel: ${p}\n💳 Fizetés: ${pay}\n\n🛒 Tételek:\n` + basket.map(i => `- ${i.name}`).join('\n') + `\n\n💰 Összesen: ${document.getElementById('total-price').innerText} Ft`;
+        window.open(`https://m.me/111991493701192?text=${encodeURIComponent(text)}`);
     }
 
     renderMenu();
