@@ -19,6 +19,26 @@
         .card p { font-size: 0.85rem; color: #aaa; margin: 0 0 15px 0; min-height: 45px; }
         .price { color: var(--orange); font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
         .add-btn { background: var(--red); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; text-transform: uppercase; }
+        .side-select {
+    display: block !important;
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    background: #1a1a1a;
+    color: white;
+    border: 2px solid var(--red);
+    border-radius: 8px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.side-select option {
+    background: #111;
+    color: white;
+}
+
 .side-select {
     width: 100%;
     padding: 10px;
@@ -236,41 +256,40 @@
     let cart = [];
 
     function render() {
-        const div = document.getElementById('main-menu');
-        div.innerHTML = menuData.map((section, sIdx) => {
-            const isMainDish = section.cat === "FŐÉTELEK" || section.cat === "BŐSÉGTÁLAK";
-            
-            return `
-                <h2>${section.cat}</h2>
-                <div class="menu-grid">
-                    ${section.items.map((p, pIdx) => {
-                        const uniqueId = `side-${sIdx}-${pIdx}`;
-                        let sideHTML = '';
-                        let clickAction = `add('${p[0].replace(/'/g, "\\'")}',${p[1]})`;
+    const div = document.getElementById('main-menu');
+    div.innerHTML = menuData.map((section, sIdx) => {
+        // CSAK a 4. kategória (FŐÉTELEK) kap köretválasztót
+        const needsSide = (sIdx === 4);
 
-                        if (isMainDish) {
-                            sideHTML = `
-                                <select id="${uniqueId}" class="side-select">
-                                    <option value="">-- Válassz köretet --</option>
-                                    ${sidesData.map(s => `<option value="${s.n}|${s.p}">${s.n} (+${s.p} Ft)</option>`).join('')}
-                                </select>
-                            `;
-                            clickAction = `addWithSide('${p[0].replace(/'/g, "\\'")}', ${p[1]}, '${uniqueId}')`;
-                        }
+        return `
+            <h2>${section.cat}</h2>
+            <div class="menu-grid">
+                ${section.items.map((p, pIdx) => {
+                    const selectId = `sel-${sIdx}-${pIdx}`;
+                    return `
+                        <div class="card">
+                            <div><h3>${p[0]}</h3><p>${p[2] || ''}</p></div>
+                            <div class="price">${p[1]} Ft</div>
+                            ${needsSide ? `
+                                <div style="margin-bottom:10px;">
+                                    <select id="${selectId}" class="side-select">
+                                        <option value="">-- Válassz köretet --</option>
+                                        ${sidesData.map(s => `<option value="${s.n}|${s.p}">${s.n} (+${s.p} Ft)</option>`).join('')}
+                                    </select>
+                                </div>
+                                <button class="add-btn" onclick="addWithSide('${p[0].replace(/'/g, "\\'")}', ${p[1]}, '${selectId}')">Kosárba</button>
+                            ` : `
+                                <button class="add-btn" onclick="add('${p[0].replace(/'/g, "\\'")}', ${p[1]})">Kosárba</button>
+                            `}
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    }).join('');
+}
 
-                        return `
-                            <div class="card">
-                                <div><h3>${p[0]}</h3><p>${p[2] || ''}</p></div>
-                                <div class="price">${p[1]} Ft</div>
-                                ${sideHTML}
-                                <button class="add-btn" onclick="${clickAction}">Kosárba</button>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
-            `;
-        }).join('');
-    }
+    
 
     function addWithSide(mainName, mainPrice, selectId) {
         const sel = document.getElementById(selectId);
