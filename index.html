@@ -101,10 +101,11 @@
         </div>
 
         <div class="selection">
-            <p style="margin:0 0 5px 0;">📲 Küldés:</p>
-            <label><input type="radio" name="mode" value="msg" checked> Messenger</label>
-            <label><input type="radio" name="mode" value="sms"> SMS</label>
-        </div>
+    <p style="margin:0 0 5px 0;">📲 Küldés módja:</p>
+    <label><input type="radio" name="mode" value="email" checked> E-mail</label>
+    <label><input type="radio" name="mode" value="sms"> SMS</label>
+</div>
+
 
         <input type="text" id="user-name" placeholder="Neved">
         <input type="text" id="user-addr" placeholder="Címed">
@@ -246,30 +247,42 @@
     }
 
     function send() {
-        const name = document.getElementById('user-name').value;
-        const addr = document.getElementById('user-addr').value;
-        const tel = document.getElementById('user-tel').value;
-        const note = document.getElementById('user-note').value;
-        const pay = document.querySelector('input[name="pay"]:checked').value;
-        const mode = document.querySelector('input[name="mode"]:checked').value;
-        const delOption = document.getElementById('delivery-option');
-        const delText = delOption.options[delOption.selectedIndex].text;
+    const name = document.getElementById('user-name').value;
+    const addr = document.getElementById('user-addr').value;
+    const tel = document.getElementById('user-tel').value;
+    const note = document.getElementById('user-note').value;
+    const pay = document.querySelector('input[name="pay"]:checked').value;
+    const mode = document.querySelector('input[name="mode"]:checked').value;
+    const delOption = document.getElementById('delivery-option');
+    const delText = delOption.options[delOption.selectedIndex].text;
 
-        if(!cart.length || !name || !addr || !tel) return alert("Kérlek tölts ki minden adatot!");
-
-        let txt = `🔥 INFERNO RENDELÉS 🔥\n` +
-                  `MOD: ${delText}\n` +
-                  `👤 ${name}\n` +
-                  `📍 ${addr}\n` +
-                  `📞 ${tel}\n` +
-                  `💳 ${pay}\n` +
-                  `📝 ${note || '-'}\n\n` +
-                  `🛒:\n` + cart.map(i => `- ${i.n}`).join('\n') + 
-                  `\n\n💰 Össz: ${document.getElementById('total-price').innerText} Ft`;
-        
-        if(mode === 'msg') window.open(`https://m.me/InfernoEtteremEsPizzeria?text=${encodeURIComponent(txt)}`);
-        else window.open(`sms:+36707430049?body=${encodeURIComponent(txt)}`);
+    if(!cart.length || !name || !addr || !tel) {
+        return alert("Kérlek tölts ki minden adatot (Név, Cím, Telefon)!");
     }
+
+    const totalPrice = document.getElementById('total-price').innerText;
+
+    let txt = `🔥 INFERNO RENDELÉS 🔥\n` +
+              `---------------------------\n` +
+              `ÁTVÉTEL: ${delText}\n` +
+              `NÉV: ${name}\n` +
+              `CÍM: ${addr}\n` +
+              `TEL: ${tel}\n` +
+              `FIZETÉS: ${pay}\n` +
+              `MEGJEGYZÉS: ${note || '-'}\n\n` +
+              `RENDELÉS:\n` + cart.map(i => `- ${i.n} (${i.p} Ft)`).join('\n') + 
+              `\n\n💰 ÖSSZESEN: ${totalPrice} Ft\n` +
+              `---------------------------`;
+
+    if(mode === 'email') {
+        const subject = encodeURIComponent(`Új Inferno Rendelés - ${name}`);
+        const body = encodeURIComponent(txt);
+        window.location.href = `mailto:gourmetfuziokft@gmail.com?subject=${subject}&body=${body}`;
+    } else {
+        window.open(`sms:+36707430049?body=${encodeURIComponent(txt)}`);
+    }
+}
+
     render();
 </script>
 
