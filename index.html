@@ -19,6 +19,25 @@
         .card p { font-size: 0.85rem; color: #aaa; margin: 0 0 15px 0; min-height: 45px; }
         .price { color: var(--orange); font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
         .add-btn { background: var(--red); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; text-transform: uppercase; }
+.side-select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background: #1a1a1a; /* Sötét háttér, hogy illeszkedjen az Inferno stílushoz */
+    color: white;
+    border: 1px solid #c0392b; /* Inferno piros keret */
+    border-radius: 5px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    outline: none;
+}
+
+.side-select option {
+    background: #111;
+    color: white;
+}
+
         .cart-box { background: #111; padding: 25px; border-radius: 15px; border: 2px solid var(--red); position: sticky; top: 20px; height: fit-content; }
         .cart-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; padding: 8px 0; border-bottom: 1px solid #222; }
         .remove-btn { color: #ff4444; cursor: pointer; font-weight: bold; border: 1px solid #444; padding: 2px 8px; border-radius: 4px; margin-left: 10px; }
@@ -206,21 +225,56 @@
         }
     ];
     
-    function render() {
-        const div = document.getElementById('main-menu');
-        div.innerHTML = menuData.map(section => `
+    
+function render() {
+    const div = document.getElementById('main-menu');
+    div.innerHTML = menuData.map(section => {
+        const isMainDish = section.cat === "Frissensültek" || section.cat === "Főételek";
+
+        return `
             <h2>${section.cat}</h2>
             <div class="menu-grid">
-                ${section.items.map(p => `
-                    <div class="card">
-                        <div><h3>${p[0]}</h3><p>${p[2]}</p></div>
-                        <div class="price">${p[1]} Ft</div>
-                        <button class="add-btn" onclick="add('${p[0]}',${p[1]})">Kosárba</button>
-                    </div>
-                `).join('')}
+                ${section.items.map(p => {
+                    let sideHTML = '';
+                    let clickAction = `add('${p[0]}',${p[1]})`;
+
+                    if (isMainDish) {
+                        const selectId = `side-${p[0].replace(/\s+/g, '-')}`;
+                        sideHTML = `
+                            <select id="${selectId}" class="side-select">
+                                <option value="">-- Válassz köretet --</option>
+                                ${sidesData.map(s => `<option value="${s.n}|${s.p}">${s.n} (+${s.p} Ft)</option>`).join('')}
+                            </select>
+                        `;
+                        clickAction = `addWithSide('${p[0]}', ${p[1]}, '${selectId}')`;
+                    }
+
+                    return `
+                        <div class="card">
+                            <div><h3>${p[0]}</h3><p>${p[2] || ''}</p></div>
+                            <div class="price">${p[1]} Ft</div>
+                            ${sideHTML}
+                            <button class="add-btn" onclick="${clickAction}">Kosárba</button>
+                        </div>
+                    `;
+                }).join('')}
             </div>
-        `).join('');
+        `;
+    }).join('');
+}
+
+function addWithSide(mainName, mainPrice, selectId) {
+    const sel = document.getElementById(selectId);
+    if (!sel.value) {
+        alert("Kérlek, válassz köretet!");
+        return;
     }
+    const [sideName, sidePrice] = sel.value.split('|');
+    const finalName = `${mainName} + ${sideName}`;
+    const finalPrice = mainPrice + parseInt(sidePrice);
+    
+    add(finalName, finalPrice);
+}
 
     let cart = [];
     function add(n, p) { cart.push({n, p}); up(); }
