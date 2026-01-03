@@ -135,6 +135,15 @@
 </div>
 
 <script>
+    const sidesData = [
+    { n: "Rizs", p: 990 }, { n: "Hasábburgonya", p: 990 }, { n: "Steak burgonya", p: 1190 },
+    { n: "Édes burgonya", p: 1390 }, { n: "Petrezselymes burgonya", p: 990 },
+    { n: "Burgonyapüré", p: 1190 }, { n: "Juhtúrós sztrapacska", p: 1790 },
+    { n: "Friss vágott saláta", p: 1590 }, { n: "Rizi-bizi", p: 1190 },
+    { n: "Kukoricás rizs", p: 1190 }, { n: "Majonézes burgonya saláta", p: 1290 },
+    { n: "Rukkolás burgonyapüré (Új)", p: 1390 }, { n: "Túrógombóc guancale-val (Új)", p: 1590 }
+];
+
     const menuData = [
         {
             cat: "ELŐÉTELEK",
@@ -228,25 +237,27 @@
     
 function render() {
     const div = document.getElementById('main-menu');
-    div.innerHTML = menuData.map(section => {
-        const isMainDish = section.cat === "Frissensültek" || section.cat === "Főételek";
+    div.innerHTML = menuData.map((section, sIdx) => {
+        // Itt figyeltem a nagybetűkre:
+        const isMainDish = section.cat === "FRISSENSÜLTEK" || section.cat === "KÉSZÉTELEK";
 
         return `
             <h2>${section.cat}</h2>
             <div class="menu-grid">
-                ${section.items.map(p => {
+                ${section.items.map((p, pIdx) => {
+                    const uniqueId = `side-${sIdx}-${pIdx}`;
                     let sideHTML = '';
-                    let clickAction = `add('${p[0]}',${p[1]})`;
+                    let clickAction = `add('${p[0].replace(/'/g, "\\'")}',${p[1]})`;
 
                     if (isMainDish) {
-                        const selectId = `side-${p[0].replace(/\s+/g, '-')}`;
                         sideHTML = `
-                            <select id="${selectId}" class="side-select">
+                            <select id="${uniqueId}" class="side-select">
                                 <option value="">-- Válassz köretet --</option>
                                 ${sidesData.map(s => `<option value="${s.n}|${s.p}">${s.n} (+${s.p} Ft)</option>`).join('')}
                             </select>
                         `;
-                        clickAction = `addWithSide('${p[0]}', ${p[1]}, '${selectId}')`;
+                        // Köretes kosárba rakás:
+                        clickAction = `addWithSide('${p[0].replace(/'/g, "\\'")}', ${p[1]}, '${uniqueId}')`;
                     }
 
                     return `
@@ -262,6 +273,19 @@ function render() {
         `;
     }).join('');
 }
+
+// Új funkció a köretes rendeléshez
+function addWithSide(mainName, mainPrice, selectId) {
+    const sel = document.getElementById(selectId);
+    if (!sel || !sel.value) {
+        alert("Kérlek, válassz köretet!");
+        return;
+    }
+    const [sideName, sidePrice] = sel.value.split('|');
+    const finalPrice = mainPrice + parseInt(sidePrice);
+    add(`${mainName} (${sideName})`, finalPrice);
+}
+
 
 function addWithSide(mainName, mainPrice, selectId) {
     const sel = document.getElementById(selectId);
