@@ -346,42 +346,60 @@
         document.getElementById('total-price').innerText = (sub + box + ship).toLocaleString();
     }
 
-    function send() {
-        const name = document.getElementById('user-name').value;
-        const addr = document.getElementById('user-addr').value;
-        const tel = document.getElementById('user-tel').value;
-        const note = document.getElementById('user-note').value;
-        const pay = document.querySelector('input[name="pay"]:checked').value;
-        const mode = document.querySelector('input[name="mode"]:checked').value;
-        const delOption = document.getElementById('delivery-option');
-        const delText = delOption.options[delOption.selectedIndex].text;
+    async function send() {
+    const name = document.getElementById('user-name').value;
+    const addr = document.getElementById('user-addr').value;
+    const tel = document.getElementById('user-tel').value;
+    const note = document.getElementById('user-note').value;
+    const pay = document.querySelector('input[name="pay"]:checked').value;
+    const delOption = document.getElementById('delivery-option');
+    const delText = delOption.options[delOption.selectedIndex].text;
+    const totalPrice = document.getElementById('total-price').innerText;
 
-        if(!cart.length || !name || !addr || !tel) {
-            return alert("Kérlek tölts ki minden adatot (Név, Cím, Telefon)!");
-        }
-
-        const totalPrice = document.getElementById('total-price').innerText;
-
-        let txt = `🔥 INFERNO RENDELÉS 🔥\n` +
-                  `---------------------------\n` +
-                  `ÁTVÉTEL: ${delText}\n` +
-                  `NÉV: ${name}\n` +
-                  `CÍM: ${addr}\n` +
-                  `TEL: ${tel}\n` +
-                  `FIZETÉS: ${pay}\n` +
-                  `MEGJEGYZÉS: ${note || '-'}\n\n` +
-                  `RENDELÉS:\n` + cart.map(i => `- ${i.n} (${i.p} Ft)`).join('\n') + 
-                  `\n\n💰 ÖSSZESEN: ${totalPrice} Ft\n` +
-                  `---------------------------`;
-
-        if(mode === 'email') {
-            const subject = encodeURIComponent(`Új Inferno Rendelés - ${name}`);
-            const body = encodeURIComponent(txt);
-            window.location.href = `mailto:gourmetfuziokft@gmail.com?subject=${subject}&body=${body}`;
-        } else {
-            window.open(`sms:+36707430049?body=${encodeURIComponent(txt)}`);
-        }
+    if(!cart.length || !name || !addr || !tel) {
+        return alert("Kérlek tölts ki minden adatot (Név, Cím, Telefon)!");
     }
+
+    const formData = {
+        _subject: `ÚJ RENDELÉS: ${name} - ${totalPrice} Ft`,
+        Vásárló: name,
+        Cím: addr,
+        Telefon: tel,
+        Átvétel: delText,
+        Fizetés: pay,
+        Megjegyzés: note || '-',
+        Rendelés: cart.map(i => `${i.n} (${i.p} Ft)`).join(', '),
+        Összesen: totalPrice + " Ft"
+    };
+
+    const btn = document.querySelector('button[onclick="send()"]');
+    btn.innerText = "Küldés...";
+    btn.disabled = true;
+
+        try {
+        const response = await fetch
+        {
+            method: "POST",
+            body: JSON.stringify(formData),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+  if (response.ok) {
+            alert("Siker! A rendelést rögzítettük és küldtük a Trellóra.");
+            cart = [];
+            up();
+        } else {
+            alert("Hiba történt a küldéskor.");
+        }
+    } catch (error) {
+        alert("Hálózati hiba történt.");
+    } finally {
+        btn.innerText = "RENDELÉS LEADÁSA";
+        btn.disabled = false;
+    }
+}
 
     render();
 </script>
