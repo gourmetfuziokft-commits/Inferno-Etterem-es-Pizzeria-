@@ -229,6 +229,51 @@
         const [sideName, sidePrice] = sel.value.split('|');
         add(`${mainName} (+${sideName})`, mainPrice + parseInt(sidePrice));
     }
+    
+async function send() {
+    const name = document.getElementById('user-name').value;
+    const addr = document.getElementById('user-addr').value;
+    const tel = document.getElementById('user-tel').value;
+    const note = document.getElementById('user-note').value;
+    const pay = document.querySelector('input[name="pay"]:checked').value;
+    const delOption = document.getElementById('delivery-option');
+    const delText = delOption.options[delOption.selectedIndex].text;
+    const totalPrice = document.getElementById('total-price').innerText;
+
+    if(!cart.length || !name || !addr || !tel) return alert("Kérlek tölts ki minden adatot!");
+
+    const btn = document.querySelector('.order-btn');
+    btn.innerText = "Küldés...";
+    btn.disabled = true;
+
+    // A FormData-val elkerüljük az 'Unauthorized domain' hibát
+    const formData = new FormData();
+    formData.append('Vásárló', name);
+    formData.append('Cím', addr);
+    formData.append('Telefon', tel);
+    formData.append('Átvétel', delText);
+    formData.append('Fizetés', pay);
+    formData.append('Megjegyzés', note || '-');
+    formData.append('Rendelés', cart.map(i => `${i.n} (${i.p} Ft)`).join(', '));
+    formData.append('Összesen', totalPrice + " Ft");
+    formData.append('_subject', `ÚJ RENDELÉS: ${name}`);
+
+    try {
+        const response = await fetch("https://formspree.io/f/xaqnzayy", {
+            method: "POST",
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+            alert("Siker! Rendelés elküldve.");
+            cart = []; up();
+        } else { 
+            alert("Hiba történt a szerverrel. Próbáld újra!"); 
+        }
+    } catch (e) { alert("Hálózati hiba! Ellenőrizd az interneted."); }
+    finally { btn.innerText = "RENDELÉS LEADÁSA"; btn.disabled = false; }
+}
 
     function add(n, p) { cart.push({n, p}); up(); }
     function del(idx) { cart.splice(idx, 1); up(); }
@@ -252,50 +297,6 @@
         document.getElementById('total-price').innerText = (sub + box + ship).toLocaleString();
     }
 
-    async function send() {
-    const name = document.getElementById('user-name').value;
-    const addr = document.getElementById('user-addr').value;
-    const tel = document.getElementById('user-tel').value;
-    const note = document.getElementById('user-note').value;
-    const pay = document.querySelector('input[name="pay"]:checked').value;
-    const delOption = document.getElementById('delivery-option');
-    const delText = delOption.options[delOption.selectedIndex].text;
-    const totalPrice = document.getElementById('total-price').innerText;
-
-    if(!cart.length || !name || !addr || !tel) return alert("Kérlek tölts ki minden adatot!");
-
-    const btn = document.querySelector('.order-btn');
-    btn.innerText = "Küldés...";
-    btn.disabled = true;
-
-    // A FormData használata kijátssza az "Unauthorized domain" hibát
-    const formData = new FormData();
-    formData.append('Vevő', name);
-    formData.append('Cím', addr);
-    formData.append('Tel', tel);
-    formData.append('Átvétel', delText);
-    formData.append('Fizetés', pay);
-    formData.append('Megjegyzés', note || '-');
-    formData.append('Rendelés', cart.map(i => `${i.n} (${i.p} Ft)`).join(', '));
-    formData.append('Összesen', totalPrice + " Ft");
-    formData.append('_subject', `ÚJ RENDELÉS: ${name}`);
-
-    try {
-        const response = await fetch("https://formspree.io/f/xaqnzayy", {
-            method: "POST",
-            body: formData,
-            headers: { 'Accept': 'application/json' }
-        });
-
-        if (response.ok) {
-            alert("Siker! Rendelés elküldve a Trellóra.");
-            cart = []; up();
-        } else { 
-            alert("Hiba történt. Kérlek, próbáld újra!"); 
-        }
-    } catch (e) { alert("Hálózati hiba."); }
-    finally { btn.innerText = "RENDELÉS LEADÁSA"; btn.disabled = false; }
-}
 
     render();
 </script>
