@@ -268,7 +268,7 @@
     btn.innerText = "Küldés...";
     btn.disabled = true;
 
-    // Átállás URL-kódolt küldésre a domain hiba kikerüléséhez
+    // A FormData használata kijátssza az "Unauthorized domain" hibát
     const formData = new FormData();
     formData.append('Vevő', name);
     formData.append('Cím', addr);
@@ -288,10 +288,10 @@
         });
 
         if (response.ok) {
-            alert("Siker! Rendelés elküldve.");
+            alert("Siker! Rendelés elküldve a Trellóra.");
             cart = []; up();
         } else { 
-            alert("Hiba történt. Próbáld meg újra!"); 
+            alert("Hiba történt. Kérlek, próbáld újra!"); 
         }
     } catch (e) { alert("Hálózati hiba."); }
     finally { btn.innerText = "RENDELÉS LEADÁSA"; btn.disabled = false; }
