@@ -242,71 +242,37 @@
     }
     
 async function send() {
-    const name = document.getElementById('user-name').value;
-    const addr = document.getElementById('user-addr').value;
-    const tel = document.getElementById('user-tel').value;
-    const note = document.getElementById('user-note').value;
-    const pay = document.querySelector('input[name="pay"]:checked').value;
-    const delOption = document.getElementById('delivery-option');
-    const delText = delOption.options[delOption.selectedIndex].text;
+    const name = document.getElementById('name').value;
+    const address = document.getElementById('address').value;
+    const phone = document.getElementById('phone').value;
     const totalPrice = document.getElementById('total-price').innerText;
 
-    if(!cart.length || !name || !addr || !tel) return alert("Kérlek tölts ki minden adatot!");
-
-    const btn = document.querySelector('.order-btn');
-    btn.innerText = "Küldés...";
-    btn.disabled = true;
-
-    // A FormData-val elkerüljük az 'Unauthorized domain' hibát
-    const formData = new FormData();
-    formData.append('Vásárló', name);
-    formData.append('Cím', addr);
-    formData.append('Telefon', tel);
-    formData.append('Átvétel', delText);
-    formData.append('Fizetés', pay);
-    formData.append('Megjegyzés', note || '-');
-    formData.append('Rendelés', cart.map(i => `${i.n} (${i.p} Ft)`).join(', '));
-    formData.append('Összesen', totalPrice + " Ft");
-    formData.append('_subject', `ÚJ RENDELÉS: ${name}`);
-
-    try {
-        const response = await fetch("https://formspree.io/f/xaqnzayy", {
-            method: "POST",
-            body: formData,
-            headers: { 'Accept': 'application/json' }
-        });
-
-        if (response.ok) {
-            alert("Siker! Rendelés elküldve.");
-            cart = []; up();
-        } else { 
-            alert("Hiba történt a szerverrel. Próbáld újra!"); 
-        }
-    } catch (e) { alert("Hálózati hiba! Ellenőrizd az interneted."); }
-    finally { btn.innerText = "RENDELÉS LEADÁSA"; btn.disabled = false; }
-}
-
-    function add(n, p) { cart.push({n, p}); up(); }
-    function del(idx) { cart.splice(idx, 1); up(); }
-    function clearCart() { if(confirm("Üríted a kosarat?")) { cart = []; up(); } }
-    
-    function up() {
-        const c = document.getElementById('cart-content');
-        if(!cart.length) { 
-            c.innerHTML = "Üres..."; 
-            document.getElementById('total-price').innerText = 0; 
-            document.getElementById('box-fee').innerText = 0; 
-            document.getElementById('display-ship').innerText = 0;
-            return; 
-        }
-        c.innerHTML = cart.map((i, x) => `<div class="cart-item">${i.n} <span>${i.p} Ft <b class="remove-btn" onclick="del(${x})">X</b></span></div>`).join('');
-        let sub = cart.reduce((s, i) => s + i.p, 0);
-        let box = cart.length * 200;
-        let ship = parseInt(document.getElementById('delivery-option').value);
-        document.getElementById('box-fee').innerText = box;
-        document.getElementById('display-ship').innerText = ship;
-        document.getElementById('total-price').innerText = (sub + box + ship).toLocaleString();
+    if (!name || !address || !phone) {
+        alert("Kérjük, töltsön ki minden adatot!");
+        return;
     }
+
+    // Rendelés tartalmának összeállítása
+    let orderDetails = "ÚJ RENDELÉS ÉRKEZETT\n\n";
+    orderDetails += `Név: ${name}\n`;
+    orderDetails += `Cím: ${address}\n`;
+    orderDetails += `Telefon: ${phone}\n`;
+    orderDetails += `Összesen: ${totalPrice} Ft\n\n`;
+    orderDetails += "Rendelt ételek:\n";
+
+    cart.forEach(item => {
+        orderDetails += `- ${item.name} (${item.price} Ft)\n`;
+    });
+
+    // Email küldése a Formspree kihagyásával
+    const subject = encodeURIComponent(`ÚJ RENDELÉS: ${name}`);
+    const body = encodeURIComponent(orderDetails);
+    
+    // Itt nyitja meg a levelezőt
+    window.location.href = `mailto:gourmetfuziokft@gmail.com?subject=${subject}&body=${body}`;
+
+    alert("A rendelés összeállítva! Kérjük, küldje el az e-mailt a megnyíló ablakban.");
+}
 
 
     render();
