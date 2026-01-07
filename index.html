@@ -252,29 +252,27 @@ async function send() {
         return;
     }
 
-    // Rendelés tartalmának összeállítása
-    let orderDetails = "ÚJ RENDELÉS ÉRKEZETT\n\n";
-    orderDetails += `Név: ${name}\n`;
-    orderDetails += `Cím: ${address}\n`;
-    orderDetails += `Telefon: ${phone}\n`;
-    orderDetails += `Összesen: ${totalPrice} Ft\n\n`;
-    orderDetails += "Rendelt ételek:\n";
-
+    // A rendelés szövegének összeállítása
+    let orderText = `ÚJ RENDELÉS ÉRKEZETT\n\n`;
+    orderText += `Név: ${name}\n`;
+    orderText += `Cím: ${address}\n`;
+    orderText += `Telefon: ${phone}\n`;
+    orderText += `Összesen: ${totalPrice} Ft\n\n`;
+    orderText += `Rendelt ételek:\n`;
+    
     cart.forEach(item => {
-        orderDetails += `- ${item.name} (${item.price} Ft)\n`;
+        orderText += `- ${item.name} (${item.price} Ft)\n`;
     });
 
-    // Email küldése a Formspree kihagyásával
-    const subject = encodeURIComponent(`ÚJ RENDELÉS: ${name}`);
-    const body = encodeURIComponent(orderDetails);
+    // Az email küldés folyamata (Formspree NÉLKÜL)
+    const mailtoLink = `mailto:gourmetfuziokft@gmail.com?subject=${encodeURIComponent("ÚJ RENDELÉS: " + name)}&body=${encodeURIComponent(orderText)}`;
     
-    // Itt nyitja meg a levelezőt
-    window.location.href = `mailto:gourmetfuziokft@gmail.com?subject=${subject}&body=${body}`;
+    // Megnyitja a felhasználó email küldőjét (Gmail, Outlook, stb.)
+    window.location.href = mailtoLink;
 
-    alert("A rendelés összeállítva! Kérjük, küldje el az e-mailt a megnyíló ablakban.");
+    alert("A rendelése elkészült! Kérjük, nyomjon a 'Küldés' gombra a megnyíló e-mail ablakban!");
 }
-
-
+ 
     render();
 </script>
 
