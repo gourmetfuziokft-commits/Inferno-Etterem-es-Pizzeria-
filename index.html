@@ -25,21 +25,10 @@
         .clear-btn { background: #333; color: #ccc; border: none; padding: 5px; width: 100%; border-radius: 4px; cursor: pointer; margin-bottom: 15px; font-size: 0.8rem; }
         .order-btn { background: #28a745; color: white; width: 100%; border: none; padding: 18px; margin-top: 15px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; }
         input, textarea, select { width: 100%; padding: 12px; margin-top: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 6px; box-sizing: border-box; }
-        .side-select { border: 1px solid var(--red); font-family: 'Oswald', sans-serif; }
+        .side-select { border: 1px solid var(--red); font-family: 'Oswald', sans-serif; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-    <div id="closed-modal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); align-items: center; justify-content: center;">
-    <div style="background-color: #1a1a1a; padding: 30px; border: 3px solid #bc0000; border-radius: 15px; max-width: 400px; text-align: center; margin: 20px;">
-        <h2 style="color: #bc0000; margin-top: 0; border: none;">FIGYELEM!</h2>
-        <p style="font-size: 1.2rem; color: white; margin-bottom: 20px;">Étermünk a mai napon <strong>ZÁRVA</strong> tart.</p>
-        <p style="color: #aaa; font-size: 0.9rem;">Rendelés leadására a mai napon nincs lehetőség. Megértésüket köszönjük!</p>
-        <button onclick="document.getElementById('closed-modal').style.display='none'" 
-                style="background: #bc0000; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; text-transform: uppercase;">
-            Értem
-        </button>
-    </div>
-</div>
 
 <header>
     <div style="width: 100%; height: 350px; overflow: hidden; position: relative;">
@@ -70,12 +59,6 @@
             <div class="cart-item">Dobozdíj (200 Ft/étel): <span id="box-fee">0</span> Ft</div>
             <div class="cart-item">Szállítás: <span id="display-ship">390</span> Ft</div>
             <h3 style="color:var(--orange)">Összesen: <span id="total-price">0</span> Ft</h3>
-        </div>
-
-        <p style="font-size: 0.8rem; color: #888; margin-top: 15px; margin-bottom: 5px;">💳 Fizetés:</p>
-        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-            <label><input type="radio" name="pay" value="Készpénz" checked> Készpénz</label>
-            <label><input type="radio" name="pay" value="Bankkártya"> Kártya</label>
         </div>
 
         <input type="text" id="user-name" placeholder="Neved">
@@ -207,7 +190,7 @@
     function render() {
         const div = document.getElementById('main-menu');
         div.innerHTML = menuData.map((section, sIdx) => {
-            const needsSide = (sIdx === 4);
+            const needsSide = (sIdx === 4); // Főételeknél engedélyezzük a köret választást
             return `
                 <h2>${section.cat}</h2>
                 <div class="menu-grid">
@@ -222,7 +205,7 @@
                                         <option value="">-- Válassz köretet --</option>
                                         ${sidesData.map(s => `<option value="${s.n}|${s.p}">${s.n} (+${s.p} Ft)</option>`).join('')}
                                     </select>
-                                    <button class="add-btn" style="margin-top:10px" onclick="addWithSide('${p[0].replace(/'/g, "\\'")}', ${p[1]}, '${selectId}')">Kosárba</button>
+                                    <button class="add-btn" onclick="addWithSide('${p[0].replace(/'/g, "\\'")}', ${p[1]}, '${selectId}')">Kosárba</button>
                                 ` : `
                                     <button class="add-btn" onclick="add('${p[0].replace(/'/g, "\\'")}', ${p[1]})">Kosárba</button>
                                 `}
@@ -234,45 +217,90 @@
         }).join('');
     }
 
+    function add(name, price) {
+        cart.push({ name, price });
+        up();
+    }
+
     function addWithSide(mainName, mainPrice, selectId) {
         const sel = document.getElementById(selectId);
         if (!sel || !sel.value) return alert("Kérlek, válassz köretet!");
         const [sideName, sidePrice] = sel.value.split('|');
         add(`${mainName} (+${sideName})`, mainPrice + parseInt(sidePrice));
     }
-    
-async function send() {
-    const name = document.getElementById('name').value;
-    const address = document.getElementById('address').value;
-    const phone = document.getElementById('phone').value;
-    const totalPrice = document.getElementById('total-price').innerText;
 
-    if (!name || !address || !phone) {
-        alert("Kérjük, töltsön ki minden adatot!");
-        return;
+    function remove(idx) {
+        cart.splice(idx, 1);
+        up();
     }
 
-    // A rendelés szövegének összeállítása
-    let orderText = `ÚJ RENDELÉS ÉRKEZETT\n\n`;
-    orderText += `Név: ${name}\n`;
-    orderText += `Cím: ${address}\n`;
-    orderText += `Telefon: ${phone}\n`;
-    orderText += `Összesen: ${totalPrice} Ft\n\n`;
-    orderText += `Rendelt ételek:\n`;
-    
-    cart.forEach(item => {
-        orderText += `- ${item.name} (${item.price} Ft)\n`;
-    });
+    function clearCart() {
+        cart = [];
+        up();
+    }
 
-    // Az email küldés folyamata (Formspree NÉLKÜL)
-    const mailtoLink = `mailto:gourmetfuziokft@gmail.com?subject=${encodeURIComponent("ÚJ RENDELÉS: " + name)}&body=${encodeURIComponent(orderText)}`;
-    
-    // Megnyitja a felhasználó email küldőjét (Gmail, Outlook, stb.)
-    window.location.href = mailtoLink;
+    function up() {
+        const content = document.getElementById('cart-content');
+        const ship = parseInt(document.getElementById('delivery-option').value);
+        const boxFee = cart.length * 200;
+        let subtotal = 0;
 
-    alert("A rendelése elkészült! Kérjük, nyomjon a 'Küldés' gombra a megnyíló e-mail ablakban!");
-}
- 
+        if (cart.length === 0) {
+            content.innerHTML = "Üres...";
+            document.getElementById('total-price').innerText = "0";
+            document.getElementById('box-fee').innerText = "0";
+            document.getElementById('display-ship').innerText = ship;
+            return;
+        }
+
+        content.innerHTML = cart.map((item, i) => `
+            <div class="cart-item">
+                ${item.name} (${item.price} Ft)
+                <span class="remove-btn" onclick="remove(${i})">X</span>
+            </div>
+        `).join('');
+
+        cart.forEach(item => subtotal += item.price);
+        document.getElementById('box-fee').innerText = boxFee;
+        document.getElementById('display-ship').innerText = ship;
+        document.getElementById('total-price').innerText = subtotal + ship + boxFee;
+    }
+
+    async function send() {
+        const name = document.getElementById('user-name').value;
+        const address = document.getElementById('user-addr').value;
+        const phone = document.getElementById('user-tel').value;
+        const note = document.getElementById('user-note').value;
+        const totalPrice = document.getElementById('total-price').innerText;
+
+        if (!name || !address || !phone) {
+            alert("Kérjük, töltsön ki minden adatot!");
+            return;
+        }
+
+        if (cart.length === 0) {
+            alert("A kosarad üres!");
+            return;
+        }
+
+        let orderText = `ÚJ RENDELÉS ÉRKEZETT\n\n`;
+        orderText += `Név: ${name}\n`;
+        orderText += `Cím: ${address}\n`;
+        orderText += `Telefon: ${phone}\n`;
+        orderText += `Megjegyzés: ${note}\n`;
+        orderText += `Összesen: ${totalPrice} Ft\n\n`;
+        orderText += `Rendelt ételek:\n`;
+        
+        cart.forEach(item => {
+            orderText += `- ${item.name} (${item.price} Ft)\n`;
+        });
+
+        const mailtoLink = `mailto:gourmetfuziokft@gmail.com?subject=${encodeURIComponent("ÚJ RENDELÉS: " + name)}&body=${encodeURIComponent(orderText)}`;
+        
+        window.location.href = mailtoLink;
+        alert("A rendelés összeállítva! Kérjük, nyomja meg a 'Küldés' gombot a megnyíló e-mail ablakban!");
+    }
+
     render();
 </script>
 
