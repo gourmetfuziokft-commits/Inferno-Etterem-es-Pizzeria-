@@ -54,35 +54,7 @@
 
     <p style="color: #888;">PRÉMIUM ONLINE RENDELÉS</p>
 </header>
-
-<div class="container">
-    <div id="main-menu"></div>
-
-    <div class="cart-box">
-        <h3 style="margin-top:0;">🛒 Kosarad</h3>
-        <button class="clear-btn" onclick="clearCart()">Kosár ürítése</button>
-        
-        <p style="font-size: 0.8rem; color: #888; margin-bottom: 5px;">📍 Átvétel módja:</p>
-        <select id="delivery-option" onchange="up()">
-            <option value="390" selected>Házhozszállítás (390 Ft)</option>
-            <option value="0">Helyben átvétel (0 Ft)</option>
-        </select>
-
-        <div id="cart-content" style="margin-top: 15px;">Üres...</div>
-        
-        <div style="margin-top:15px; border-top: 1px solid #444; padding-top:10px;">
-            <div class="cart-item">Dobozdíj (200 Ft/étel): <span id="box-fee">0</span> Ft</div>
-            <div class="cart-item">Szállítás: <span id="display-ship">390</span> Ft</div>
-            <h3 style="color:var(--orange)">Összesen: <span id="total-price">0</span> Ft</h3>
-        </div>
-
-        <input type="text" id="user-name" placeholder="Neved">
-        <input type="text" id="user-addr" placeholder="Címed">
-        <input type="tel" id="user-tel" placeholder="Telefonod">
-        <textarea id="user-note" placeholder="Megjegyzés..."></textarea>
-        
-        <button class="order-btn" onclick="send()">RENDELÉS LEADÁSA</button>
-    </div>
+    
 </div>
     <div id="daily-menu-container" class="daily-menu-box">
     <span class="menu-time" id="status-tag">🕒 Elérhető: 11:00 - 17:00</span>
@@ -132,6 +104,37 @@
     // Percenként újra ellenőrizzük, ha nyitva hagyná az oldalt
     setInterval(updateMenuAvailability, 60000);
 </script>
+
+<div class="container">
+    <div id="main-menu"></div>
+
+    <div class="cart-box">
+        <h3 style="margin-top:0;">🛒 Kosarad</h3>
+        <button class="clear-btn" onclick="clearCart()">Kosár ürítése</button>
+        
+        <p style="font-size: 0.8rem; color: #888; margin-bottom: 5px;">📍 Átvétel módja:</p>
+        <select id="delivery-option" onchange="up()">
+            <option value="390" selected>Házhozszállítás (390 Ft)</option>
+            <option value="0">Helyben átvétel (0 Ft)</option>
+        </select>
+
+        <div id="cart-content" style="margin-top: 15px;">Üres...</div>
+        
+        <div style="margin-top:15px; border-top: 1px solid #444; padding-top:10px;">
+            <div class="cart-item">Dobozdíj (200 Ft/étel): <span id="box-fee">0</span> Ft</div>
+            <div class="cart-item">Szállítás: <span id="display-ship">390</span> Ft</div>
+            <h3 style="color:var(--orange)">Összesen: <span id="total-price">0</span> Ft</h3>
+        </div>
+
+        <input type="text" id="user-name" placeholder="Neved">
+        <input type="text" id="user-addr" placeholder="Címed">
+        <input type="tel" id="user-tel" placeholder="Telefonod">
+        <textarea id="user-note" placeholder="Megjegyzés..."></textarea>
+        
+        <button class="order-btn" onclick="send()">RENDELÉS LEADÁSA</button>
+    </div>
+</div>
+
 
 
 <script>
