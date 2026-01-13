@@ -84,6 +84,55 @@
         <button class="order-btn" onclick="send()">RENDELÉS LEADÁSA</button>
     </div>
 </div>
+    <div id="daily-menu-container" class="daily-menu-box">
+    <span class="menu-time" id="status-tag">🕒 Elérhető: 11:00 - 17:00</span>
+    <h2>MAI NAPI MENÜ</h2>
+    <hr style="border: 0.5px solid rgba(255,255,255,0.3)">
+    <ul style="list-style: none; padding: 0; font-size: 1.2rem; line-height: 1.8;">
+        <li>🥣 Húsleves, cérnatészta</li>
+        <li>🍝 Bolognai penne</li>
+        <li>🥞 Kakaós palacsinta</li>
+    </ul>
+    <span class="price-tag">Csak: 2.990,- Ft</span>
+    <button class="add-btn" id="menu-btn" onclick="addToCart('Napi Menü', 2990)">KOSÁRBA</button>
+</div>
+
+<script>
+    function updateMenuAvailability() {
+        const now = new Date();
+        const hour = now.getHours();
+        const container = document.getElementById('daily-menu-container');
+        const btn = document.getElementById('menu-btn');
+        const tag = document.getElementById('status-tag');
+
+        // Időintervallum ellenőrzése (11 és 17 óra között)
+        if (hour >= 11 && hour < 17) {
+            // Elérhető
+            container.style.opacity = "1";
+            container.style.filter = "grayscale(0%)";
+            btn.disabled = false;
+            btn.innerText = "KOSÁRBA";
+            tag.innerText = "✅ Jelenleg rendelhető (17:00-ig)";
+            tag.style.backgroundColor = "#28a745";
+        } else {
+            // Nem elérhető
+            container.style.opacity = "0.6";
+            container.style.filter = "grayscale(50%)";
+            btn.disabled = true;
+            btn.style.backgroundColor = "#444";
+            btn.innerText = "JELENLEG NEM RENDELHETŐ";
+            tag.innerText = "❌ Csak 11:00 és 17:00 között elérhető";
+            tag.style.backgroundColor = "#bc0000";
+        }
+    }
+
+    // Oldal betöltésekor ellenőrizzük
+    updateMenuAvailability();
+    
+    // Percenként újra ellenőrizzük, ha nyitva hagyná az oldalt
+    setInterval(updateMenuAvailability, 60000);
+</script>
+
 
 <script>
     const sidesData = [
