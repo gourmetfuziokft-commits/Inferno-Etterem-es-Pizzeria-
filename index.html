@@ -107,6 +107,22 @@
 
 <div class="container">
     <div id="main-menu"></div>
+    <div class="payment-box">
+    <p>Hogyan szeretne fizetni? (Kötelező választani)</p>
+    
+    <label>
+        <input type="radio" name="Fizetés" value="Készpénz" required> 
+        💵 Készpénz
+    </label>
+    
+    <br>
+    
+    <label>
+        <input type="radio" name="Fizetés" value="Bankkártya" required> 
+        💳 Bankkártya a futárnál
+    </label>
+</div>
+
 
     <div class="cart-box">
         <h3 style="margin-top:0;">🛒 Kosarad</h3>
@@ -130,7 +146,18 @@
         <input type="text" id="user-addr" placeholder="Címed">
         <input type="tel" id="user-tel" placeholder="Telefonod">
         <textarea id="user-note" placeholder="Megjegyzés..."></textarea>
-        
+        <div style="text-align: left; margin: 15px 0; padding: 10px; border: 1px dashed #555;">
+    <p style="margin-bottom: 10px; font-weight: bold;">Fizetési mód:</p>
+    
+    <label style="display: block; cursor: pointer; margin-bottom: 8px;">
+        <input type="radio" name="payment-method" value="Készpénz" required> 💵 Készpénz
+    </label>
+    
+    <label style="display: block; cursor: pointer;">
+        <input type="radio" name="payment-method" value="Bankkártya (Futárnál)"> 💳 Bankkártya (Futárnál)
+    </label>
+</div>
+
         <button class="order-btn" onclick="send()">RENDELÉS LEADÁSA</button>
     </div>
 </div>
