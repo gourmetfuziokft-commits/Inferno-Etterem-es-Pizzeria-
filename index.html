@@ -378,22 +378,42 @@
         }
 
         let orderText = `ÚJ RENDELÉS ÉRKEZETT\n\n`;
-        orderText += `Név: ${name}\n`;
-        orderText += `Cím: ${address}\n`;
-        orderText += `Telefon: ${phone}\n`;
-        orderText += `Megjegyzés: ${note}\n`;
-        orderText += `Összesen: ${totalPrice} Ft\n\n`;
-        orderText += `Rendelt ételek:\n`;
-        
-        cart.forEach(item => {
-            orderText += `- ${item.name} (${item.price} Ft)\n`;
-        });
-
-        const mailtoLink = `mailto:gourmetfuziokft@gmail.com?subject=${encodeURIComponent("ÚJ RENDELÉS: " + name)}&body=${encodeURIComponent(orderText)}`;
-        
-        window.location.href = mailtoLink;
-        alert("A rendelés összeállítva! Kérjük, nyomja meg a 'Küldés' gombot a megnyíló e-mail ablakban!");
+        function prepareOrder(event) {
+    // 1. Ellenőrizzük, van-e valami a kosárban
+    if(cart.length === 0) {
+        alert("Üres a kosarad!");
+        event.preventDefault();
+        return;
     }
+
+    // 2. KIOLVASSUK A KIVÁLASZTOTT FIZETÉSI MÓDOT
+    // Megkeressük azt a 'fizetes' nevű gombot, ami be van jelölve (checked)
+    const paymentElement = document.querySelector('input[name="fizetes"]:checked');
+    
+    if (!paymentElement) {
+        alert("Kérlek, válassz fizetési módot!");
+        event.preventDefault();
+        return;
+    }
+
+    const valasztottFizetes = paymentElement.value;
+
+    // 3. ÖSSZEÁLLÍTJUK A TELJES SZÖVEGET
+    const termekek = cart.map(i => i.name + " (" + i.price + " Ft)").join(", ");
+    
+    // Itt fűzzük hozzá a fizetési módot a szöveg végére
+    const veglegesUzenet = "TERMÉKEK: " + termekek + 
+                           " | ÖSSZESEN: " + total + " Ft" + 
+                           " | FIZETÉSI MÓD: " + valasztottFizetes;
+
+    // 4. BEILLESZTJÜK A REJTETT MEZŐBE, AMIT AZ EMAIL KÜLDŐ HASZNÁL
+    // Győződj meg róla, hogy a rejtett inputod ID-ja 'cart-data'!
+    const hiddenInput = document.getElementById('cart-data');
+    if (hiddenInput) {
+        hiddenInput.value = veglegesUzenet;
+    }
+}
+
 
     render();
 </script>
