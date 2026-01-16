@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="hu"> 
+<html lang="hu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inferno Étterem - Étlap</title>
+    <title>Inferno Étterem és Pizzéria</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --red: #bc0000; --orange: #ff4500; --dark: #0a0a0a; --grey: #1a1a1a; }
         body { font-family: 'Roboto', sans-serif; background-color: var(--dark); color: white; margin: 0; padding-bottom: 120px; }
-        header { background: #000; text-align: center; border-bottom: 4px solid var(--red); }
+        header { background: #000; text-align: center; border-bottom: 4px solid var(--red); padding-bottom: 20px; }
         h1 { font-family: 'Oswald', sans-serif; color: var(--red); text-transform: uppercase; margin: 20px 0 5px 0; font-size: 2.5rem; }
         .container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 380px; gap: 30px; padding: 20px; }
         @media (max-width: 950px) { .container { grid-template-columns: 1fr; } }
@@ -16,319 +16,110 @@
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
         .card { background: var(--grey); border-radius: 12px; padding: 20px; border: 1px solid #333; display: flex; flex-direction: column; justify-content: space-between; }
         .card h3 { margin: 0 0 8px 0; color: #fff; font-size: 1.1rem; }
-        .card p { font-size: 0.85rem; color: #aaa; margin: 0 0 15px 0; min-height: 45px; }
+        .card p { font-size: 0.85rem; color: #aaa; margin: 0 0 15px 0; min-height: 40px; }
         .price { color: var(--orange); font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
         .old-price { text-decoration: line-through; color: #666; font-size: 0.9rem; margin-right: 8px; }
         .promo-badge { background: #28a745; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; vertical-align: middle; margin-left: 10px; }
         .add-btn { background: var(--red); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; text-transform: uppercase; }
         .cart-box { background: #111; padding: 25px; border-radius: 15px; border: 2px solid var(--red); position: sticky; top: 20px; height: fit-content; }
         .cart-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; padding: 8px 0; border-bottom: 1px solid #222; }
-        .remove-btn { color: #ff4444; cursor: pointer; font-weight: bold; border: 1px solid #444; padding: 2px 8px; border-radius: 4px; margin-left: 10px; }
-        .clear-btn { background: #333; color: #ccc; border: none; padding: 5px; width: 100%; border-radius: 4px; cursor: pointer; margin-bottom: 15px; font-size: 0.8rem; }
+        .remove-btn { color: #ff4444; cursor: pointer; font-weight: bold; border: 1px solid #444; padding: 2px 8px; border-radius: 4px; }
         .order-btn { background: #28a745; color: white; width: 100%; border: none; padding: 18px; margin-top: 15px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; }
-        input, textarea, select { width: 100%; padding: 12px; margin-top: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 6px; box-sizing: border-box; }
+        input, select { width: 100%; padding: 12px; margin-top: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 6px; box-sizing: border-box; }
         .side-select { border: 1px solid var(--red); font-family: 'Oswald', sans-serif; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
 <header>
-    <div style="width: 100%; height: 350px; overflow: hidden; position: relative;">
-        <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.8);">
-            <source src="grok_video_2026-01-03-23-10-55.mp4" type="video/mp4">
-        </video>
-    </div>
     <h1>Inferno Étterem és Pizzéria</h1>
     <p style="color: #ff4500; font-weight: bold; font-size: 1.2rem;">🔥 AKCIÓ: MINDEN PIZZA CSAK 2.500 FT! 🔥</p>
+    <div id="open-status" style="font-weight: bold; margin-top: 10px;"></div>
 </header>
-<div style="background: #111; text-align: center; padding: 15px; border-bottom: 2px solid var(--red); font-family: 'Oswald', sans-serif;">
-    <p style="margin: 0; color: #ccc; font-size: 0.9rem;">
-        <span style="color: var(--red);">HÉTFŐ: ZÁRVA</span> | 
-        KEDD - VASÁRNAP: 11:00 - 22:00
-    </p>
-    <p style="margin: 5px 0 0 0; color: var(--orange); font-weight: bold;">
-        Konyha és rendelésfelvétel: 21:30-ig
-    </p>
-    <div id="open-status" style="margin-top: 10px; font-weight: bold; text-transform: uppercase;"></div>
-</div>
 
 <div class="container">
     <div id="main-menu"></div>
-
     <div class="cart-box">
-        <h3 style="margin-top:0;">🛒 Kosarad</h3>
-        <button class="clear-btn" onclick="clearCart()">Kosár ürítése</button>
-        
-        <p style="font-size: 0.8rem; color: #888; margin-bottom: 5px;">📍 Átvétel módja:</p>
+        <h3>🛒 Kosarad</h3>
         <select id="delivery-option" onchange="up()">
-            <option value="390" selected>Házhozszállítás (390 Ft)</option>
+            <option value="390">Házhozszállítás (390 Ft)</option>
             <option value="0">Helyben átvétel (0 Ft)</option>
         </select>
-
-        <div id="cart-content" style="margin-top: 15px;">Üres...</div>
-        
+        <div id="cart-content">Üres...</div>
         <div style="margin-top:15px; border-top: 1px solid #444; padding-top:10px;">
             <div class="cart-item">Dobozdíj (200 Ft/étel): <span id="box-fee">0</span> Ft</div>
-            <div class="cart-item">Szállítás: <span id="display-ship">390</span> Ft</div>
             <h3 style="color:var(--orange)">Összesen: <span id="total-price">0</span> Ft</h3>
         </div>
-
-        <input type="text" id="user-name" placeholder="Neved">
-        <input type="text" id="user-addr" placeholder="Címed">
-        <input type="tel" id="user-tel" placeholder="Telefonod">
-        <textarea id="user-note" placeholder="Megjegyzés..."></textarea>
-        
-        <div style="text-align: left; margin: 15px 0; padding: 10px; border: 1px dashed #555;">
-            <p style="margin-bottom: 10px; font-weight: bold;">Fizetési mód:</p>
-            <label style="display: block; cursor: pointer; margin-bottom: 8px;"><input type="radio" name="payment-method" value="Készpénz" checked> 💵 Készpénz</label>
-            <label style="display: block; cursor: pointer;"><input type="radio" name="payment-method" value="Bankkártya (Futárnál)"> 💳 Bankkártya (Futárnál)</label>
-        </div>
-
+        <input type="text" id="user-name" placeholder="Név">
+        <input type="text" id="user-addr" placeholder="Cím">
+        <input type="tel" id="user-tel" placeholder="Telefon">
         <button class="order-btn" onclick="send()">RENDELÉS LEADÁSA</button>
     </div>
 </div>
 
 <script>
-    const sidesData = [
-        { n: "Rizs", p: 990 }, { n: "Hasábburgonya", p: 990 }, { n: "Steak burgonya", p: 1190 },
-        { n: "Édes burgonya", p: 1390 }, { n: "Petrezselymes burgonya", p: 990 },
-        { n: "Burgonyapüré", p: 1190 }, { n: "Juhtúrós sztrapacska", p: 1790 },
-        { n: "Friss vágott saláta", p: 1590 }, { n: "Rizi-bizi", p: 1190 },
-        { n: "Kukoricás rizs", p: 1190 }, { n: "Majonézes burgonya saláta", p: 1290 }
-    ];
+    const sidesData = [{n:"Rizs",p:990},{n:"Hasábburgonya",p:990},{n:"Steak burgonya",p:1190},{n:"Édes burgonya",p:1390},{n:"Petrezselymes burgonya",p:990},{n:"Burgonyapüré",p:1190},{n:"Juhtúrós sztrapacska",p:1790}];
 
     const menuData = [
-        {
-            cat: "ELŐÉTELEK",
-            items: [
-                ["Olasz-magyar vegyes ízelítő", 3590, "pármai sonka, olasz pikáns szalámi, prosciutto cotto, olivabogyó, gorgonzola, taleggio, szárított paradicsom, rozmaringos pizzakenyérrel"],
-                ["Padlizsánkrém", 3190, "pizzakenyérrel, friss zöldségekkel"],
-                ["Bruschetta pizzakenyérrel", 2990, "paradicsom, bazsalikom, fokhagyma"]
-            ]
-        },
-        {
-            cat: "LEVESEK (0,5L)",
-            items: [
-                ["Húsleves gazdagon", 2590, "levesbetét, csirke, zöldségek"],
-                ["Toszkán Paradicsomleves", 2590, "mozzarella golyó, pizzakenyér"],
-                ["Sütőtök krémleves", 2590, "pirított mandulával"],
-                ["Gulyásleves", 3700, "marhahúsból"],
-                ["Meleg szilvaleves", 2790, "tejszínhabbal"]
-            ]
-        },
-        {
-            cat: "SALÁTÁK",
-            items: [
-                ["Cézár saláta", 2990, "római saláta, cézár öntet, kruton, parmezán"],
-                ["Cézár saláta csirkével", 3900, "grillezett csirke"],
-                ["Cézár saláta garnélarákkal", 4500, "pirított garnélával"],
-                ["Görögsaláta", 3190, "paradicsom, uborka, feta sajt, olíva"]
-            ]
-        },
-        {
-            cat: "TÉSZTÁK",
-            items: [
-                ["Lasagne", 3990, "kemencében sült húsos tészta"],
-                ["Arrabiata penne", 3190, "paradicsomszósz, chili, fokhagyma"],
-                ["Klasszik Bolognai spagetti", 3590, "marharagu, parmezán"],
-                ["Eredeti Carbonara spagetti", 4190, "guanciale, pecorino, tojás"],
-                ["Alfredo penne csirkével", 4190, "tejszínes-fokhagymás"],
-                ["Gambero tagliatelle", 4990, "garnélarák, vörös pesto"],
-                ["Pollo di Crema", 3990, "gorgonzola, csirke"],
-                ["Milanese", 4190, "sonka, gomba, paradicsomszósz"],
-                ["Aglio et Olio", 3190, "olivaolaj, fokhagyma"],
-                ["Parajos Gnocchi", 3990, "spenót, tejszín"]
-            ]
-        },
-        {
-            cat: "FŐÉTELEK",
-            items: [
-                ["Rántott Mozzarella sajt", 3100, ""],
-                ["Juhtúrós sztrapacska", 3990, "szalonnával"],
-                ["Sztrapacska sült csülökkel", 4990, "füstölt-sült csülök"],
-                ["Brassói aprópecsenye", 4090, "sertés szűzből"],
-                ["Harcsapaprikás túrógombóccal", 5490, "harcsafilé"],
-                ["Cordon Bleu", 3390, "sajt, sonka"],
-                ["Óriás bécsi szelet", 3590, "sertés karaj"],
-                ["Cigánypecsenye", 4590, "fokhagymás tarja, szalonna"],
-                ["Lazac Steak, parajos gnocchi-val", 5790, ""],
-                ["Csirkepaprikás gnocchi-val", 4190, ""],
-                ["Parmezános bundában sült csirkemell", 3890, ""],
-                ["Kapros juhtúróval töltött csirkemell", 4190, ""],
-                ["Caprese csirkemell", 3390, "paradicsom, mozzarella, pesto"],
-                ["Hagymás rostélyos", 4790, "marha hátszínből"],
-                ["Milánói sertésborda", 3590, "milánói spagettivel"],
-                ["Marhapörkölt", 4590, ""]
-            ]
-        },
-        {
-            cat: "BŐSÉGTÁLAK",
-            items: [
-                ["Inferno tál (2 személyes)", 9490, "Cordon bleu, Cigánypecsenye, Rántott sajt, Rántott gomba, Vegyes köret"],
-                ["Szárnyas tál (2 személyes)", 8990, "Szezámmagos csirke, Kijevi csirke, Grillezett mellszelet, Rántott gomba, Vegyes köret"],
-                ["Bőségtál (4 személyes)", 17500, "Inferno és Szárnyas tál válogatás, dupla körettel"]
-            ]
-        },
-        {
-            cat: "PIZZÁK (32 cm)",
-            items: [
-                ["Margherita", 3290, "mozzarella, bazsalikom"],
-                ["Prosciutto", 3590, "sonka"],
-                ["Funghi", 3290, "gomba"],
-                ["Prosciutto e Funghi", 3650, "sonka, gomba"],
-                ["Bolognese", 4190, "marharagu"],
-                ["Tonno", 3990, "tonhal, lilahagyma"],
-                ["Salame", 3890, "pikáns szalámi"],
-                ["Quattro Formaggi", 4190, "4 sajt"],
-                ["Pizza ala Pesto", 3990, "mozzarella, pesto"],
-                ["Lucifer", 4390, "bacon, marharagu, chili"],
-                ["Capriciosa", 4190, "sonka, gomba, olíva"],
-                ["Luna", 4190, "tejföl, csirke, bacon, spenót"],
-                ["Parma di Ruccola", 4390, "pármai sonka, rukkola"],
-                ["Inferno", 4090, "pikáns szalámi, pepperóni"],
-                ["BBQ Pizza", 4190, "Bbq alap, csirkemell, füstölt sajt"],
-                ["Sonkás-sajtos pizzatekercs", 3990, "sonka, sajt, 2 szósz"],
-                ["Vespa", 4290, "tejföl, sonka, szalámi, erős"],
-                ["Carne", 4290, "bacon, sonka, szalámi, kolbász"],
-                ["Dolce Vita", 4590, "füge, kecskesajt, sonka, méz"],
-                ["Mais", 3790, "sonka, gomba, kukorica"],
-                ["Spinaci e Ricotta", 3690, "spenót, ricotta"],
-                ["Beatriche", 4490, "csirke, juhtúró, kapor, paprika"],
-                ["Pizza Christina", 3790, "mustáros alap, kolbász, póréhagyma"]
-            ]
-        }
+        { cat: "ELŐÉTELEK", items: [["Olasz-magyar ízelítő", 3590], ["Padlizsánkrém", 3190], ["Bruschetta", 2990]] },
+        { cat: "LEVESEK", items: [["Húsleves gazdagon", 2590], ["Toszkán Paradicsomleves", 2590], ["Sütőtök krémleves", 2590], ["Gulyásleves", 3700], ["Meleg szilvaleves", 2790]] },
+        { cat: "FŐÉTELEK", items: [["Hagymás rostélyos", 4790], ["Milánói sertésborda", 3590], ["Brassói aprópecsenye", 4090], ["Cigánypecsenye", 4590], ["Óriás bécsi szelet", 3590], ["Cordon Bleu", 3390], ["Harcsapaprikás", 5490], ["Marhapörkölt", 4590], ["Lazac Steak", 5790], ["Csirkepaprikás", 4190], ["Juhtúrós sztrapacska", 3990], ["Rántott Mozzarella", 3100]] },
+        { cat: "4 SZEMÉLYES BŐSÉGTÁLAK", items: [
+            ["Húsimádó bőségtál (4 fős)", 18900, "Bécsi szelet, Sült csülök, Hagymás rostélyos, Brassói, Vegyes köret"],
+            ["Inferno bőségtál (4 fős)", 17500, "Cordon bleu, Cigánypecsenye, Rántott sajt, Gomba, Vegyes köret"],
+            ["Szárnyas bőségtál (4 fős)", 17500, "Kijevi csirke, Szezámmagos csirke, Grillezett mell, Gomba, Vegyes köret"],
+            ["Vegetáriánus bőségtál (4 fős)", 16900, "Rántott sajt, Grill sajt, Rántott gomba, Karfiol, Rizs, Tartár"]
+        ]},
+        { cat: "PIZZÁK (32 cm)", items: [["Margherita",3290],["Prosciutto",3590],["Funghi",3290],["Prosciutto e Funghi",3650],["Bolognese",4190],["Tonno",3990],["Salame",3890],["Quattro Formaggi",4190],["Lucifer",4390],["Capriciosa",4190],["Luna",4190],["Parma di Ruccola",4390],["Inferno",4090],["BBQ",4190],["Pizzatekercs",3990],["Vespa",4290],["Carne",4290],["Dolce Vita",4590],["Mais",3790],["Spinaci e Ricotta",3690],["Beatriche",4490],["Pizza Christina",3790]] }
     ];
 
     let cart = [];
-
-    function render() function checkOpeningHours() {
-    const now = new Date();
-    const day = now.getDay(); // 0: Vasárnap, 1: Hétfő...
-    const hour = now.getHours();
-    const minute = now.getMinutes();
-    const currentTime = hour * 60 + minute; // Idő percekben
-    const closeTime = 21 * 60 + 30; // 21:30 percekben (1290 perc)
-    const openTime = 11 * 60; // 11:00 percekben (660 perc)
-
-    const orderBtn = document.querySelector('.order-btn');
-    const statusDiv = document.getElementById('open-status');
-    let isOpen = true;
-
-    // Hétfő ellenőrzés
-    if (day === 1) {
-        isOpen = false;
-    } 
-    // Időintervallum ellenőrzés (11:00 - 21:30)
-    else if (currentTime < openTime || currentTime >= closeTime) {
-        isOpen = false;
-    }
-
-    if (!isOpen) {
-        orderBtn.disabled = true;
-        orderBtn.style.background = "#444";
-        orderBtn.style.cursor = "not-allowed";
-        orderBtn.innerText = "JELENLEG ZÁRVA VAGYUNK";
-        statusDiv.innerHTML = '<span style="color: #ff4444;">● ZÁRVA - Rendelésfelvétel 11:00-tól</span>';
-    } else {
-        statusDiv.innerHTML = '<span style="color: #28a745;">● NYITVA - Rendelés leadható 21:30-ig</span>';
-    }
-}
-
-// A kód legvégén hívd meg:
-render();
-checkOpeningHours();
-// 1 percenként ellenőrizze újra automatikusan
-setInterval(checkOpeningHours, 60000);
-{
+    function render() {
         const div = document.getElementById('main-menu');
         div.innerHTML = menuData.map((section, sIdx) => {
-            const isPizza = (section.cat === "PIZZÁK (32 cm)");
-            const needsSide = (section.cat === "FŐÉTELEK"); 
-            return `
-                <h2>${section.cat} ${isPizza ? '<span class="promo-badge">FIX 2500 FT</span>' : ''}</h2>
-                <div class="menu-grid">
-                    ${section.items.map((p, pIdx) => {
-                        let finalPrice = isPizza ? 2500 : p[1];
-                        let priceHTML = isPizza ? `<span class="old-price">${p[1]} Ft</span> 2.500 Ft` : `${p[1]} Ft`;
-                        const selectId = `sel-${sIdx}-${pIdx}`;
-                        return `
-                            <div class="card">
-                                <div><h3>${p[0]}</h3><p>${p[2] || ''}</p></div>
-                                <div class="price">${priceHTML}</div>
-                                ${needsSide ? `
-                                    <select id="${selectId}" class="side-select">
-                                        <option value="">-- Köret választás --</option>
-                                        ${sidesData.map(s => `<option value="${s.n}|${s.p}">${s.n} (+${s.p} Ft)</option>`).join('')}
-                                    </select>
-                                    <button class="add-btn" onclick="addWithSide('${p[0].replace(/'/g, "\\'")}', ${finalPrice}, '${selectId}')">Kosárba</button>
-                                ` : `
-                                    <button class="add-btn" onclick="add('${p[0].replace(/'/g, "\\'")}', ${finalPrice})">Kosárba</button>
-                                `}
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
-            `;
+            const isPizza = section.cat.includes("PIZZÁK");
+            const isMain = section.cat === "FŐÉTELEK";
+            return `<h2>${section.cat} ${isPizza ? '<span class="promo-badge">2500 FT</span>':''}</h2><div class="menu-grid">${section.items.map((p, pIdx) => {
+                let pr = isPizza ? 2500 : p[1];
+                let sId = `s-${sIdx}-${pIdx}`;
+                return `<div class="card"><h3>${p[0]}</h3><p>${p[2]||''}</p><div class="price">${isPizza?`<span class="old-price">${p[1]}</span>`:''} ${pr} Ft</div>
+                ${isMain ? `<select id="${sId}" class="side-select">${sidesData.map(s=>`<option value="${s.n}|${s.p}">${s.n} (+${s.p})</option>`).join('')}</select><button class="add-btn" onclick="addS('${p[0]}',${pr},'${sId}')">Kosárba</button>` : `<button class="add-btn" onclick="add('${p[0]}',${pr})">Kosárba</button>`}</div>`;
+            }).join('')}</div>`;
         }).join('');
     }
 
-    function add(name, price) { cart.push({ name, price }); up(); }
-    function addWithSide(mN, mP, id) {
-        const sel = document.getElementById(id);
-        if(!sel || !sel.value) return alert("Válassz köretet!");
-        const [sn, sp] = sel.value.split('|');
-        add(`${mN} (+${sn})`, mP + parseInt(sp));
+    function check() {
+        const n = new Date(), t = n.getHours()*60+n.getMinutes(), isOpen = (n.getDay()!==1 && t>=660 && t<1290);
+        const b = document.querySelector('.order-btn'), s = document.getElementById('open-status');
+        b.disabled = !isOpen; b.style.background = isOpen ? "#28a745" : "#444";
+        s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: Kedd 11:00)</span>';
     }
-    function remove(idx) { cart.splice(idx, 1); up(); }
-    function clearCart() { cart = []; up(); }
 
-    function up() {
+    function add(n,p){cart.push({n,p});up();}
+    function addS(n,p,id){const v=document.getElementById(id).value.split('|'); add(`${n} (${v[0]})`, p+parseInt(v[1]));}
+    function up(){
         const ship = parseInt(document.getElementById('delivery-option').value);
-        const boxFee = cart.length * 200;
-        let sub = 0;
-        document.getElementById('cart-content').innerHTML = cart.length === 0 ? "Üres..." : cart.map((item, i) => `<div class="cart-item">${item.name} (${item.price} Ft) <span class="remove-btn" onclick="remove(${i})">X</span></div>`).join('');
-        cart.forEach(i => sub += i.price);
-        document.getElementById('box-fee').innerText = boxFee;
-        document.getElementById('display-ship').innerText = ship;
-        document.getElementById('total-price').innerText = sub + ship + boxFee;
+        let sub=0; document.getElementById('cart-content').innerHTML = cart.length?cart.map((it,i)=>`<div class="cart-item">${it.n} <span class="remove-btn" onclick="cart.splice(${i},1);up()">X</span></div>`).join(''):'Üres';
+        cart.forEach(i=>sub+=i.p);
+        document.getElementById('box-fee').innerText = cart.length*200;
+        document.getElementById('total-price').innerText = sub + ship + (cart.length*200);
     }
-
-    function send() {
-        const n = document.getElementById('user-name').value, a = document.getElementById('user-addr').value, p = document.getElementById('user-tel').value;
-        const pay = document.querySelector('input[name="payment-method"]:checked');
-        if(!n || !a || !p || cart.length === 0) return alert("Kérlek töltsd ki az adatokat!");
-        const body = `RENDELÉS (2500 FT PIZZA)\nNév: ${n}\nCím: ${a}\nTel: ${p}\nFizetés: ${pay.value}\nTermékek: ${cart.map(i=>i.name).join(", ")}\nÖsszesen: ${document.getElementById('total-price').innerText} Ft`;
-        window.location.href = `mailto:gourmetfuziokft@gmail.com?subject=Rendelés&body=${encodeURIComponent(body)}`;
+    function send(){
+        const body = `Rendelés:\n${cart.map(i=>i.n).join('\n')}\nÖsszesen: ${document.getElementById('total-price').innerText} Ft\nNév: ${document.getElementById('user-name').value}\nCím: ${document.getElementById('user-addr').value}`;
+        window.location.href=`mailto:gourmetfuziokft@gmail.com?subject=Rendelés&body=${encodeURIComponent(body)}`;
     }
-    render();
+    render(); check(); setInterval(check, 30000);
 </script>
-  <section style="background: #111; padding: 60px 20px; border-top: 2px solid var(--red); margin-top: 50px; text-align: center;">
-    <h2 style="font-family: 'Oswald', sans-serif; color: var(--red); text-transform: uppercase; margin-bottom: 30px; letter-spacing: 1px;">Partneri Együttműködés</h2>
-    
-    <div style="max-width: 1000px; margin: 0 auto; line-height: 1.6; color: #ccc;">
-        <p style="font-size: 1.1rem; margin-bottom: 35px;">Szállodáknak, rendezvényszervezőknek és kiemelt partnereinknek egyedi kedvezményeket és rugalmas kiszállítást biztosítunk.</p>
-        
-        <p style="text-transform: uppercase; font-size: 0.8rem; color: #666; margin-bottom: 20px; letter-spacing: 2px;">Akikkel már együttműködünk:</p>
-        
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 45px;">
-            <a href="https://www.coca-cola.com/hu/hu" target="_blank" style="text-decoration: none; background: #1a1a1a; padding: 12px 25px; border: 1px solid #444; border-radius: 6px; color: #eee; font-weight: bold; min-width: 150px; transition: 0.3s;" onmouseover="this.style.borderColor='#bc0000'" onmouseout="this.style.borderColor='#444'">Coca-Cola</a>
-            
-            <a href="https://www.hellenergy.com/hu/" target="_blank" style="text-decoration: none; background: #1a1a1a; padding: 12px 25px; border: 1px solid #444; border-radius: 6px; color: #eee; font-weight: bold; min-width: 150px; transition: 0.3s;" onmouseover="this.style.borderColor='#bc0000'" onmouseout="this.style.borderColor='#444'">Hell Energy Drink</a>
-            
-            <a href="https://www.metro.hu" target="_blank" style="text-decoration: none; background: #1a1a1a; padding: 12px 25px; border: 1px solid #444; border-radius: 6px; color: #eee; font-weight: bold; min-width: 150px; transition: 0.3s;" onmouseover="this.style.borderColor='#bc0000'" onmouseout="this.style.borderColor='#444'">Metro Kft.</a>
-            
-            <a href="https://panyolai.hu" target="_blank" style="text-decoration: none; background: #1a1a1a; padding: 12px 25px; border: 1px solid #444; border-radius: 6px; color: #eee; font-weight: bold; min-width: 150px; transition: 0.3s;" onmouseover="this.style.borderColor='#bc0000'" onmouseout="this.style.borderColor='#444'">Panyolai</a>
-            
-            <a href="https://www.youtube.com/@UtonVeled" target="_blank" style="text-decoration: none; background: #1a1a1a; padding: 12px 25px; border: 1px solid #444; border-radius: 6px; color: #eee; font-weight: bold; min-width: 150px; transition: 0.3s;" onmouseover="this.style.borderColor='#bc0000'" onmouseout="this.style.borderColor='#444'">Úton Veled (YouTube)</a>
-        </div>
 
-        <div style="background: rgba(188, 0, 0, 0.1); padding: 30px; border-radius: 15px; border: 1px dashed var(--red);">
-            <p style="font-weight: bold; color: white; font-size: 1.3rem; margin-top: 0;">Legyen Ön is a partnerünk!</p>
-            <p style="margin-bottom: 5px;">Személyre szabott ajánlatokért keressen minket (Gourmet Fúzió Kft.):</p>
-            <a href="mailto:gourmetfuziokft@gmail.com" style="color: var(--orange); text-decoration: none; font-size: 1.2rem; font-weight: bold;">gourmetfuziokft@gmail.com</a>
-            <p style="margin-top: 5px; color: #fff;">+36 20 552 1824</p>
-        </div>
+<footer style="background:#111; padding:40px; text-align:center; border-top:2px solid var(--red); margin-top:50px;">
+    <h3 style="font-family:Oswald; color:var(--red);">PARTNEREINK</h3>
+    <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
+        <a href="https://www.coca-cola.com/hu/hu" target="_blank" style="color:white; text-decoration:none; border:1px solid #444; padding:10px;">Coca-Cola</a>
+        <a href="https://www.hellenergy.com/hu/" target="_blank" style="color:white; text-decoration:none; border:1px solid #444; padding:10px;">Hell Energy</a>
+        <a href="https://www.metro.hu" target="_blank" style="color:white; text-decoration:none; border:1px solid #444; padding:10px;">Metro Kft.</a>
+        <a href="https://panyolai.hu" target="_blank" style="color:white; text-decoration:none; border:1px solid #444; padding:10px;">Panyolai</a>
+        <a href="https://www.youtube.com/@UtonVeled" target="_blank" style="color:white; text-decoration:none; border:1px solid #444; padding:10px;">Úton Veled</a>
     </div>
-</section>
+</footer>
 </body>
 </html>
