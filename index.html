@@ -41,6 +41,16 @@
     <h1>Inferno Étterem és Pizzéria</h1>
     <p style="color: #ff4500; font-weight: bold; font-size: 1.2rem;">🔥 AKCIÓ: MINDEN PIZZA CSAK 2.500 FT! 🔥</p>
 </header>
+<div style="background: #111; text-align: center; padding: 15px; border-bottom: 2px solid var(--red); font-family: 'Oswald', sans-serif;">
+    <p style="margin: 0; color: #ccc; font-size: 0.9rem;">
+        <span style="color: var(--red);">HÉTFŐ: ZÁRVA</span> | 
+        KEDD - VASÁRNAP: 11:00 - 22:00
+    </p>
+    <p style="margin: 5px 0 0 0; color: var(--orange); font-weight: bold;">
+        Konyha és rendelésfelvétel: 21:30-ig
+    </p>
+    <div id="open-status" style="margin-top: 10px; font-weight: bold; text-transform: uppercase;"></div>
+</div>
 
 <div class="container">
     <div id="main-menu"></div>
@@ -191,7 +201,45 @@
 
     let cart = [];
 
-    function render() {
+    function render() function checkOpeningHours() {
+    const now = new Date();
+    const day = now.getDay(); // 0: Vasárnap, 1: Hétfő...
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+    const currentTime = hour * 60 + minute; // Idő percekben
+    const closeTime = 21 * 60 + 30; // 21:30 percekben (1290 perc)
+    const openTime = 11 * 60; // 11:00 percekben (660 perc)
+
+    const orderBtn = document.querySelector('.order-btn');
+    const statusDiv = document.getElementById('open-status');
+    let isOpen = true;
+
+    // Hétfő ellenőrzés
+    if (day === 1) {
+        isOpen = false;
+    } 
+    // Időintervallum ellenőrzés (11:00 - 21:30)
+    else if (currentTime < openTime || currentTime >= closeTime) {
+        isOpen = false;
+    }
+
+    if (!isOpen) {
+        orderBtn.disabled = true;
+        orderBtn.style.background = "#444";
+        orderBtn.style.cursor = "not-allowed";
+        orderBtn.innerText = "JELENLEG ZÁRVA VAGYUNK";
+        statusDiv.innerHTML = '<span style="color: #ff4444;">● ZÁRVA - Rendelésfelvétel 11:00-tól</span>';
+    } else {
+        statusDiv.innerHTML = '<span style="color: #28a745;">● NYITVA - Rendelés leadható 21:30-ig</span>';
+    }
+}
+
+// A kód legvégén hívd meg:
+render();
+checkOpeningHours();
+// 1 percenként ellenőrizze újra automatikusan
+setInterval(checkOpeningHours, 60000);
+{
         const div = document.getElementById('main-menu');
         div.innerHTML = menuData.map((section, sIdx) => {
             const isPizza = (section.cat === "PIZZÁK (32 cm)");
