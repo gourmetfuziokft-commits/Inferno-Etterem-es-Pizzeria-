@@ -120,11 +120,18 @@
         document.getElementById('total-price').innerText = sub + ship + (cart.length*200);
     }
     function send(){
-        const n = document.getElementById('user-name').value, a = document.getElementById('user-addr').value, t = document.getElementById('user-tel').value;
-        if(!n || !a || !t || cart.length === 0) return alert("Kérlek adj meg minden adatot!");
-        const body = `Rendelés:\n${cart.map(i=>i.n).join('\n')}\n\nÖsszesen: ${document.getElementById('total-price').innerText} Ft\nNév: ${n}\nCím: ${a}\nTel: ${t}`;
-        window.location.href=`mailto:gourmetfuziokft@gmail.com?subject=Rendelés&body=${encodeURIComponent(body)}`;
-    }
+    const n = document.getElementById('user-name').value, 
+          a = document.getElementById('user-addr').value, 
+          t = document.getElementById('user-tel').value, 
+          f = document.getElementById('payment-method').value;
+          
+    if(!n || !a || !t || cart.length === 0) return alert("Kérlek adj meg minden adatot!");
+    
+    const body = `RENDELÉS:\n${cart.map(i=>i.n).join('\n')}\n\nFIZETÉSI MÓD: ${f}\nÖSSZESEN: ${document.getElementById('total-price').innerText} Ft\nNÉV: ${n}\nCÍM: ${a}\nTEL: ${t}`;
+    
+    window.location.href=`mailto:gourmetfuziokft@gmail.com?subject=Rendelés&body=${encodeURIComponent(body)}`;
+}
+
     render(); check(); setInterval(check, 30000);
 </script>
 
