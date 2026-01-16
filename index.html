@@ -8,8 +8,11 @@
     <style>
         :root { --red: #bc0000; --orange: #ff4500; --dark: #0a0a0a; --grey: #1a1a1a; }
         body { font-family: 'Roboto', sans-serif; background-color: var(--dark); color: white; margin: 0; padding-bottom: 120px; }
-        header { background: #000; text-align: center; border-bottom: 4px solid var(--red); padding-bottom: 20px; }
-        h1 { font-family: 'Oswald', sans-serif; color: var(--red); text-transform: uppercase; margin: 20px 0 5px 0; font-size: 2.5rem; }
+        header { background: #000; text-align: center; border-bottom: 4px solid var(--red); padding: 20px; }
+        h1 { font-family: 'Oswald', sans-serif; color: var(--red); text-transform: uppercase; margin: 10px 0; font-size: 2.5rem; }
+        .business-info { font-size: 0.9rem; color: #aaa; margin-bottom: 15px; line-height: 1.4; }
+        .opening-hours { background: #111; padding: 10px; border-radius: 8px; border: 1px solid #333; display: inline-block; margin: 10px 0; }
+        .event-box { background: linear-gradient(45deg, #bc0000, #ff4500); padding: 20px; text-align: center; margin: 20px auto; max-width: 1160px; border-radius: 12px; font-family: 'Oswald', sans-serif; }
         .container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 380px; gap: 30px; padding: 20px; }
         @media (max-width: 950px) { .container { grid-template-columns: 1fr; } }
         h2 { font-family: 'Oswald', sans-serif; border-left: 5px solid var(--red); padding-left: 15px; margin-top: 40px; text-transform: uppercase; color: #eee; }
@@ -32,10 +35,22 @@
 <body>
 
 <header>
+    <div class="business-info">
+        <strong>Gourmet Fúzió Kft.</strong><br>
+        Székhely: 2360 Gyál, Kőrösi út 11.<br>
+        Adószám: 32420930-2-13 | Cégjegyzékszám: 13-09-228795
+    </div>
     <h1>Inferno Étterem és Pizzéria</h1>
-    <p style="color: #ff4500; font-weight: bold; font-size: 1.2rem;">🔥 AKCIÓ: MINDEN PIZZA CSAK 2.500 FT! 🔥</p>
-    <div id="open-status" style="font-weight: bold; margin-top: 10px;"></div>
+    <div class="opening-hours">
+        Hétfő: ZÁRVA | Kedd - Vasárnap: 11:00 - 22:00<br>
+        <strong>Rendelésfelvétel: 21:30-ig!</strong>
+    </div>
+    <div id="open-status" style="font-weight: bold; margin-top: 10px; font-size: 1.2rem;"></div>
 </header>
+
+<div class="event-box">
+    🤝 Vállaljuk családi, iskolai és munkahelyi rendezvények teljes körű lebonyolítását! Keressen minket bizalommal!
+</div>
 
 <div class="container">
     <div id="main-menu"></div>
@@ -82,7 +97,7 @@
             return `<h2>${section.cat} ${isPizza ? '<span class="promo-badge">2500 FT</span>':''}</h2><div class="menu-grid">${section.items.map((p, pIdx) => {
                 let pr = isPizza ? 2500 : p[1];
                 let sId = `s-${sIdx}-${pIdx}`;
-                return `<div class="card"><h3>${p[0]}</h3><p>${p[2]||''}</p><div class="price">${isPizza?`<span class="old-price">${p[1]}</span>`:''} ${pr} Ft</div>
+                return `<div class="card"><h3>${p[0]}</h3><p>${p[2]||''}</p><div class="price">${isPizza?`<span class="old-price">${p[1]} Ft</span> `:''} ${pr} Ft</div>
                 ${isMain ? `<select id="${sId}" class="side-select">${sidesData.map(s=>`<option value="${s.n}|${s.p}">${s.n} (+${s.p})</option>`).join('')}</select><button class="add-btn" onclick="addS('${p[0]}',${pr},'${sId}')">Kosárba</button>` : `<button class="add-btn" onclick="add('${p[0]}',${pr})">Kosárba</button>`}</div>`;
             }).join('')}</div>`;
         }).join('');
@@ -92,7 +107,7 @@
         const n = new Date(), t = n.getHours()*60+n.getMinutes(), isOpen = (n.getDay()!==1 && t>=660 && t<1290);
         const b = document.querySelector('.order-btn'), s = document.getElementById('open-status');
         b.disabled = !isOpen; b.style.background = isOpen ? "#28a745" : "#444";
-        s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: Kedd 11:00)</span>';
+        s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelésfelvétel 21:30-ig)</span>' : '<span style="color:#ff4444">● ZÁRVA (Rendelésfelvétel 11:00-tól)</span>';
     }
 
     function add(n,p){cart.push({n,p});up();}
@@ -105,21 +120,24 @@
         document.getElementById('total-price').innerText = sub + ship + (cart.length*200);
     }
     function send(){
-        const body = `Rendelés:\n${cart.map(i=>i.n).join('\n')}\nÖsszesen: ${document.getElementById('total-price').innerText} Ft\nNév: ${document.getElementById('user-name').value}\nCím: ${document.getElementById('user-addr').value}`;
+        const n = document.getElementById('user-name').value, a = document.getElementById('user-addr').value, t = document.getElementById('user-tel').value;
+        if(!n || !a || !t || cart.length === 0) return alert("Kérlek adj meg minden adatot!");
+        const body = `Rendelés:\n${cart.map(i=>i.n).join('\n')}\n\nÖsszesen: ${document.getElementById('total-price').innerText} Ft\nNév: ${n}\nCím: ${a}\nTel: ${t}`;
         window.location.href=`mailto:gourmetfuziokft@gmail.com?subject=Rendelés&body=${encodeURIComponent(body)}`;
     }
     render(); check(); setInterval(check, 30000);
 </script>
 
 <footer style="background:#111; padding:40px; text-align:center; border-top:2px solid var(--red); margin-top:50px;">
-    <h3 style="font-family:Oswald; color:var(--red);">PARTNEREINK</h3>
-    <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
-        <a href="https://www.coca-cola.com/hu/hu" target="_blank" style="color:white; text-decoration:none; border:1px solid #444; padding:10px;">Coca-Cola</a>
-        <a href="https://www.hellenergy.com/hu/" target="_blank" style="color:white; text-decoration:none; border:1px solid #444; padding:10px;">Hell Energy</a>
-        <a href="https://www.metro.hu" target="_blank" style="color:white; text-decoration:none; border:1px solid #444; padding:10px;">Metro Kft.</a>
-        <a href="https://panyolai.hu" target="_blank" style="color:white; text-decoration:none; border:1px solid #444; padding:10px;">Panyolai</a>
-        <a href="https://www.youtube.com/@UtonVeled" target="_blank" style="color:white; text-decoration:none; border:1px solid #444; padding:10px;">Úton Veled</a>
+    <h3 style="font-family:Oswald; color:var(--red);">LEGYEN A PARTNERÜNK!</h3>
+    <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-bottom: 30px;">
+        <a href="https://www.coca-cola.com/hu/hu" target="_blank" style="color:white; text-decoration:none; border:1px solid #444; padding:10px; border-radius:5px;">Coca-Cola</a>
+        <a href="https://www.hellenergy.com/hu/" target="_blank" style="color:white; text-decoration:none; border:1px solid #444; padding:10px; border-radius:5px;">Hell Energy</a>
+        <a href="https://www.metro.hu" target="_blank" style="color:white; text-decoration:none; border:1px solid #444; padding:10px; border-radius:5px;">Metro Kft.</a>
+        <a href="https://panyolai.hu" target="_blank" style="color:white; text-decoration:none; border:1px solid #444; padding:10px; border-radius:5px;">Panyolai</a>
+        <a href="https://www.youtube.com/@UtonVeled" target="_blank" style="color:white; text-decoration:none; border:1px solid #444; padding:10px; border-radius:5px;">Úton Veled</a>
     </div>
+    <p style="font-size: 0.8rem; color: #666;">© 2026 Inferno Étterem és Pizzéria | Minden jog fenntartva.</p>
 </footer>
 </body>
 </html>
