@@ -68,6 +68,12 @@
         <input type="text" id="user-name" placeholder="Név">
         <input type="text" id="user-addr" placeholder="Cím">
         <input type="tel" id="user-tel" placeholder="Telefon">
+        <input type="tel" id="user-tel" placeholder="Telefon">
+<select id="payment-method" style="width: 100%; padding: 12px; margin-top: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 6px;">
+    <option value="Készpénz">Készpénz</option>
+    <option value="Bankkártya (futárnál)">Bankkártya (futárnál)</option>
+</select>
+
         <button class="order-btn" onclick="send()">RENDELÉS LEADÁSA</button>
     </div>
 </div>
@@ -132,15 +138,15 @@
     const n = document.getElementById('user-name').value, 
           a = document.getElementById('user-addr').value, 
           t = document.getElementById('user-tel').value, 
-          f = document.getElementById('payment-method').value;
+          f = document.getElementById('payment-method').value; // Beolvassa a fizetési módot
           
     if(!n || !a || !t || cart.length === 0) return alert("Kérlek adj meg minden adatot!");
     
+    // Itt a levél szövege, amibe belekerül a fizetési mód is:
     const body = `RENDELÉS:\n${cart.map(i=>i.n).join('\n')}\n\nFIZETÉSI MÓD: ${f}\nÖSSZESEN: ${document.getElementById('total-price').innerText} Ft\nNÉV: ${n}\nCÍM: ${a}\nTEL: ${t}`;
     
     window.location.href=`mailto:gourmetfuziokft@gmail.com?subject=Rendelés&body=${encodeURIComponent(body)}`;
 }
-
     render(); check(); setInterval(check, 30000);
 </script>
 
