@@ -18,6 +18,8 @@
         .card h3 { margin: 0 0 8px 0; color: #fff; font-size: 1.1rem; }
         .card p { font-size: 0.85rem; color: #aaa; margin: 0 0 15px 0; min-height: 45px; }
         .price { color: var(--orange); font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
+        .old-price { text-decoration: line-through; color: #666; font-size: 0.9rem; margin-right: 8px; }
+        .discount-badge { background: var(--red); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; vertical-align: middle; margin-left: 10px; }
         .add-btn { background: var(--red); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; text-transform: uppercase; }
         .cart-box { background: #111; padding: 25px; border-radius: 15px; border: 2px solid var(--red); position: sticky; top: 20px; height: fit-content; }
         .cart-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; padding: 8px 0; border-bottom: 1px solid #222; }
@@ -26,7 +28,6 @@
         .order-btn { background: #28a745; color: white; width: 100%; border: none; padding: 18px; margin-top: 15px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; }
         input, textarea, select { width: 100%; padding: 12px; margin-top: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 6px; box-sizing: border-box; }
         .side-select { border: 1px solid var(--red); font-family: 'Oswald', sans-serif; margin-bottom: 10px; }
-        
         .daily-menu-box { border: 2px solid var(--red); border-radius: 10px; padding: 20px; margin: 20px auto; max-width: 600px; text-align: center; background: rgba(188,0,0,0.1); }
         .menu-time { padding: 5px 10px; border-radius: 5px; color: white; font-size: 0.9rem; }
     </style>
@@ -40,31 +41,18 @@
         </video>
     </div>
     <h1>Inferno Étterem és Pizzéria</h1>
-    <p style="color: #888;">PRÉMIUM ONLINE RENDELÉS</p>
-
-    <div style="max-width: 600px; margin: 20px auto; padding: 15px; border: 2px solid var(--red); border-radius: 10px; background: rgba(188, 0, 0, 0.1); border-style: dashed;">
-        <h3 style="color: var(--red); margin: 0 0 10px 0; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px;">
-            🎉 Vállaljuk rendezvények lebonyolítását!
-        </h3>
-        <p style="margin: 0; font-size: 1rem; color: #eee; line-height: 1.5;">
-            Szalagavatók • Születésnapok • Csapatépítők • Családi rendezvények
-        </p>
-        <p style="margin-top: 10px; font-size: 0.9rem; color: #ff4500; font-weight: bold;">
-            Érdeklődjön telefonon: +36 70 743 0049
-        </p>
-    </div>
+    <p style="color: #888;">🔥 MA MINDEN PIZZA -50% KEDVEZMÉNNYEL! 🔥</p>
 </header>
     
 <div id="daily-menu-container" class="daily-menu-box">
     <span class="menu-time" id="status-tag">🕒 Ellenőrzés...</span>
     <h2>MAI NAPI MENÜ</h2>
-    <hr style="border: 0.5px solid rgba(255,255,255,0.3)">
     <ul style="list-style: none; padding: 0; font-size: 1.2rem; line-height: 1.8;">
-        <li>🥣 Gombakrémleves</li>
-        <li>🍝 Ananászos csirke kemencében sütve, párolt rizs</li>
-        <li>🥞 Panna Cotta, erdeigyümölcs ragu</li>
+        <li>🥣 Toszkán Paradicsomleves</li>
+        <li>🍝 Rántott csirkemell, hasábburgonyával</li>
+        <li>🥞 Tejberizs, csokoládé öntet</li>
     </ul>
-    <span class="price-tag" style="display:block; margin: 10px 0; font-size: 1.5rem; color: var(--orange); font-weight: bold;">Csak: 2.990,- Ft</span>
+    <span style="display:block; margin: 10px 0; font-size: 1.5rem; color: var(--orange); font-weight: bold;">Csak: 2.990,- Ft</span>
     <button class="add-btn" id="menu-btn" onclick="add('Napi Menü', 2990)">KOSÁRBA</button>
 </div>
 
@@ -218,24 +206,31 @@
     function render() {
         const div = document.getElementById('main-menu');
         div.innerHTML = menuData.map((section, sIdx) => {
+            const isPizza = (section.cat === "PIZZÁK (32 cm)");
             const needsSide = (section.cat === "FŐÉTELEK"); 
             return `
-                <h2>${section.cat}</h2>
+                <h2>${section.cat} ${isPizza ? '<span class="discount-badge">-50% AKCIÓ</span>' : ''}</h2>
                 <div class="menu-grid">
                     ${section.items.map((p, pIdx) => {
+                        let finalPrice = p[1];
+                        let priceHTML = `${finalPrice} Ft`;
+                        if (isPizza) {
+                            finalPrice = Math.round(p[1] * 0.5);
+                            priceHTML = `<span class="old-price">${p[1]} Ft</span> ${finalPrice} Ft`;
+                        }
                         const selectId = `sel-${sIdx}-${pIdx}`;
                         return `
                             <div class="card">
                                 <div><h3>${p[0]}</h3><p>${p[2] || ''}</p></div>
-                                <div class="price">${p[1]} Ft</div>
+                                <div class="price">${priceHTML}</div>
                                 ${needsSide ? `
                                     <select id="${selectId}" class="side-select">
                                         <option value="">-- Válassz köretet --</option>
                                         ${sidesData.map(s => `<option value="${s.n}|${s.p}">${s.n} (+${s.p} Ft)</option>`).join('')}
                                     </select>
-                                    <button class="add-btn" onclick="addWithSide('${p[0].replace(/'/g, "\\'")}', ${p[1]}, '${selectId}')">Kosárba</button>
+                                    <button class="add-btn" onclick="addWithSide('${p[0].replace(/'/g, "\\'")}', ${finalPrice}, '${selectId}')">Kosárba</button>
                                 ` : `
-                                    <button class="add-btn" onclick="add('${p[0].replace(/'/g, "\\'")}', ${p[1]})">Kosárba</button>
+                                    <button class="add-btn" onclick="add('${p[0].replace(/'/g, "\\'")}', ${finalPrice})">Kosárba</button>
                                 `}
                             </div>
                         `;
@@ -245,49 +240,21 @@
         }).join('');
     }
 
-    function add(name, price) {
-        cart.push({ name, price });
-        up();
+    function add(name, price) { cart.push({ name, price }); up(); }
+    function addWithSide(mN, mP, id) {
+        const s = document.getElementById(id);
+        if(!s || !s.value) return alert("Válassz köretet!");
+        const [sn, sp] = s.value.split('|');
+        add(`${mN} (+${sn})`, mP + parseInt(sp));
     }
-
-    function addWithSide(mainName, mainPrice, selectId) {
-        const sel = document.getElementById(selectId);
-        if (!sel || !sel.value) return alert("Kérlek, válassz köretet!");
-        const [sideName, sidePrice] = sel.value.split('|');
-        add(`${mainName} (+${sideName})`, mainPrice + parseInt(sidePrice));
-    }
-
-    function remove(idx) {
-        cart.splice(idx, 1);
-        up();
-    }
-
-    function clearCart() {
-        cart = [];
-        up();
-    }
+    function remove(idx) { cart.splice(idx, 1); up(); }
+    function clearCart() { cart = []; up(); }
 
     function up() {
-        const content = document.getElementById('cart-content');
         const ship = parseInt(document.getElementById('delivery-option').value);
         const boxFee = cart.length * 200;
         let subtotal = 0;
-
-        if (cart.length === 0) {
-            content.innerHTML = "Üres...";
-            document.getElementById('total-price').innerText = "0";
-            document.getElementById('box-fee').innerText = "0";
-            document.getElementById('display-ship').innerText = ship;
-            return;
-        }
-
-        content.innerHTML = cart.map((item, i) => `
-            <div class="cart-item">
-                ${item.name} (${item.price} Ft)
-                <span class="remove-btn" onclick="remove(${i})">X</span>
-            </div>
-        `).join('');
-
+        document.getElementById('cart-content').innerHTML = cart.length === 0 ? "Üres..." : cart.map((item, i) => `<div class="cart-item">${item.name} (${item.price} Ft) <span class="remove-btn" onclick="remove(${i})">X</span></div>`).join('');
         cart.forEach(item => subtotal += item.price);
         document.getElementById('box-fee').innerText = boxFee;
         document.getElementById('display-ship').innerText = ship;
@@ -295,80 +262,28 @@
     }
 
     function updateMenuAvailability() {
-        const now = new Date();
-        const hour = now.getHours();
-        const container = document.getElementById('daily-menu-container');
-        const btn = document.getElementById('menu-btn');
-        const tag = document.getElementById('status-tag');
-
-        if (hour >= 11 && hour < 17) {
-            container.style.opacity = "1";
-            btn.disabled = false;
-            tag.innerText = "✅ Jelenleg rendelhető (17:00-ig)";
-            tag.style.backgroundColor = "#28a745";
-        } else {
-            container.style.opacity = "0.6";
-            btn.disabled = true;
-            tag.innerText = "❌ Csak 11:00 és 17:00 között elérhető";
-            tag.style.backgroundColor = "#bc0000";
-        }
+        const h = new Date().getHours();
+        const t = document.getElementById('status-tag');
+        const b = document.getElementById('menu-btn');
+        if (h >= 11 && h < 17) { b.disabled = false; t.innerText = "✅ Rendelhető (17:00-ig)"; t.style.background = "#28a745"; }
+        else { b.disabled = true; t.innerText = "❌ Csak 11:00-17:00 között"; t.style.background = "#bc0000"; }
     }
 
     function send() {
-        const name = document.getElementById('user-name').value;
-        const address = document.getElementById('user-addr').value;
-        const phone = document.getElementById('user-tel').value;
-        const note = document.getElementById('user-note').value;
-        const totalPrice = document.getElementById('total-price').innerText;
-        const payment = document.querySelector('input[name="payment-method"]:checked');
-
-        if (!name || !address || !phone) {
-            alert("Kérjük, töltsön ki minden adatot!");
-            return;
-        }
-        if (cart.length === 0) {
-            alert("A kosarad üres!");
-            return;
-        }
-        if (!payment) {
-            alert("Kérjük, válasszon fizetési módot!");
-            return;
-        }
-
-        const itemsString = cart.map(i => i.name + " (" + i.price + " Ft)").join(", ");
-        
-        let body = `ÚJ RENDELÉS - INFERNO\n\n`;
-        body += `Név: ${name}\nCím: ${address}\nTelefon: ${phone}\n`;
-        body += `Fizetési mód: ${payment.value}\n`;
-        body += `Megjegyzés: ${note || "Nincs"}\n\n`;
-        body += `Termékek: ${itemsString}\n`;
-        body += `ÖSSZESEN: ${totalPrice} Ft`;
-
-        window.location.href = `mailto:gourmetfuziokft@gmail.com?subject=Rendelés - ${name}&body=${encodeURIComponent(body)}`;
+        const n = document.getElementById('user-name').value;
+        const a = document.getElementById('user-addr').value;
+        const p = document.getElementById('user-tel').value;
+        const pay = document.querySelector('input[name="payment-method"]:checked');
+        if(!n || !a || !p || !pay || cart.length === 0) return alert("Tölts ki mindent és válassz fizetési módot!");
+        const body = `RENDELÉS\nNév: ${n}\nCím: ${a}\nTel: ${p}\nFizetés: ${pay.value}\nTermékek: ${cart.map(i=>i.name).join(", ")}\nÖSSZESEN: ${document.getElementById('total-price').innerText} Ft`;
+        window.location.href = `mailto:gourmetfuziokft@gmail.com?subject=Rendelés&body=${encodeURIComponent(body)}`;
     }
 
-    render();
-    updateMenuAvailability();
-    setInterval(updateMenuAvailability, 60000);
+    render(); updateMenuAvailability();
 </script>
 
-<footer style="background: #111; color: #888; padding: 40px 20px; border-top: 2px solid var(--red); margin-top: 50px; font-size: 0.9rem;">
-    <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
-        <div>
-            <h4 style="color: white; margin-top: 0; text-transform: uppercase;">Üzemeltető adatai</h4>
-            <p><strong>Név:</strong> Gourmet Fúzió Kft.</p>
-            <p><strong>Adószám:</strong> 27875708-2-41</p>
-            <p><strong>Telefonszám:</strong> +3620/552-18-24</p>
-            <p><strong>Vezető:</strong> Süle Dávid Fülöp</p>
-        </div>
-        <div>
-            <h4 style="color: white; margin-top: 0; text-transform: uppercase;">Nyitvatartás</h4>
-            <p>Hétfő: ZÁRVA | Kedd - Vasárnap: 11:00 - 22:00</p>
-        </div>
-    </div>
-    <div style="text-align: center; margin-top: 30px; border-top: 1px solid #222; padding-top: 20px;">
-        &copy; 2026 Inferno Étterem és Pizzéria.
-    </div>
+<footer style="background: #111; color: #888; padding: 40px 20px; border-top: 2px solid var(--red); margin-top: 50px; text-align: center;">
+    &copy; 2026 Inferno Étterem és Pizzéria. <br> Gourmet Fúzió Kft. | +36 20 552 1824
 </footer>
 
 </body>
