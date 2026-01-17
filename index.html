@@ -118,13 +118,27 @@ MINDEN PIZZÁNK 2500FT! Az Akció 2026.01.18  21:30-ig érvényes!
             }).join('')}</div>`;
         }).join('');
     }
+function check() {
+    // Ha ezt true-ra állítod, azonnal lezár az oldal:
+    const technikaiHiba = true; 
 
-    function check() {
-        const n = new Date(), t = n.getHours()*60+n.getMinutes(), isOpen = (n.getDay()!==1 && t>=660 && t<1290);
-        const b = document.querySelector('.order-btn'), s = document.getElementById('open-status');
-        b.disabled = !isOpen; b.style.background = isOpen ? "#28a745" : "#444";
-        s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelésfelvétel 21:30-ig)</span>' : '<span style="color:#ff4444">● ZÁRVA (Rendelésfelvétel 11:00-tól)</span>';
+    const n = new Date(), t = n.getHours()*60+n.getMinutes();
+    const isOpen = (n.getDay()!==1 && t>=660 && t<1290);
+    const b = document.querySelector('.order-btn'), s = document.getElementById('open-status');
+
+    if (technikaiHiba) {
+        b.disabled = true;
+        b.style.background = "#444";
+        b.innerText = "RENDELÉS SZÜNETEL";
+        s.innerHTML = '<span style="color:#ff4444; font-size: 1.3rem;">● MAI NAPRA BEZÁRTUNK (Technikai okok miatt)</span>';
+    } else {
+        b.disabled = !isOpen; 
+        b.style.background = isOpen ? "#28a745" : "#444";
+        s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: Kedd 11:00)</span>';
     }
+}
+
+    
 
     function add(n,p){cart.push({n,p});up();}
     function addS(n,p,id){const v=document.getElementById(id).value.split('|'); add(`${n} (${v[0]})`, p+parseInt(v[1]));}
