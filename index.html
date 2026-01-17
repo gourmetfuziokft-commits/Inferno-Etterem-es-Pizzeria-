@@ -136,18 +136,20 @@ MINDEN PIZZÁNK 2500FT! Az Akció 2026.01.18  21:30-ig érvényes!
         document.getElementById('total-price').innerText = sub + ship + (cart.length*200);
     }
     function send(){
-    const n = document.getElementById('user-name').value, 
-          a = document.getElementById('user-addr').value, 
-          t = document.getElementById('user-tel').value, 
-          f = document.getElementById('payment-method').value; // Beolvassa a fizetési módot
+    const n = document.getElementById('user-name').value;
+    const a = document.getElementById('user-addr').value;
+    const t = document.getElementById('user-tel').value;
+    const f = document.getElementById('payment-method').value;
+    const total = document.getElementById('total-price').innerText;
           
     if(!n || !a || !t || cart.length === 0) return alert("Kérlek adj meg minden adatot!");
     
-    // Itt a levél szövege, amibe belekerül a fizetési mód is:
-    const body = `RENDELÉS:\n${cart.map(i=>i.n).join('\n')}\n\nFIZETÉSI MÓD: ${f}\nÖSSZESEN: ${document.getElementById('total-price').innerText} Ft\nNÉV: ${n}\nCÍM: ${a}\nTEL: ${t}`;
+    const termekek = cart.map(i => i.n).join('\n');
+    const uzenet = `RENDELÉS:\n${termekek}\n\nFIZETÉSI MÓD: ${f}\nÖSSZESEN: ${total} Ft\n\nNÉV: ${n}\nCÍM: ${a}\nTEL: ${t}`;
     
-    window.location.href=`mailto:gourmetfuziokft@gmail.com?subject=Rendelés&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:gourmetfuziokft@gmail.com?subject=Rendelés&body=${encodeURIComponent(uzenet)}`;
 }
+
     render(); check(); setInterval(check, 30000);
 </script>
 
