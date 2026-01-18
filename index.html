@@ -81,6 +81,7 @@ MINDEN PIZZÁNK 2500FT! Az Akció 2026.01.18  21:30-ig érvényes!
 
 <script>
     const sidesData = [{n:"Rizs",p:990},{n:"Hasábburgonya",p:990},{n:"Steak burgonya",p:1190},{n:"Édes burgonya",p:1390},{n:"Petrezselymes burgonya",p:990},{n:"Burgonyapüré",p:1190},{n:"Juhtúrós sztrapacska",p:1790}];
+const extraFeltetek = ["Extra sajt", "Kukorica", "Gomba", "Sonka", "Szalámi", "Bacon", "Hagyma", "Pármai sonka", "Erős paprika", "Parmezán", "Kolbász", "Gorgonzola", "Bab", "Rukkola", "Pepperóni", "Fokhagyma", "Ananász", "Csirkemell", "Szárított paradicsom", "Olivabogyó", "Tonhal",];
 
     const menuData = [
         { cat: "ELŐÉTELEK", items: [["Olasz-magyar ízelítő", 3590], ["Padlizsánkrém", 3190], ["Bruschetta", 2990]] },
@@ -106,18 +107,80 @@ MINDEN PIZZÁNK 2500FT! Az Akció 2026.01.18  21:30-ig érvényes!
 
     let cart = [];
     function render() {
-        const div = document.getElementById('main-menu');
-        div.innerHTML = menuData.map((section, sIdx) => {
-            const isPizza = section.cat.includes("PIZZÁK");
-            const isMain = section.cat === "FŐÉTELEK";
-            return `<h2>${section.cat} ${isPizza ? '<span class="promo-badge">2500 FT</span>':''}</h2><div class="menu-grid">${section.items.map((p, pIdx) => {
-                let pr = isPizza ? 2500 : p[1];
-                let sId = `s-${sIdx}-${pIdx}`;
-                return `<div class="card"><h3>${p[0]}</h3><p>${p[2]||''}</p><div class="price">${isPizza?`<span class="old-price">${p[1]} Ft</span> `:''} ${pr} Ft</div>
-                ${isMain ? `<select id="${sId}" class="side-select">${sidesData.map(s=>`<option value="${s.n}|${s.p}">${s.n} (+${s.p})</option>`).join('')}</select><button class="add-btn" onclick="addS('${p[0]}',${pr},'${sId}')">Kosárba</button>` : `<button class="add-btn" onclick="add('${p[0]}',${pr})">Kosárba</button>`}</div>`;
-            }).join('')}</div>`;
-        }).join('');
-    }
+    const div = document.getElementById('main-menu');
+    div.innerHTML = menuData.map((section, sIdx) => {
+        const isPizza = section.cat.includes("PIZZÁK");
+        const isMain = section.cat === "FŐÉTELEK";
+        
+        return `<h2>${section.cat} ${isPizza ? '<span class="promo-badge">2500 FT</span>':''}</h2>
+        <div class="menu-grid">${section.items.map((p, pIdx) => {
+            let pr = isPizza ? 2500 : p[1];
+            let sId = `s-${sIdx}-${pIdx}`;
+            
+            let extraHTML = "";
+            if (isMain) {
+                // Köretválasztó a főételekhez
+                extraHTML = `<select id="${sId}" class="side-select">${sidesData.map(s=>`<option value="${s.n}|${s.p}">${s.n} (+${s.p} Ft)</option>`).join('')}</select>
+                             <button class="add-btn" onclick="addS('${p[0]}',${pr},'${sId}')">Kosárba</button>`;
+            } else if (isPizza) {
+                // Extra feltét választó a pizzákhoz (alapértelmezett a "Nincs extra")
+                extraHTML = `<select id="${sId}" class="side-select">
+                                <option value="">Nincs extra feltét</option>
+                                ${extraFeltetek.map(f => `<option value="${f}">${f} (+450 Ft)</option>`).join('')}
+                             </select>
+                             <button class="add-btn" onclick="addPizza('${p[0]}',${pr},'${sId}')">Kosárba</button>`;
+            } else {
+                // Minden más (Leves, Előétel)
+                extraHTML = `<button class="add-btn" onclick="add('${p[0]}',${pr})">Kosárba</button>`;
+            }
+
+            return `<div class="card">
+                        <h3>${p[0]}</h3>
+                        <p>${p[2]||''}</p>
+                        <div class="price">${isPizza?`<span class="old-price">${p[1]} Ft</span> `:''} ${pr} Ft</div>
+                        ${extraHTML}
+                    </div>`;
+        }).join('')}</div>`;
+    }).join('');
+}
+function render() {
+    const div = document.getElementById('main-menu');
+    div.innerHTML = menuData.map((section, sIdx) => {
+        const isPizza = section.cat.includes("PIZZÁK");
+        const isMain = section.cat === "FŐÉTELEK";
+        
+        return `<h2>${section.cat} ${isPizza ? '<span class="promo-badge">2500 FT</span>':''}</h2>
+        <div class="menu-grid">${section.items.map((p, pIdx) => {
+            let pr = isPizza ? 2500 : p[1];
+            let sId = `s-${sIdx}-${pIdx}`;
+            
+            let extraHTML = "";
+            if (isMain) {
+                // Köretválasztó a főételekhez
+                extraHTML = `<select id="${sId}" class="side-select">${sidesData.map(s=>`<option value="${s.n}|${s.p}">${s.n} (+${s.p} Ft)</option>`).join('')}</select>
+                             <button class="add-btn" onclick="addS('${p[0]}',${pr},'${sId}')">Kosárba</button>`;
+            } else if (isPizza) {
+                // Extra feltét választó a pizzákhoz (alapértelmezett a "Nincs extra")
+                extraHTML = `<select id="${sId}" class="side-select">
+                                <option value="">Nincs extra feltét</option>
+                                ${extraFeltetek.map(f => `<option value="${f}">${f} (+450 Ft)</option>`).join('')}
+                             </select>
+                             <button class="add-btn" onclick="addPizza('${p[0]}',${pr},'${sId}')">Kosárba</button>`;
+            } else {
+                // Minden más (Leves, Előétel)
+                extraHTML = `<button class="add-btn" onclick="add('${p[0]}',${pr})">Kosárba</button>`;
+            }
+
+            return `<div class="card">
+                        <h3>${p[0]}</h3>
+                        <p>${p[2]||''}</p>
+                        <div class="price">${isPizza?`<span class="old-price">${p[1]} Ft</span> `:''} ${pr} Ft</div>
+                        ${extraHTML}
+                    </div>`;
+        }).join('')}</div>`;
+    }).join('');
+}
+
 function check() {
     // Ha ezt true-ra állítod, azonnal lezár az oldal:
     const technikaiHiba = false; 
@@ -142,6 +205,17 @@ function check() {
 
     function add(n,p){cart.push({n,p});up();}
     function addS(n,p,id){const v=document.getElementById(id).value.split('|'); add(`${n} (${v[0]})`, p+parseInt(v[1]));}
+    function addPizza(nev, ar, id) {
+    const extra = document.getElementById(id).value;
+    if (extra !== "") {
+        // Ha választott feltétet, hozzáadunk 450 Ft-ot
+        add(`${nev} (+${extra})`, ar + 450);
+    } else {
+        // Ha nem választott, marad az eredeti ár
+        add(nev, ar);
+    }
+}
+
     function up(){
         const ship = parseInt(document.getElementById('delivery-option').value);
         let sub=0; document.getElementById('cart-content').innerHTML = cart.length?cart.map((it,i)=>`<div class="cart-item">${it.n} <span class="remove-btn" onclick="cart.splice(${i},1);up()">X</span></div>`).join(''):'Üres';
