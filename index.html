@@ -72,7 +72,7 @@ MINDEN PIZZÁNK 2500FT! Az Akció 2026.01.18  21:30-ig érvényes!
         <input type="comm" id="user-comm" placeholder="Megjegyzés">
 <select id="payment-method" style="width: 100%; padding: 12px; margin-top: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 6px;">
     <option value="Készpénz">Készpénz</option>
-    <option value="Bankkártya (futárnál)">Bankkártya (futárnál)</option>
+    <option value="Bankkártya">Bankkártya</option>
 </select>
 
         <button class="order-btn" onclick="send()">RENDELÉS LEADÁSA</button>
@@ -134,7 +134,7 @@ function check() {
     } else {
         b.disabled = !isOpen; 
         b.style.background = isOpen ? "#28a745" : "#444";
-        s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: Kedd 11:00)</span>';
+        s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: 11:00)</span>';
     }
 }
 
