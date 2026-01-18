@@ -120,7 +120,7 @@ MINDEN PIZZÁNK 2500FT! Az Akció 2026.01.18  21:30-ig érvényes!
     }
 function check() {
     // Ha ezt true-ra állítod, azonnal lezár az oldal:
-    const technikaiHiba = true; 
+    const technikaiHiba = false; 
 
     const n = new Date(), t = n.getHours()*60+n.getMinutes();
     const isOpen = (n.getDay()!==1 && t>=660 && t<1290);
