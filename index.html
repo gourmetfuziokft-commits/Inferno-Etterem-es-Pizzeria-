@@ -198,24 +198,39 @@ function render() {
 }
 
 function check() {
-    // Ha ezt true-ra állítod, azonnal lezár az oldal:
-    const technikaiHiba = false; 
+    const technikaiHiba = true; // Vagy false, ha már nincs hiba
+    const n = new Date();
+    const maiNap = n.getDay(); // 0: Vasárnap, 1: Hétfő...
+    const t = n.getHours() * 60 + n.getMinutes();
+    
+    const b = document.querySelector('.order-btn');
+    const s = document.getElementById('open-status');
 
-    const n = new Date(), t = n.getHours()*60+n.getMinutes();
-    const isOpen = (n.getDay()!==1 && t>=660 && t<1290);
-    const b = document.querySelector('.order-btn'), s = document.getElementById('open-status');
-
-    if (technikaiHiba) {
+    // 1. LÉPÉS: Megnézzük, Hétfő van-e (ez a legfontosabb)
+    if (maiNap === 1) {
         b.disabled = true;
         b.style.background = "#444";
         b.innerText = "RENDELÉS SZÜNETEL";
-        s.innerHTML = '<span style="color:#ff4444; font-size: 1.3rem;">● MAI NAPRA BEZÁRTUNK (Technikai okok miatt)</span>';
-    } else {
+        s.innerHTML = '<span style="color:#ff4444; font-size: 1.3rem;">● ZÁRVA</span><br><small style="color:#ccc;">Nyitás: Kedd 11:00</small>';
+    } 
+    // 2. LÉPÉS: Ha nem hétfő, megnézzük van-e technikai hiba
+    else if (technikaiHiba) {
+        b.disabled = true;
+        b.style.background = "#444";
+        b.innerText = "RENDELÉS SZÜNETEL";
+        s.innerHTML = '<span style="color:#ff4444; font-size: 1.3rem;">● MAI NAPRA BEZÁRTUNK (Technikai okok miatt)</span><br><small style="color:#ccc;">Várható nyitás: Holnap 11:00</small>';
+    } 
+    // 3. LÉPÉS: Normál üzemmenet
+    else {
+        const isOpen = (t >= 660 && t < 1290);
         b.disabled = !isOpen; 
         b.style.background = isOpen ? "#28a745" : "#444";
-        s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: 11:00)</span>';
+        s.innerHTML = isOpen ? 
+            '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : 
+            '<span style="color:#ff4444">● ZÁRVA (Nyitás: 11:00)</span>';
     }
 }
+
 
     
 
