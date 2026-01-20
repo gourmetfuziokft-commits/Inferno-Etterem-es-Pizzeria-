@@ -59,6 +59,22 @@
         MINDEN PIZZÁNK <span style="font-size: 1.8rem; color: #28a745;">2500 FT!</span><br>
         <span style="color: #aaa; font-size: 0.9rem;">KIZÁRÓLAG A WEBOLDALON LEADOTT RENDELÉSEKRE ÉRVÉNYES!</span>
     </p>
+        <div id="daily-menu-container" style="max-width: 1160px; margin: 20px auto; background: #1a1a1a; border: 2px solid #28a745; border-radius: 12px; overflow: hidden; display: flex; flex-wrap: wrap; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+    <div style="background: #28a745; color: white; padding: 20px; text-align: center; min-width: 150px; flex: 1;">
+        <h2 style="margin: 0; font-family: 'Oswald', sans-serif; font-size: 1.8rem;">NAPI MENÜ</h2>
+        <div style="font-size: 0.9rem; font-weight: bold;">12:00 - 17:00</div>
+    </div>
+    <div style="padding: 20px; flex: 3; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px; font-weight: bold; font-size: 1.1rem; color: #eee;">
+        <span>🍲 Gulyásleves</span>
+        <span>🥗 Zöldborsófőzelék tükörtojással</span>
+        <span>🍰 Tiramisu</span>
+    </div>
+    <div style="padding: 20px; flex: 1; text-align: center; border-left: 1px dashed #444;">
+        <div style="color: #28a745; font-size: 1.6rem; font-family: 'Oswald', sans-serif; font-weight: bold;">2990 Ft</div>
+        <button class="add-btn" style="background: #28a745; margin-top: 10px;" onclick="add('NAPI MENÜ (Gulyás, Főzelék, Tiramisu)', 2990)">KOSÁRBA</button>
+    </div>
+</div>
+
 </div>
 
 <style>
@@ -230,6 +246,28 @@ function check() {
             '<span style="color:#ff4444">● ZÁRVA (Nyitás: 11:00)</span>';
     }
 }
+function updateDailyMenu() {
+    const now = new Date();
+    const hour = now.getHours();
+    const menuBox = document.getElementById('daily-menu-container');
+    
+    // Ha 12 előtt vagy 17 után vagyunk, elhalványítjuk a menüt
+    if (hour < 12 || hour >= 17) {
+        menuBox.style.opacity = "0.4";
+        menuBox.style.filter = "grayscale(100%)";
+        menuBox.querySelector('button').disabled = true;
+        menuBox.querySelector('button').innerText = "MENÜ VÉGE";
+    } else {
+        menuBox.style.opacity = "1";
+        menuBox.style.filter = "none";
+        menuBox.querySelector('button').disabled = false;
+        menuBox.querySelector('button').innerText = "KOSÁRBA";
+    }
+}
+
+// Ezt is hívd meg a fájl végén
+updateDailyMenu();
+setInterval(updateDailyMenu, 60000); // Percenként ellenőrzi
 
 
     
