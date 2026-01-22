@@ -138,7 +138,7 @@ const extraFeltetek = ["Extra sajt", "Kukorica", "Gomba", "Sonka", "Szalámi", "
 
     const menuData = [
         { cat: "ELŐÉTELEK", items: [["Olasz-magyar ízelítő", 3590], ["Padlizsánkrém", 3190], ["Bruschetta", 2990]] },
-        { cat: "LEVESEK", items: [["Húsleves gazdagon", 2590], ["Toszkán Paradicsomleves", 2590], ["Sütőtök krémleves", 2590], ["Gulyásleves", 3700], ["Meleg szilvaleves", 2790]] },
+        { cat: "LEVESEK", items: [["Húsleves gazdagon", 2590], ["Toszkán Paradicsomleves", 2590], ["Gulyásleves", 3700], ["Meleg szilvaleves", 2790]] },
         { 
     cat: "SALÁTÁK", 
     items: [
@@ -156,6 +156,16 @@ const extraFeltetek = ["Extra sajt", "Kukorica", "Gomba", "Sonka", "Szalámi", "
             ["Rántott húsos Tál (4 fős)", 18900, "Rántott csirkemell, Rántott karaj, burgonyapüré, párolt rizs"]
         ]},
         { cat: "PIZZÁK (32 cm)", items: [["Margherita",3290],["Prosciutto",3590],["Funghi",3290],["Prosciutto e Funghi",3650],["Bolognese",4190],["Tonno",3990],["Salame",3890],["Quattro Formaggi",4190],["Lucifer",4390],["Capriciosa",4190],["Luna",4190],["Parma di Ruccola",4390],["Inferno",4090],["BBQ",4190],["Pizzatekercs",3990],["Vespa",4290],["Carne",4290],["Dolce Vita",4590],["Mais",3790],["Spinaci e Ricotta",3690],["Beatriche",4490],["Pizza Christina",3790]] }
+        {
+    cat: "DESSZERTEK",
+    items: [
+        ["Házi Tiramisu", 2190, "Klasszikus olasz desszert"],
+        ["Palacsinta (2db/adag)", 1490, "Választható: kakaós, nutellás, ízes, túrókrémes"],
+        ["Házi készítésű Sajttorta", 2190, "Választható: karamell vagy eper öntettel"],
+        ["Habos Gesztenyepüré (Új)", 2190, "Friss tejszínhabbal"]
+    ]
+}
+
     ];
 
     let cart = [];
@@ -183,7 +193,7 @@ const extraFeltetek = ["Extra sajt", "Kukorica", "Gomba", "Sonka", "Szalámi", "
                              </select>
                              <button class="add-btn" onclick="addPizza('${p[0]}',${pr},'${sId}')">Kosárba</button>`;
             } else {
-                // Minden más (Leves, Előétel)
+                // Minden más (Leves, Előétel, Desszert)
                 extraHTML = `<button class="add-btn" onclick="add('${p[0]}',${pr})">Kosárba</button>`;
             }
 
