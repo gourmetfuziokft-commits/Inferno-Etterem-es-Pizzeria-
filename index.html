@@ -242,7 +242,7 @@
         const now = new Date();
         const hour = now.getHours();
         const menuBox = document.getElementById('daily-menu-container');
-        if (hour < 11 || hour >= 21:30) {
+        if (hour < 11 || hour >= 21) {
             menuBox.style.opacity = "0.4"; menuBox.style.filter = "grayscale(100%)";
             menuBox.querySelector('button').disabled = true; menuBox.querySelector('button').innerText = "MENÜ VÉGE";
         } else {
