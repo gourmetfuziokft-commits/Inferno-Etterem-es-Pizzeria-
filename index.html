@@ -231,7 +231,8 @@
             b.disabled = true; b.style.background = "#444"; b.innerText = "RENDELÉS SZÜNETEL";
             s.innerHTML = '<span style="color:#ff4444; font-size: 1.3rem;">● MAI NAPRA BEZÁRTUNK</span>';
         } else {
-            const isOpen = (t >= 660 && t < 1290);
+            const isOpen = (t >= 720 && t < 1290); // 720 = 12:00, 1290 = 21:30
+
             b.disabled = !isOpen; 
             b.style.background = isOpen ? "#28a745" : "#444";
             s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: 11:00)</span>';
