@@ -240,17 +240,26 @@
     }
 
     function updateDailyMenu() {
-        const now = new Date();
-        const hour = now.getHours();
-        const menuBox = document.getElementById('daily-menu-container');
-        if (true) {
-            menuBox.style.opacity = "0.4"; menuBox.style.filter = "grayscale(100%)";
-            menuBox.querySelector('button').disabled = true; menuBox.querySelector('button').innerText = "MENÜ VÉGE";
-        } else {
-            menuBox.style.opacity = "1"; menuBox.style.filter = "none";
-            menuBox.querySelector('button').disabled = false; menuBox.querySelector('button').innerText = "KOSÁRBA";
-        }
+    const now = new Date();
+    const hour = now.getHours();
+    const day = now.getDay(); // 0: Vasárnap, 1: Hétfő, 2: Kedd...
+    const menuBox = document.getElementById('daily-menu-container');
+
+    // Csak kedd (2) és péntek (5) között legyen aktív (vagy hétvégén ne)
+    // Ha azt akarod, hogy szombat-vasárnap se legyen menü:
+    if (day === 0 || day === 1 || day === 6 || hour < 11 || hour >= 17) {
+        menuBox.style.opacity = "0.4";
+        menuBox.style.filter = "grayscale(100%)";
+        menuBox.querySelector('button').disabled = true;
+        menuBox.querySelector('button').innerText = "MENÜ SZÜNETEL";
+    } else {
+        menuBox.style.opacity = "1";
+        menuBox.style.filter = "none";
+        menuBox.querySelector('button').disabled = false;
+        menuBox.querySelector('button').innerText = "KOSÁRBA";
     }
+}
+
 
     function add(n,p){cart.push({n,p});up();}
     function addS(n,p,id){const v=document.getElementById(id).value.split('|'); add(`${n} (${v[0]})`, p+parseInt(v[1]));}
