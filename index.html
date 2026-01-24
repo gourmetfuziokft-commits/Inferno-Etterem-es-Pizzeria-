@@ -277,7 +277,7 @@
         if(!n || !a || !t || cart.length === 0) return alert("Kérlek adj meg minden adatot!");
         const termekek = cart.map(i => i.n).join('\n');
         const uzenet = `RENDELÉS:\n${termekek}\n\nFIZETÉSI MÓD: ${f}\nÖSSZESEN: ${total} Ft\n\nNÉV: ${n}\nCÍM: ${a}\nTEL: ${t}`;
-        window.location.href = `mailto:gourmetfuziokft@gmail.com?subject=Rendelés&body=${encodeURIComponent(uzenet)}`;
+        window.location.href = `mailto:infernoetterem@gmail.com?subject=Rendelés&body=${encodeURIComponent(uzenet)}`;
     }
 
     render(); check(); updateDailyMenu();
