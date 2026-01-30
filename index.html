@@ -290,7 +290,7 @@
     if (day === 0 || day === 1 || day === 6 || hour < 11 || hour >= 17) {
         menuBox.style.opacity = "0.4";
         menuBox.style.filter = "grayscale(100%)";
-        menuBox.querySelector('button').disabled = true;
+        menuBox.querySelector('button').disabled = false;
         menuBox.querySelector('button').innerText = "MENÜ SZÜNETEL";
     } else {
         menuBox.style.opacity = "1";
