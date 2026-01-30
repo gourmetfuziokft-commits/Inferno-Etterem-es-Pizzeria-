@@ -48,7 +48,7 @@
     <h1>Inferno Étterem és Pizzéria</h1>
     <div class="opening-hours">
         Hétfő: ZÁRVA | Kedd - Vasárnap: 11:00 - 22:00<br>
-        <strong>Rendelésfelvétel: 11:00-21:30-ig!  +3670/743-00-49 </strong>
+        <strong>Rendelésfelvétel: 11:00-21:30-ig! +3670/743-00-49 </strong>
     </div>
     <div id="open-status" style="font-weight: bold; margin-top: 10px; font-size: 1.2rem;"></div>
     <div style="margin-top: 15px;">
@@ -70,7 +70,8 @@
         <span style="color: #aaa; font-size: 0.9rem;">KIZÁRÓLAG A WEBOLDALON LEADOTT RENDELÉSEKRE ÉRVÉNYES!</span>
     </p>
 </div>
-    <div style="background: #bc0000; color: white; margin: 20px auto; max-width: 1160px; border-radius: 12px; padding: 15px; text-align: center; border: 3px solid white; box-shadow: 0 0 20px rgba(188, 0, 0, 0.7);">
+
+<div style="background: #bc0000; color: white; margin: 20px auto; max-width: 1160px; border-radius: 12px; padding: 15px; text-align: center; border: 3px solid white; box-shadow: 0 0 20px rgba(188, 0, 0, 0.7);">
     <h2 style="font-family: 'Oswald', sans-serif; border:none; color: white; margin: 0; font-size: 1.8rem; text-transform: uppercase; letter-spacing: 2px;">
         ⚠️ FIGYELEM! ⚠️
     </h2>
@@ -80,7 +81,7 @@
     </p>
 </div>
 
-<div id="daily-menu-container" style="display:none; max-width: 1160px; margin: 20px auto; background: #1a1a1a; border: 2px solid #28a745; border-radius: 12px; overflow: hidden; display: flex; flex-wrap: wrap; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+<div id="daily-menu-container" style="display:none; max-width: 1160px; margin: 20px auto; background: #1a1a1a; border: 2px solid #28a745; border-radius: 12px; overflow: hidden; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
     <div style="background: #28a745; color: white; padding: 20px; text-align: center; min-width: 150px; flex: 1;">
         <h2 style="margin: 0; border:none; font-family: 'Oswald', sans-serif; font-size: 1.8rem; padding:0;">NAPI MENÜ</h2>
         <div style="font-size: 0.9rem; font-weight: bold;">11:30 - 21:30</div>
@@ -92,7 +93,7 @@
     </div>
     <div style="padding: 20px; flex: 1; text-align: center; border-left: 1px dashed #444;">
         <div style="color: #28a745; font-size: 1.6rem; font-family: 'Oswald', sans-serif; font-weight: bold;">2990 Ft</div>
-        <button class="add-btn" style="background: #28a745; margin-top: 10px;" onclick="add('NAPI MENÜ (Tavaszi leves, Bolognai csirke, Szilvás gombóc)', 2990)">KOSÁRBA</button>
+        <button class="add-btn" style="background: #28a745; margin-top: 10px;" onclick="add('NAPI MENÜ', 2990)">KOSÁRBA</button>
     </div>
 </div>
 
@@ -115,7 +116,7 @@
         <input type="text" id="user-comm" placeholder="Megjegyzés">
         <select id="payment-method">
             <option value="Készpénz">Készpénz</option>
-             </select>
+        </select>
         <button class="order-btn" onclick="send()">RENDELÉS LEADÁSA</button>
     </div>
 </div>
@@ -157,21 +158,20 @@
         { cat: "LEVESEK", items: [["Húsleves gazdagon", 2590], ["Toszkán Paradicsomleves", 2590], ["Gulyásleves", 3700], ["Meleg szilvaleves", 2790]] },
         { cat: "SALÁTÁK", items: [["Cézár saláta", 2990], ["Cézár saláta csirkével", 3900], ["Cézár saláta garnélarákkal", 4500], ["Görögsaláta", 3190]] },
         { cat: "TÉSZTÁK", items: [
-    ["Arrabiata penne", 3190, "paradicsomszósz, chili, fokhagyma"],
-    ["Klasszik Bolognai spagetti", 3590],
-    ["Eredeti Carbonara", 4190, "guanchale, parmezán, tojás"],
-    ["Milanese spagetti", 4190, "gomba, sonka, paradicsomszósz"],
-    ["Alfredo penne csirkével", 4190, "tejszín, petrezselyem, fokhagyma, csirkemell"],
-    ["Alfredo penne garnélával", 4990, "tejszín, fokhagyma, petrezselyem, garnéla"],
-    ["Pollo di Crema pennével", 3990, "csirkemell, tejszín, gorgonzola, póréhagyma"],
-    ["Aglio e Olio spagettivel", 3190, "olivaolaj, fokhagyma, petrezselyem"],
-    ["Gambero tagliatellével", 4990, "garnélarák, házi vörös pesto, szárított paradicsom, fokhagyma, tejszín"],
-    ["Hátszínes Tagliatelle", 5290, "erdei gomba, hátszín, mascarpone, tejszín"],
-    ["Parajos Tagliatelle", 3990, "tejszín, fokhagyma, spenót, mascarpone"],
-    ["Pollo e mais pennével", 3590, "tejszín, csirkemell, kukorica"],
-    ["Pomodori secchi", 3990, "aszalt paradicsomos, fűszeres gnocchi"]
-]},
-
+            ["Arrabiata penne", 3190, "paradicsomszósz, chili, fokhagyma"],
+            ["Klasszik Bolognai spagetti", 3590],
+            ["Eredeti Carbonara", 4190, "guanchale, parmezán, tojás"],
+            ["Milanese spagetti", 4190, "gomba, sonka, paradicsomszósz"],
+            ["Alfredo penne csirkével", 4190, "tejszín, petrezselyem, fokhagyma, csirkemell"],
+            ["Alfredo penne garnélával", 4990, "tejszín, fokhagyma, petrezselyem, garnéla"],
+            ["Pollo di Crema pennével", 3990, "csirkemell, tejszín, gorgonzola, póréhagyma"],
+            ["Aglio e Olio spagettivel", 3190, "olivaolaj, fokhagyma, petrezselyem"],
+            ["Gambero tagliatellével", 4990, "garnélarák, házi vörös pesto, szárított paradicsom, fokhagyma, tejszín"],
+            ["Hátszínes Tagliatelle", 5290, "erdei gomba, hátszín, mascarpone, tejszín"],
+            ["Parajos Tagliatelle", 3990, "tejszín, fokhagyma, spenót, mascarpone"],
+            ["Pollo e mais pennével", 3590, "tejszín, csirkemell, kukorica"],
+            ["Pomodori secchi", 3990, "aszalt paradicsomos, fűszeres gnocchi"]
+        ]},
         { cat: "FŐÉTELEK", items: [
             ["Csirkemell roston/rántva", 1590],
             ["Rántott sertéskaraj", 1790],
@@ -191,17 +191,17 @@
         { cat: "4 SZEMÉLYES BŐSÉGTÁLAK", items: [
             ["Vega Tál (4 fős)", 17900, "Rántott trappista, camambert, karfiol, gomba, cukkini, majonézes burgonyasaláta, steak burgonya"],
             ["Családi Tál (4 fős)", 21990, "Cordon bleu, caprese csirkemell, baconos szűz, trappista, gomba, rizs, hasábburgonya, tartármártás, savanyúság"],
-            ["Grill Tál (4 fős)", 21990,  "Roston csirkemell, holstein szelet, baconos szűz, camambert, rizi-bizi, petrezselymes burgonya, friss saláta"],
+            ["Grill Tál (4 fős)", 21990, "Roston csirkemell, holstein szelet, baconos szűz, camambert, rizi-bizi, petrezselymes burgonya, friss saláta"],
             ["Rántott húsos Tál (4 fős)", 18900, "Rántott csirkemell, Rántott karaj, burgonyapüré, párolt rizs"]
         ]},
-         { cat: "PIZZÁK (32 cm)", items: [
+        { cat: "PIZZÁK (32 cm)", items: [
             ["Margherita", 3290, "pizzaszósz, mozzarella, bazsalikom"],
             ["Prosciutto", 3590, "pizzaszósz, mozzarella, sonka"],
             ["Funghi", 3290, "pizzaszósz, mozzarella, gomba"],
             ["Prosciutto e Funghi", 3650, "pizzaszósz, mozzarella, sonka, gomba"],
             ["Bolognese", 4190, "pizzaszósz, mozzarella, bolognai ragu"],
             ["Tonno", 3990, "pizzaszósz, mozzarella, tonhal, lilahagyma, olivabogyó"],
-            ["Salame", 3890, "pizzaszósz, mozzarella, olasz pikáns szalámi"],
+            ["Salame", 3890, "pizzaszósz, mozzarella, olasz csemege szalámi"],
             ["Quattro Formaggi", 4190, "pizzaszósz, mozzarella, gorgonzola, parmezán, füstölt sajt"],
             ["ala Pesto", 3990, "pizzaszósz, mozzarella, mascarpone, házi pesto, rukkola, koktélparadicsom"],
             ["Lucifer", 4390, "pizzaszósz, mozzarella, kukorica, bab, bacon, marharagu, lilahagyma, chili olaj"],
@@ -221,7 +221,7 @@
         ]},
         { cat: "DESSZERTEK", items: [
             ["Házi Tiramisu", 2190],
-            ["Palacsinta (2db/adag)" , 1490, "kakós, lekváros, nutellás, túrókrémes"],
+            ["Palacsinta (2db/adag)", 1490, "kakaós, lekváros, nutellás, túrókrémes"],
             ["Házi készítésű Sajttorta", 2190],
             ["Habos Gesztenyepüré (Új)", 2190]
         ]}
@@ -279,8 +279,7 @@
             b.disabled = true; b.style.background = "#444"; b.innerText = "RENDELÉS SZÜNETEL";
             s.innerHTML = '<span style="color:#ff4444; font-size: 1.3rem;">● MAI NAPRA BEZÁRTUNK</span>';
         } else {
-            const isOpen = (t >= 660 && t < 1290); // 720 = 12:00, 1290 = 21:30
-
+            const isOpen = (t >= 660 && t < 1290);
             b.disabled = !isOpen; 
             b.style.background = isOpen ? "#28a745" : "#444";
             s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: 11:00)</span>';
@@ -288,26 +287,11 @@
     }
 
     function updateDailyMenu() {
-    const now = new Date();
-    const hour = now.getHours();
-    const day = now.getDay(); // 0: Vasárnap, 1: Hétfő, 2: Kedd...
-    const menuBox = document.getElementById('daily-menu-container');
-
-    // Csak kedd (2) és péntek (5) között legyen aktív (vagy hétvégén ne)
-    // Ha azt akarod, hogy szombat-vasárnap se legyen menü:
-    if true {
-        menuBox.style.opacity = "0.4";
-        menuBox.style.filter = "grayscale(100%)";
-        menuBox.querySelector('button').disabled = true;
-        menuBox.querySelector('button').innerText = "MENÜ SZÜNETEL";
-    } else {
-        menuBox.style.opacity = "1";
-        menuBox.style.filter = "none";
-        menuBox.querySelector('button').disabled = false;
-        menuBox.querySelector('button').innerText = "KOSÁRBA";
+        const menuBox = document.getElementById('daily-menu-container');
+        if (true) {
+            menuBox.style.display = "none";
+        }
     }
-}
-
 
     function add(n,p){cart.push({n,p});up();}
     function addS(n,p,id){const v=document.getElementById(id).value.split('|'); add(`${n} (${v[0]})`, p+parseInt(v[1]));}
