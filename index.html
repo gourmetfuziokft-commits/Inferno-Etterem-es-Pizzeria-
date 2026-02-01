@@ -292,7 +292,7 @@
         const b = document.querySelector('.order-btn');
         const s = document.getElementById('open-status');
         if (maiNap === 1) {
-            b.disabled = false; b.style.background = "#444"; b.innerText = "RENDELÉS SZÜNETEL";
+            b.disabled = true; b.style.background = "#444"; b.innerText = "RENDELÉS SZÜNETEL";
             s.innerHTML = '<span style="color:#ff4444">● ZÁRVA (Hétfőn zárva tartunk)</span>';
         } else {
             const isOpen = (t >= 660 && t < 1290);
