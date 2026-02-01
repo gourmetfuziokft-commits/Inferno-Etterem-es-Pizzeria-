@@ -285,20 +285,21 @@
         }).join('');
     }
 
-    function check() {
+      function check() {
         const n = new Date();
         const maiNap = n.getDay();
-        const t = n.getHours() * 60 + n.getMinutes();
         const b = document.querySelector('.order-btn');
         const s = document.getElementById('open-status');
+
+        // Manuális zárás élesítve
+        b.disabled = true; 
+        b.style.background = "#444"; 
+        b.innerText = "RENDELÉS SZÜNETEL";
+        
         if (maiNap === 1) {
-            b.disabled = true; b.style.background = "#444"; b.innerText = "RENDELÉS SZÜNETEL";
             s.innerHTML = '<span style="color:#ff4444">● ZÁRVA (Hétfőn zárva tartunk)</span>';
         } else {
-            const isOpen = (t >= 660 && t < 1290);
-            b.disabled = !isOpen; 
-            b.style.background = isOpen ? "#28a745" : "#444";
-            s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: MA 12:00)</span>';
+            s.innerHTML = '<span style="color:#ff4444; font-size: 1.3rem;">● MAI NAPRA BEZÁRTUNK</span><br><small style="color:#ccc;">Nyitás: Holnap 11:00</small>';
         }
     }
 
