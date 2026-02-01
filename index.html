@@ -61,15 +61,6 @@
     🤝 Vállaljuk családi, iskolai és munkahelyi rendezvények teljes körű lebonyolítását! Keressen minket bizalommal!
 </div>
 
-<div style="background: #000; border: 3px solid #ff4500; margin: 20px auto; max-width: 1160px; border-radius: 12px; padding: 20px; text-align: center; box-shadow: 0 0 15px rgba(255, 69, 0, 0.5); animation: pulse 2s infinite;">
-    <h2 style="font-family: 'Oswald', sans-serif; border:none; color: #ff4500; margin: 0; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px;">
-        🔥 EBBEN A HÓNAPBAN (JANUÁR 31-IG) 🔥 KISZÁLLÍTÁSI IDŐ MIN. 40-60 PERC!
-    </h2>
-    <p style="font-family: 'Roboto', sans-serif; color: #fff; margin: 10px 0 0 0; font-size: 1.2rem; font-weight: bold;">
-        MINDEN PIZZÁNK <span style="font-size: 1.8rem; color: #28a745;">2500 FT!</span><br>
-        <span style="color: #aaa; font-size: 0.9rem;">KIZÁRÓLAG A WEBOLDALON LEADOTT RENDELÉSEKRE ÉRVÉNYES!</span>
-    </p>
-</div>
 <div style="background: #bc0000; color: white; margin: 20px auto; max-width: 1160px; border-radius: 12px; padding: 15px; text-align: center; border: 3px solid white; box-shadow: 0 0 20px rgba(188, 0, 0, 0.7);">
     <h2 style="font-family: 'Oswald', sans-serif; border:none; color: white; margin: 0; font-size: 1.8rem; text-transform: uppercase; letter-spacing: 2px;">
         ⚠️ FIGYELEM! ⚠️
@@ -239,7 +230,6 @@
             
             return `<h2>${section.cat} ${isPizza ? '<span class="promo-badge">2500 FT</span>':''}</h2>
             <div class="menu-grid">${section.items.map((p, pIdx) => {
-                let pr = isPizza ? 2500 : p[1];
                 let sId = `s-${sIdx}-${pIdx}`;
                 let extraHTML = "";
                 
