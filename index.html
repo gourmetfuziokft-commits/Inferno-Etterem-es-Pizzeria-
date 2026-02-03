@@ -122,6 +122,7 @@
         <input type="text" id="user-comm" placeholder="Megjegyzés">
         <select id="payment-method">
             <option value="Készpénz">Készpénz</option>
+            <option value="Bankkártya">Bankkártya</option>
         </select>
         <button class="order-btn" onclick="send()">RENDELÉS LEADÁSA</button>
     </div>
@@ -298,7 +299,7 @@
         const menuBtn = document.getElementById('menu-add-btn');
 
         // Csak 8:00 és 16:00 között látható a menü blokk
-        if (hrs >= 16 || hrs < 8) {
+        if (hrs >= 16 || hrs < 11) {
             menuContainer.style.display = 'none';
             if(menuBtn) menuBtn.disabled = true;
         } else {
