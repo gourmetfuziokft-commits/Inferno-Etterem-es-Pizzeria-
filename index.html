@@ -121,7 +121,7 @@
                     <button class="add-btn" onclick="add('Heti Menü', 3390)" style="min-width: 220px; font-size: 1.1rem; padding: 15px;">
                         MENÜ KOSÁRBA
                     </button>
-                    <p style="font-size: 0.85rem; color: #aaa; margin-top: 12px; margin-bottom: 0;">(Írd be a megjegyzésbe, melyik napit kéred!)</p>
+                    <p style="font-size: 0.85rem; color: #aaa; margin-top: 12px; margin-bottom: 0;"</p>
                 </div>
             </div>
         </div>
@@ -131,7 +131,7 @@
     <div class="cart-box">
         <h3>🛒 Kosarad</h3>
         <select id="delivery-option" onchange="up()">
-            <option value="390">Házhozszállítás (390 Ft)</option>
+            <option value="590">Házhozszállítás (590 Ft)</option>
             <option value="0">Helyben átvétel (0 Ft)</option>
         </select>
         <div id="cart-content">Üres...</div>
@@ -145,6 +145,7 @@
         <input type="text" id="user-comm" placeholder="Megjegyzés">
         <select id="payment-method">
             <option value="Készpénz">Készpénz</option>
+            <option value="Bankkártya">Bankkártya</option>
         </select>
         <button class="order-btn" onclick="send()">RENDELÉS LEADÁSA</button>
     </div>
