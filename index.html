@@ -75,9 +75,11 @@
     </div>
     <h1>Inferno Étterem és Pizzéria</h1>
     <div class="opening-hours">
-        Hétfő: ZÁRVA | Kedd - Vasárnap: 11:00 - 22:00<br>
-        <strong>Rendelésfelvétel: 11:00-21:30-ig! +3670/743-00-49 </strong>
-    </div>
+    Hétfő: ZÁRVA | Kedd - Vasárnap: 11:00 - 22:00<br>
+    <strong>MA RENDKÍVÜLI NYITVATARTÁS: 12:00 - 22:00!</strong><br>
+    <strong>Rendelésfelvétel: +3670/743-00-49 (11:00-21:30) </strong>
+</div>
+
     <div id="open-status" style="font-weight: bold; margin-top: 10px; font-size: 1.2rem;"></div>
         <div class="partners-bar">
         <h4>Partnereink</h4>
@@ -285,21 +287,29 @@
         }).join('');
     }
 
-      function check() {
+      
+    function check() {
         const n = new Date();
         const maiNap = n.getDay();
+        const t = n.getHours() * 60 + n.getMinutes();
         const b = document.querySelector('.order-btn');
         const s = document.getElementById('open-status');
 
-        // Manuális zárás élesítve
-        b.disabled = true; 
-        b.style.background = "#444"; 
-        b.innerText = "RENDELÉS SZÜNETEL";
-        
         if (maiNap === 1) {
+            b.disabled = true; b.style.background = "#444"; b.innerText = "RENDELÉS SZÜNETEL";
             s.innerHTML = '<span style="color:#ff4444">● ZÁRVA (Hétfőn zárva tartunk)</span>';
         } else {
-            s.innerHTML = '<span style="color:#ff4444; font-size: 1.3rem;">● MAI NAPRA BEZÁRTUNK</span><br><small style="color:#ccc;">Nyitás: Holnap 11:00</small>';
+            // Itt módosítottam 720-ra (12:00)
+            const isOpen = (t >= 720 && t < 1290); 
+            b.disabled = !isOpen; 
+            b.style.background = isOpen ? "#28a745" : "#444";
+            
+            if (isOpen) {
+                s.innerHTML = '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>';
+            } else {
+                // Ha még nincs dél, ezt írja ki:
+                s.innerHTML = '<span style="color:#ff4444">● ZÁRVA (Nyitás: MA 12:00-kor)</span>';
+            }
         }
     }
 
