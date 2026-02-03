@@ -46,37 +46,19 @@
     <h1>Inferno Étterem és Pizzéria</h1>
     <div class="opening-hours">
         Hétfő: ZÁRVA | Kedd - Vasárnap: 11:00 - 22:00<br>
-        <strong>MA RENDKÍVÜLI NYITVATARTÁS: 12:00 - 22:00!</strong><br>
         <strong>Rendelésfelvétel: +3670/743-00-49 (11:00-21:30) </strong>
     </div>
-
     <div id="open-status" style="font-weight: bold; margin-top: 10px; font-size: 1.2rem;"></div>
-
-    <div class="partners-bar">
-        <h4>Partnereink</h4>
-        <div class="partner-links">
-            <a href="https://www.coca-cola.com/hu/hu" target="_blank">Coca-Cola</a>
-            <a href="https://www.hellenergy.com/hu/" target="_blank">Hell Energy</a>
-            <a href="https://www.metro.hu" target="_blank">Metro Kft.</a>
-            <a href="https://panyolai.hu" target="_blank">Panyolai</a>
-            <a href="https://youtube.com/@utonveled2025?si=pgJkxP522aWwrBBy" target="_blank">Úton Veled</a>
-        </div>
-    </div>
 </header>
-
-<div class="event-box">
-    🤝 Vállaljuk családi, iskolai és munkahelyi rendezvények teljes körű lebonyolítását! Keressen minket bizalommal!
-</div>
 
 <div class="container">
     <div>
         <div id="weekly-menu-container" style="background: #1a1a1a; border: 2px solid var(--red); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-align: center; margin-bottom: 30px;">
             <div style="background: var(--red); color: white; padding: 12px; font-family: 'Oswald', sans-serif; font-size: 1.6rem; text-transform: uppercase; letter-spacing: 2px;">
-                Heti Menü Ajánlat
+                Heti Menü Ajánlat (11:00 - 16:00)
             </div>
             <div style="padding: 25px;">
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; text-align: left;">
-                    
                     <div style="background: #222; padding: 15px; border-radius: 10px; border-left: 4px solid var(--orange);">
                         <strong style="color: var(--orange); display: block; margin-bottom: 8px; font-family: 'Oswald', sans-serif;">KEDD</strong>
                         <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.6; color: #eee;">
@@ -85,7 +67,6 @@
                             <li>• Epres panna cotta</li>
                         </ul>
                     </div>
-
                     <div style="background: #222; padding: 15px; border-radius: 10px; border-left: 4px solid var(--orange);">
                         <strong style="color: var(--orange); display: block; margin-bottom: 8px; font-family: 'Oswald', sans-serif;">SZERDA</strong>
                         <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.6; color: #eee;">
@@ -94,7 +75,6 @@
                             <li>• Palacsinta</li>
                         </ul>
                     </div>
-
                     <div style="background: #222; padding: 15px; border-radius: 10px; border-left: 4px solid var(--orange);">
                         <strong style="color: var(--orange); display: block; margin-bottom: 8px; font-family: 'Oswald', sans-serif;">CSÜTÖRTÖK</strong>
                         <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.6; color: #eee;">
@@ -103,7 +83,6 @@
                             <li>• Derelye, fahéjas szórással</li>
                         </ul>
                     </div>
-
                     <div style="background: #222; padding: 15px; border-radius: 10px; border-left: 4px solid var(--orange);">
                         <strong style="color: var(--orange); display: block; margin-bottom: 8px; font-family: 'Oswald', sans-serif;">PÉNTEK</strong>
                         <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.6; color: #eee;">
@@ -113,15 +92,13 @@
                         </ul>
                     </div>
                 </div>
-
                 <div style="background: #000; padding: 20px; border-radius: 12px; display: inline-block; border: 2px solid var(--red);">
                     <div style="color: #fff; font-size: 1.8rem; font-weight: bold; font-family: 'Oswald', sans-serif; margin-bottom: 10px;">
                         Menü ár: <span style="color: var(--orange);">3390 Ft</span>
                     </div>
-                    <button class="add-btn" onclick="add('Heti Menü', 3390)" style="min-width: 220px; font-size: 1.1rem; padding: 15px;">
+                    <button id="menu-add-btn" class="add-btn" onclick="add('Heti Menü', 3390)" style="min-width: 220px; font-size: 1.1rem; padding: 15px;">
                         MENÜ KOSÁRBA
                     </button>
-                    <p style="font-size: 0.85rem; color: #aaa; margin-top: 12px; margin-bottom: 0;"</p>
                 </div>
             </div>
         </div>
@@ -131,7 +108,7 @@
     <div class="cart-box">
         <h3>🛒 Kosarad</h3>
         <select id="delivery-option" onchange="up()">
-            <option value="590">Házhozszállítás (590 Ft)</option>
+            <option value="390">Házhozszállítás (390 Ft)</option>
             <option value="0">Helyben átvétel (0 Ft)</option>
         </select>
         <div id="cart-content">Üres...</div>
@@ -145,13 +122,13 @@
         <input type="text" id="user-comm" placeholder="Megjegyzés">
         <select id="payment-method">
             <option value="Készpénz">Készpénz</option>
-            <option value="Bankkártya">Bankkártya</option>
         </select>
         <button class="order-btn" onclick="send()">RENDELÉS LEADÁSA</button>
     </div>
 </div>
 
 <script>
+    // ... (az étlap adatok ugyanazok maradnak, mint fent) ...
     const sidesData = [
         {n: "Nem kérek köretet", p: 0}, {n: "Rizs", p: 990}, {n: "Hasábburgonya", p: 990},
         {n: "Steak burgonya", p: 1190}, {n: "Édes burgonya", p: 1390}, {n: "Petrezselymes burgonya", p: 990},
@@ -314,6 +291,22 @@
         }).join('');
     }
 
+    function updateMenuVisibility() {
+        const n = new Date();
+        const hrs = n.getHours();
+        const menuContainer = document.getElementById('weekly-menu-container');
+        const menuBtn = document.getElementById('menu-add-btn');
+
+        // Csak 8:00 és 16:00 között látható a menü blokk
+        if (hrs >= 16 || hrs < 8) {
+            menuContainer.style.display = 'none';
+            if(menuBtn) menuBtn.disabled = true;
+        } else {
+            menuContainer.style.display = 'block';
+            if(menuBtn) menuBtn.disabled = false;
+        }
+    }
+
     function check() {
         const n = new Date();
         const maiNap = n.getDay();
@@ -325,14 +318,14 @@
             b.disabled = true; b.style.background = "#444"; b.innerText = "RENDELÉS SZÜNETEL";
             s.innerHTML = '<span style="color:#ff4444">● ZÁRVA (Hétfőn zárva tartunk)</span>';
         } else {
-            const isOpen = (t >= 720 && t < 1290); 
+            const isOpen = (t >= 660 && t < 1290); // 11:00 - 21:30
             b.disabled = !isOpen; 
             b.style.background = isOpen ? "#28a745" : "#444";
             
             if (isOpen) {
                 s.innerHTML = '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>';
             } else {
-                s.innerHTML = '<span style="color:#ff4444">● ZÁRVA (Nyitás: MA 12:00-kor)</span>';
+                s.innerHTML = '<span style="color:#ff4444">● ZÁRVA (Nyitás: Kedd-Vasárnap 11:00-kor)</span>';
             }
         }
     }
@@ -367,7 +360,8 @@
 
     render(); 
     check();
-    setInterval(check, 60000);
+    updateMenuVisibility();
+    setInterval(() => { check(); updateMenuVisibility(); }, 60000);
 </script>
 </body>
 </html>
