@@ -101,28 +101,25 @@
 </div>
 
 <div class="container">
-    <div id="main-menu"></div>
-    <div class="cart-box">
-        <h3>🛒 Kosarad</h3>
-        <select id="delivery-option" onchange="up()">
-            <option value="390">Házhozszállítás (390 Ft)</option>
-            <option value="0">Helyben átvétel (0 Ft)</option>
-        </select>
-        <div id="cart-content">Üres...</div>
-        <div style="margin-top:15px; border-top: 1px solid #444; padding-top:10px;">
-            <div class="cart-item">Dobozdíj (200 Ft/étel): <span id="box-fee">0</span> Ft</div>
-            <h3 style="color:var(--orange)">Összesen: <span id="total-price">0</span> Ft</h3>
+    <div id="weekly-menu-container" style="max-width: 1160px; margin: 20px auto; background: #1a1a1a; border: 2px solid var(--red); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-align: center;">
+    <div style="background: var(--red); color: white; padding: 10px; font-family: 'Oswald', sans-serif; font-size: 1.5rem; text-transform: uppercase;">
+        Aktuális Heti Menü
+    </div>
+    <div style="padding: 15px;">
+        <img src=https://www.facebook.com/share/p/1GwrAokdWd/ alt="Heti Menü" style="width: 100%; max-width: 800px; height: auto; border-radius: 8px; border: 1px solid #333; margin-bottom: 20px;">
+        
+        <div style="background: #222; padding: 20px; border-radius: 10px; display: inline-block; min-width: 250px;">
+            <div style="color: var(--orange); font-size: 1.8rem; font-weight: bold; font-family: 'Oswald', sans-serif; margin-bottom: 10px;">
+                Heti menü ár: 3390 Ft
+            </div>
+            <button class="add-btn" onclick="add('Heti Menü (napi kínálat)', 3390)" style="max-width: 200px;">
+                MENÜ KOSÁRBA
+            </button>
+            <p style="font-size: 0.8rem; color: #888; margin-top: 10px;
         </div>
-        <input type="text" id="user-name" placeholder="Név">
-        <input type="text" id="user-addr" placeholder="Cím">
-        <input type="tel" id="user-tel" placeholder="Telefon">
-        <input type="text" id="user-comm" placeholder="Megjegyzés">
-        <select id="payment-method">
-            <option value="Készpénz">Készpénz</option>
-        </select>
-        <button class="order-btn" onclick="send()">RENDELÉS LEADÁSA</button>
     </div>
 </div>
+
 
 <script>
     const sidesData = [
