@@ -258,39 +258,49 @@
     let cart = [];
 
     function render() {
-        const div = document.getElementById('main-menu');
-        div.innerHTML = menuData.map((section, sIdx) => {
-            const isPizza = section.cat.includes("PIZZÁK");
-            const isMain = section.cat === "SERTÉS/MARHA ÉTELEK" || section.cat === "SZÁRNYAS ÉTELEK" || section.cat === "FŐÉTELEK";
-            
-            return `<h2>${section.cat}</h2>
-            <div class="menu-grid">${section.items.map((p, pIdx) => {
-                let pr = p[1];
-                let sId = `s-${sIdx}-${pIdx}`;
-                let extraHTML = "";
-                
-                if (isMain) {
-                    extraHTML = `<select id="${sId}" class="side-select">${sidesData.map(s=>`<option value="${s.n}|${s.p}">${s.n} (+${s.p} Ft)</option>`).join('')}</select>
-                                 <button class="add-btn" onclick="addS('${p[0]}',${pr},'${sId}')">Kosárba</button>`;
-                } else if (isPizza) {
-                    extraHTML = `<select id="${sId}" class="side-select">
-                                    <option value="">Nincs extra feltét</option>
-                                    ${extraFeltetek.map(f => `<option value="${f}">${f} (+450 Ft)</option>`).join('')}
-                                 </select>
-                                 <button class="add-btn" onclick="addPizza('${p[0]}',${pr},'${sId}')">Kosárba</button>`;
-                } else {
-                    extraHTML = `<button class="add-btn" onclick="add('${p[0]}',${pr})">Kosárba</button>`;
-                }
+    const div = document.getElementById('main-menu');
+    
+    // Dátum ellenőrzése (0 = Január, 1 = Február)
+    const now = new Date();
+    const isFebruary = (now.getMonth() === 1); 
 
-                return `<div class="card">
-                            <h3>${p[0]}</h3>
-                            <p>${p[2]||''}</p>
-                            <div class="price">${pr} Ft</div>
-                            ${extraHTML}
-                        </div>`;
-            }).join('')}</div>`;
-        }).join('');
-    }
+    div.innerHTML = menuData.map((section, sIdx) => {
+        const isPizza = section.cat.includes("PIZZÁK");
+        const isMain = section.cat === "SERTÉS/MARHA ÉTELEK" || section.cat === "SZÁRNYAS ÉTELEK" || section.cat === "FŐÉTELEK";
+        const isPasta = section.cat === "TÉSZTÁK"; // Tészta kategória beazonosítása
+        
+        return `<h2>${section.cat} ${isPasta && isFebruary ? '<span style="color:var(--orange); font-size:0.8rem;"> - FEBRUÁRI AKCIÓ!</span>' : ''}</h2>
+        <div class="menu-grid">${section.items.map((p, pIdx) => {
+            
+            // ÁR LOGIKA: Ha tészta ÉS február van, akkor 3000, egyébként az eredeti ár
+            let pr = (isPasta && isFebruary) ? 3000 : p[1];
+            
+            let sId = `s-${sIdx}-${pIdx}`;
+            let extraHTML = "";
+            
+            if (isMain) {
+                extraHTML = `<select id="${sId}" class="side-select">${sidesData.map(s=>`<option value="${s.n}|${s.p}">${s.n} (+${s.p} Ft)</option>`).join('')}</select>
+                             <button class="add-btn" onclick="addS('${p[0]}',${pr},'${sId}')">Kosárba</button>`;
+            } else if (isPizza) {
+                extraHTML = `<select id="${sId}" class="side-select">
+                                <option value="">Nincs extra feltét</option>
+                                ${extraFeltetek.map(f => `<option value="${f}">${f} (+450 Ft)</option>`).join('')}
+                             </select>
+                             <button class="add-btn" onclick="addPizza('${p[0]}',${pr},'${sId}')">Kosárba</button>`;
+            } else {
+                extraHTML = `<button class="add-btn" onclick="add('${p[0]}',${pr})">Kosárba</button>`;
+            }
+
+            return `<div class="card" ${isPasta && isFebruary ? 'style="border: 1px solid var(--orange);"' : ''}>
+                        <h3>${p[0]}</h3>
+                        <p>${p[2]||''}</p>
+                        <div class="price">${pr} Ft ${isPasta && isFebruary ? '<span style="text-decoration: line-through; color: #666; font-size: 0.8rem;">' + p[1] + ' helyett</span>' : ''}</div>
+                        ${extraHTML}
+                    </div>`;
+        }).join('')}</div>`;
+    }).join('');
+}
+
 
     function updateMenuVisibility() {
         const n = new Date();
