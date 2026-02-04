@@ -50,6 +50,25 @@
     </div>
     <div id="open-status" style="font-weight: bold; margin-top: 10px; font-size: 1.2rem;"></div>
 </header>
+    <div id="february-promo" style="display: none; background: linear-gradient(90deg, #ff4500, #bc0000); color: white; text-align: center; padding: 15px; font-family: 'Oswald', sans-serif; font-size: 1.2rem; border-bottom: 3px solid #000; box-shadow: 0 4px 10px rgba(0,0,0,0.3); text-transform: uppercase; letter-spacing: 1px;">
+    🔥 Februári Tészta-Láz! Minden tésztaétel <span style="font-size: 1.5rem; text-decoration: underline;">3000 Ft</span>! 🔥
+    <div style="font-size: 0.8rem; font-family: 'Roboto', sans-serif; margin-top: 5px; opacity: 0.9;">
+        (Kizárólag a weboldalon leadott rendelések esetén érvényes!)
+    </div>
+</div>
+
+<script>
+    // Ez a kis kód csak februárban jeleníti meg a felső sávot
+    function checkPromoBanner() {
+        const now = new Date();
+        const promoBanner = document.getElementById('february-promo');
+        if (now.getMonth() === 1) { // 1 = Február
+            promoBanner.style.display = 'block';
+        }
+    }
+    checkPromoBanner();
+</script>
+
 
 <div class="container">
     <div>
