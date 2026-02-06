@@ -367,14 +367,40 @@
         if (extra !== "") { add(`${nev} (+${extra})`, ar + 450); } else { add(nev, ar); }
     }
 
-    function up(){
-        const ship = parseInt(document.getElementById('delivery-option').value);
-        let sub=0;
-        document.getElementById('cart-content').innerHTML = cart.length?cart.map((it,i)=>`<div class="cart-item">${it.n} <span class="remove-btn" onclick="cart.splice(${i},1);up()">X</span></div>`).join(''):'Üres';
-        cart.forEach(i=>sub+=i.p);
-        document.getElementById('box-fee').innerText = cart.length*200;
-        document.getElementById('total-price').innerText = sub + ship + (cart.length*200);
+    function up() {
+    // 1. Szállítási költség lekérése
+    const ship = parseInt(document.getElementById('delivery-option').value) || 0;
+    
+    // 2. Ételek árának összesítése
+    let subtotal = 0;
+    cart.forEach(item => {
+        subtotal += item.p;
+    });
+
+    // 3. Dobozdíj kiszámítása (200 Ft minden egyes tétel után)
+    const totalBoxFee = cart.length * 200;
+
+    // 4. Kosár tartalmának megjelenítése
+    const cartContent = document.getElementById('cart-content');
+    if (cart.length === 0) {
+        cartContent.innerHTML = 'Üres...';
+    } else {
+        cartContent.innerHTML = cart.map((it, i) => `
+            <div class="cart-item">
+                ${it.n} (${it.p} Ft)
+                <span class="remove-btn" onclick="cart.splice(${i},1);up()">X</span>
+            </div>
+        `).join('');
     }
+
+    // 5. Értékek beírása a HTML-be
+    document.getElementById('box-fee').innerText = totalBoxFee;
+    
+    // A VÉGÖSSZEG: Ételek + Szállítás + Dobozdíj
+    const finalTotal = subtotal + ship + totalBoxFee;
+    document.getElementById('total-price').innerText = finalTotal;
+}
+
 
     function send(){
         const n = document.getElementById('user-name').value;
