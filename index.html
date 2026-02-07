@@ -41,7 +41,7 @@
     <div class="business-info">
         <strong>Gourmet Fúzió Kft.</strong><br>
         Inferno Étterem és Pizzéria (1042 Budapest, Király utca 25) <br>
-        Adószám: 27875808-2-41 | Vezető tisztségviselő: Süle Dávid (+3620/552-18-24)
+        Adószám: 27875708-2-41 | Vezető tisztségviselő: Süle Dávid (+3620/552-18-24)
     </div>
     <h1>Inferno Étterem és Pizzéria</h1>
     <div class="opening-hours">
@@ -139,10 +139,17 @@
         <input type="text" id="user-addr" placeholder="Cím">
         <input type="tel" id="user-tel" placeholder="Telefon">
         <input type="text" id="user-comm" placeholder="Megjegyzés">
-        <select id="payment-method">
-            <option value="Készpénz">Készpénz</option>
-            <option value="Bankkártya">Bankkártya</option>
+    <select id="payment-method">
+    <option value="Készpénz">Készpénz (Házhozszállításnál csak ez érhető el)</option>
+    <option value="Bankkártya - Helyszínen">Bankkártya (Csak helyben átvételkor!)</option>
+</select>
+
+        
         </select>
+        <p style="color: #ff4444; font-size: 0.8rem; margin-top: 15px; text-align: center; font-weight: bold;">
+    ⚠️ Házhozszállítás esetén bankkártyás fizetésre nincs lehetőség, csak készpénzt tudunk elfogadni!
+</p>
+
         <button class="order-btn" onclick="send()">RENDELÉS LEADÁSA</button>
     </div>
 </div>
@@ -401,6 +408,17 @@
     document.getElementById('total-price').innerText = finalTotal;
 }
 
+function send() {
+    const delivery = document.getElementById('delivery-option').value;
+    const payment = document.getElementById('payment-method').value;
+
+    if (delivery === "390" && payment.includes("Bankkártya")) {
+        alert("Sajnáljuk, házhozszállítás esetén csak készpénzes fizetésre van lehetőség!");
+        return; // Megállítja a rendelést
+    }
+
+    // ... a többi meglévő send() kód ...
+}
 
     function send(){
         const n = document.getElementById('user-name').value;
