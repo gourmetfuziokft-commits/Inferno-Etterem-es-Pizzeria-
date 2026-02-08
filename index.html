@@ -44,7 +44,7 @@
     </div>
     <h1>Inferno Étterem és Pizzéria</h1>
     <div class="opening-hours">
-        Hétfő: ZÁRVA | Kedd - Vasárnap: 11:00 - 22:00 (Ma: 12:00 nyitás)<br>
+        Hétfő: ZÁRVA | Kedd - Vasárnap: 11:00 - 22:00 (Vasárnap: 12:00 nyitás)<br>
         <strong>Rendelésfelvétel: +3670/743-00-49 </strong>
     </div>
     <div id="open-status" style="font-weight: bold; margin-top: 10px; font-size: 1.2rem;"></div>
@@ -159,18 +159,33 @@
 
     function render() {
         const div = document.getElementById('main-menu');
-        const isFeb = (new Date().getMonth() === 1);
+        const now = new Date();
+        const isFeb = (now.getMonth() === 1);
+        const isSunday = (now.getDay() === 0);
+
         div.innerHTML = menuData.map((section, sIdx) => {
             const isPizza = section.cat.includes("PIZZÁK");
             const isMain = ["SERTÉS/MARHA ÉTELEK", "SZÁRNYAS ÉTELEK", "FŐÉTELEK"].includes(section.cat);
             const isPasta = section.cat === "TÉSZTÁK";
-            return `<h2>${section.cat}</h2><div class="menu-grid">${section.items.map((p, pIdx) => {
-                let pr = (isPasta && isFeb) ? 3000 : p[1];
+            
+            let sectionHeader = `<h2>${section.cat} ${isPizza && isSunday ? '<span style="color:var(--orange); font-size:0.8rem; vertical-align:middle;"> - 🔥 PIZZA-MÁNIA: MA 2500 FT!</span>' : ''}</h2>`;
+            
+            return sectionHeader + `<div class="menu-grid">${section.items.map((p, pIdx) => {
+                let pr = p[1];
+                if (isPasta && isFeb) pr = 3000;
+                if (isPizza && isSunday) pr = 2500; // Pizza-Mánia érvényesítése
+
                 let sId = `s-${sIdx}-${pIdx}`;
                 let ex = isMain ? `<select id="${sId}" class="side-select">${sidesData.map(s=>`<option value="${s.n}|${s.p}">${s.n} (+${s.p} Ft)</option>`).join('')}</select><button class="add-btn" onclick="addS('${p[0]}',${pr},'${sId}')">Kosárba</button>` :
                          (isPizza ? `<select id="${sId}" class="side-select"><option value="">Nincs extra</option>${extraFeltetek.map(f=>`<option value="${f}">${f} (+450 Ft)</option>`).join('')}</select><button class="add-btn" onclick="addPizza('${p[0]}',${pr},'${sId}')">Kosárba</button>` :
                          `<button class="add-btn" onclick="add('${p[0]}',${pr})">Kosárba</button>`);
-                return `<div class="card"><h3>${p[0]}</h3><p>${p[2]||''}</p><div class="price">${pr} Ft</div>${ex}</div>`;
+                
+                return `<div class="card" ${isPizza && isSunday ? 'style="border: 1px solid var(--orange);"' : ''}>
+                            <h3>${p[0]}</h3>
+                            <p>${p[2]||''}</p>
+                            <div class="price">${pr} Ft ${isPizza && isSunday ? '<span style="text-decoration:line-through;color:#666;font-size:0.7rem;display:block;">'+p[1]+' Ft helyett</span>' : ''}</div>
+                            ${ex}
+                        </div>`;
             }).join('')}</div>`;
         }).join('');
     }
@@ -178,10 +193,11 @@
     function check() {
         const n = new Date(), t = n.getHours() * 60 + n.getMinutes(), d = n.getDay();
         const b = document.querySelector('.order-btn'), s = document.getElementById('open-status');
-        let start = (d === 0) ? 720 : 660;
+        let start = (d === 0) ? 720 : 660; // Vasárnap 12:00, amúgy 11:00
         const isOpen = (d !== 1 && t >= start && t < 1290);
         if (b) b.disabled = !isOpen;
-        if (s) s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA</span>' : '<span style="color:#ff4444">● ZÁRVA</span>';
+        if (s) s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : 
+                          (d === 1 ? '<span style="color:#ff4444">● ZÁRVA (Hétfő)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: ' + (d===0?'12:00':'11:00') + ')</span>');
     }
 
     function add(n,p){cart.push({n,p});up();}
@@ -202,7 +218,7 @@
         const n = document.getElementById('user-name').value, a = document.getElementById('user-addr').value, t = document.getElementById('user-tel').value;
         if (d !== "0" && p.includes("Bankkártya")) return alert("Házhozszállításnál csak készpénz!");
         if(!n || !a || !t || !cart.length) return alert("Hiányzó adatok!");
-        const msg = `RENDELÉS:\n${cart.map(i=>"- "+i.n).join('\n')}\n\nFizetés: ${p}\nÖsszesen: ${document.getElementById('total-price').innerText} Ft\n\nNév: ${n}\nCím: ${a}\nTel: ${t}`;
+        const msg = `RENDELÉS:\n${cart.map(i=>"- "+i.n).join('\n')}\n\nFizetés: ${p}\nDobozdíj: ${document.getElementById('box-fee').innerText} Ft\nÖsszesen: ${document.getElementById('total-price').innerText} Ft\n\nNév: ${n}\nCím: ${a}\nTel: ${t}`;
         window.location.href = `mailto:infernoetterem@gmail.com?subject=Rendelés&body=${encodeURIComponent(msg)}`;
     }
 
