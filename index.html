@@ -39,8 +39,8 @@
     </div>
     <h1>Inferno Étterem és Pizzéria</h1>
     <div class="opening-hours">
-        Hétfő: ZÁRVA | Kedd - Vasárnap: 11:00 - 22:00<br>
-        <strong>Rendelésfelvétel: +3670/743-00-49 (11:00-21:30) </strong>
+        Hétfő: ZÁRVA | Kedd - Vasárnap: 11:00 - 22:00 (Kivéve ma: 12:00 nyitás)<br>
+        <strong>Rendelésfelvétel: +3670/743-00-49 (Nyitvatartási időben) </strong>
     </div>
     <div id="open-status" style="font-weight: bold; margin-top: 10px; font-size: 1.2rem;"></div>
 </header>
@@ -62,44 +62,24 @@
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; text-align: left;">
                     <div style="background: #222; padding: 15px; border-radius: 10px; border-left: 4px solid var(--orange);">
                         <strong style="color: var(--orange); display: block; margin-bottom: 8px; font-family: 'Oswald', sans-serif;">KEDD</strong>
-                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.6; color: #eee;">
-                            <li>• Erdei gyümölcs krémleves</li>
-                            <li>• Krumplis tészta - csemege uborkával</li>
-                            <li>• Epres panna cotta</li>
-                        </ul>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.6; color: #eee;"><li>• Erdei gyümölcs krémleves</li><li>• Krumplis tészta - csemege uborkával</li><li>• Epres panna cotta</li></ul>
                     </div>
                     <div style="background: #222; padding: 15px; border-radius: 10px; border-left: 4px solid var(--orange);">
                         <strong style="color: var(--orange); display: block; margin-bottom: 8px; font-family: 'Oswald', sans-serif;">SZERDA</strong>
-                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.6; color: #eee;">
-                            <li>• Paradicsomleves</li>
-                            <li>• Bolognai rakott tészta</li>
-                            <li>• Palacsinta</li>
-                        </ul>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.6; color: #eee;"><li>• Paradicsomleves</li><li>• Bolognai rakott tészta</li><li>• Palacsinta</li></ul>
                     </div>
                     <div style="background: #222; padding: 15px; border-radius: 10px; border-left: 4px solid var(--orange);">
                         <strong style="color: var(--orange); display: block; margin-bottom: 8px; font-family: 'Oswald', sans-serif;">CSÜTÖRTÖK</strong>
-                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.6; color: #eee;">
-                            <li>• Gulyásleves</li>
-                            <li>• Zöldborsófőzelék, fasírt</li>
-                            <li>• Derelye, fahéjas szórással</li>
-                        </ul>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.6; color: #eee;"><li>• Gulyásleves</li><li>• Zöldborsófőzelék, fasírt</li><li>• Derelye, fahéjas szórással</li></ul>
                     </div>
                     <div style="background: #222; padding: 15px; border-radius: 10px; border-left: 4px solid var(--orange);">
                         <strong style="color: var(--orange); display: block; margin-bottom: 8px; font-family: 'Oswald', sans-serif;">PÉNTEK</strong>
-                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.6; color: #eee;">
-                            <li>• Húsleves</li>
-                            <li>• Csirkepörkölt galuskával</li>
-                            <li>• Tiramisu</li>
-                        </ul>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.6; color: #eee;"><li>• Húsleves</li><li>• Csirkepörkölt galuskával</li><li>• Tiramisu</li></ul>
                     </div>
                 </div>
                 <div style="background: #000; padding: 20px; border-radius: 12px; display: inline-block; border: 2px solid var(--red);">
-                    <div style="color: #fff; font-size: 1.8rem; font-weight: bold; font-family: 'Oswald', sans-serif; margin-bottom: 10px;">
-                        Menü ár: <span style="color: var(--orange);">3390 Ft</span>
-                    </div>
-                    <button id="menu-add-btn" class="add-btn" onclick="add('Heti Menü', 3390)" style="min-width: 220px; font-size: 1.1rem; padding: 15px;">
-                        MENÜ KOSÁRBA
-                    </button>
+                    <div style="color: #fff; font-size: 1.8rem; font-weight: bold; font-family: 'Oswald', sans-serif; margin-bottom: 10px;">Menü ár: <span style="color: var(--orange);">3390 Ft</span></div>
+                    <button id="menu-add-btn" class="add-btn" onclick="add('Heti Menü', 3390)" style="min-width: 220px; font-size: 1.1rem; padding: 15px;">MENÜ KOSÁRBA</button>
                 </div>
             </div>
         </div>
@@ -156,10 +136,7 @@
             ["Meleg szilvaleves", 2790]
         ]},
         { cat: "SALÁTÁK", items: [
-            ["Cézár saláta", 2990],
-            ["Cézár saláta csirkével", 3900],
-            ["Cézár saláta garnélarákkal", 4500],
-            ["Görögsaláta", 3190, "kerti zöldségek, olivaolaj, fetasajt"]
+            ["Cézár saláta", 2990], ["Cézár saláta csirkével", 3900], ["Cézár saláta garnélarákkal", 4500], ["Görögsaláta", 3190, "kerti zöldségek, olivaolaj, fetasajt"]
         ]},
         { cat: "TÉSZTÁK", items: [
             ["Arrabiata penne", 3190, "paradicsomszósz, chili, fokhagyma"],
@@ -177,67 +154,26 @@
             ["Pomodori secchi", 3990, "aszalt paradicsomos, fűszeres gnocchi"]
         ]},
         { cat: "FŐÉTELEK", items: [
-            ["Rántott Mozzarella sajt", 3100],
-            ["Juhtúrós sztrapacska", 3990],
-            ["Juhtúrós sztrapacska füstölt-sült csülökkel", 4990],
-            ["Lazac steak parajos-tejszínes gnocchi-val", 5790],
-            ["Brassói aprópecsenye", 4090],
-            ["Aranchini (húsos rizsgolyó)", 3590],
-            ["Csirkepaprikás gnocchi-val", 4190],
-            ["Harcsapaprikás túrógombóccal", 5490]
+            ["Rántott Mozzarella sajt", 3100], ["Juhtúrós sztrapacska", 3990], ["Juhtúrós sztrapacska füstölt-sült csülökkel", 4990], ["Lazac steak parajos-tejszínes gnocchi-val", 5790],
+            ["Brassói aprópecsenye", 4090, "sertés szűzpecsenyéből, sült burgonyával"], ["Aranchini (húsos rizsgolyó)", 3590], ["Csirkepaprikás gnocchi-val", 4190], ["Harcsapaprikás túrógombóccal", 5490]
         ]},
         { cat: "SZÁRNYAS ÉTELEK", items: [
-            ["Parmezános bundában sült csirkemell", 3890],
-            ["Kapros juhtúróval töltött csirkemell", 4190],
-            ["Caprese csirkemell", 3390, "paradicsomkarika, házi pesto, sajt, bazsalikom"],
-            ["Vaslapon sült csikecomb", 3690],
-            ["Inferno csirkemell", 4190, "olasz pikás szalámi, pepperóni, sajt"],
-            ["Chilis - pankómorzsás sült csirkemell", 3390],
-            ["Csirkemell roston/rántva", 1590, "köret nélkül"]
+            ["Parmezános bundában sült csirkemell", 3890], ["Kapros juhtúróval töltött csirkemell", 4190], ["Caprese csirkemell", 3390, "paradicsomkarika, házi pesto, sajt, bazsalikom"],
+            ["Vaslapon sült csikecomb", 3690], ["Inferno csirkemell", 4190, "olasz pikás szalámi, pepperóni, sajt"], ["Chilis - pankómorzsás sült csirkemell", 3390], ["Csirkemell roston/rántva", 1590, "köret nélkül"]
         ]},
         { cat: "SERTÉS/MARHA ÉTELEK", items: [
-            ["Cordon Bleu", 3390],
-            ["Óriás bécsi szelet", 3590],
-            ["Hagymás rostélyos", 4790],
-            ["Holstein szelet", 4290],
-            ["Cigánypecsenye", 4590, "kakastaréj szalonnával"],
-            ["Milánói sertésborda", 3590],
-            ["Marhapörkölt", 4590],
-            ["Hátszín steak vajon párolt zöldségekkel, sajtmártással", 5590],
-            ["Rántott sertéskaraj", 1790, "köret nélkül"]
+            ["Cordon Bleu", 3390], ["Óriás bécsi szelet", 3590], ["Hagymás rostélyos (hátszínből)", 4790], ["Holstein szelet", 4290], ["Cigánypecsenye", 4590, "kakastaréj szalonnával"],
+            ["Milánói sertésborda", 3590], ["Marhapörkölt", 4590], ["Hátszín steak vajon párolt zöldségekkel, sajtmártással", 5590], ["Rántott sertéskaraj", 1790, "köret nélkül"]
         ]},
         { cat: "PIZZÁK (32 cm)", items: [
-            ["Margherita", 3290, "pizzaszósz, mozzarella, friss bazsalikom, paradicsomkarika"],
-            ["Prosciutto", 3590, "pizzaszósz, mozzarella, sonka"],
-            ["Funghi", 3290, "pizzaszósz, mozzarella, gomba"],
-            ["Prosciutto e Funghi", 3650, "pizzaszósz, sonka, gomba"],
-            ["Mais", 3790, "pizzaszósz, mozzarella, sonka, gomba, kukorica, petrezselyem, fokhagyma"],
-            ["Bolognese", 4190, "pizzaszósz, mozarella, bolognai ragu"],
-            ["Spinaci e Ricotta", 3690, "pizzaszósz, mozarella, spenót, ricotta"],
-            ["Tonno", 3990, "pizzaszósz, mozzarella, tonhal, olivabogyó, lilahagyma"],
-            ["Salame", 3890, "pizzaszósz, mozzarella, pikáns olasz szalámi"],
-            ["Quattro Formaggi", 4190, "pizzaszósz, mozzarella, gorgonzola, füstöltsajt, parmezán"],
-            ["Beatriche", 4490, "fokhagymás tejföl, mozzarella, csirkemell, juhtúró, kapor, kaliforniai paprika"],
-            ["Pizza ala Pesto", 3990, "pizzaszósz, mozzarella, mascarpone, házi pesto, ruccola, koktélparadicsom"],
-            ["Lucifer", 4390, "pizzaszósz, mozzarella, kukorica, bab, bacon, marharagu, lilahagyma, chili olaj"],
-            ["Capriciosa", 4190, "pizzaszósz, mozzarella, sonka, gomba, articsóka, olivabogyó"],
-            ["Luna", 4190, "fokhagymás tejföl, mozzarella, csirke, bacon, friss spenót, fokhagyma"],
-            ["Parma di Ruccola", 4390, "pizzaszósz, mozzarella, rukkola, koktélparadicsom, pármai sonka, parmezán"],
-            ["Inferno", 4090, "pizzaszósz, mozzarella, olasz pikáns szalámi, pepperóni paprika"],
-            ["BBQ Pizza", 4190, "Bbq alap, mozzarella, csirkemell, lilahagyma, füstölt sajt, csemegeuborka"],
-            ["Sonkás-sajtos pizzatekercs", 3990, "sonka, mozzarella feltekerve, 2 szósszal"],
-            ["Vespa", 4290, "fokhagymás tejföl, mozzarella, sonka, bacon, olasz szalámi, lilahagyma, hegyes erős"],
-            ["Carne", 4290, "pizzaszósz, mozzarella, bacon, sonka, olasz szalámi, lilahagyma, kolbász, hegyes erős"],
-            ["Dolce Vita", 4590, "tejszín alap, mozzarella, dió, kecskesajt, füge, pármai sonka, méz"],
-            ["Hawaii", 3690, "pizzaszósz, mozzarella, sonka, ananász"],
-            ["Calzone", 3790, "pizzaszósz, mozzarella, sonka, gomba, félbe hajtva"],
-            ["Verdu", 3790, "pizzaszósz, mozzarella, grillezett zöldségek, parmezán"]
+            ["Margherita", 3290, "pizzaszósz, mozzarella, friss bazsalikom, paradicsomkarika"], ["Prosciutto", 3590, "pizzaszósz, mozzarella, sonka"], ["Funghi", 3290, "pizzaszósz, mozzarella, gomba"], ["Prosciutto e Funghi", 3650, "pizzaszósz, sonka, gomba"], ["Mais", 3790, "pizzaszósz, mozzarella, sonka, gomba, kukorica, petrezselyem, fokhagyma"],
+            ["Bolognese", 4190, "pizzaszósz, mozarella, bolognai ragu"], ["Spinaci e Ricotta", 3690, "pizzaszósz, mozarella, spenót, ricotta"], ["Tonno", 3990, "pizzaszósz, mozzarella, tonhal, olivabogyó, lilahagyma"], ["Salame", 3890, "pizzaszósz, mozzarella, pikáns olasz szalámi"], ["Quattro Formaggi", 4190, "pizzaszósz, mozzarella, gorgonzola, füstöltsajt, parmezán"],
+            ["Beatriche", 4490, "fokhagymás tejföl, mozzarella, csirkemell, juhtúró, kapor, kaliforniai paprika"], ["Pizza ala Pesto", 3990, "pizzaszósz, mozzarella, mascarpone, házi pesto, ruccola, koktélparadicsom"], ["Lucifer", 4390, "pizzaszósz, mozzarella, kukorica, bab, bacon, marharagu, lilahagyma, chili olaj"], ["Capriciosa", 4190, "pizzaszósz, mozzarella, sonka, gomba, articsóka, olivabogyó"], ["Luna", 4190, "fokhagymás tejföl, mozzarella, csirke, bacon, friss spenót, fokhagyma"],
+            ["Parma di Ruccola", 4390, "pizzaszósz, mozzarella, rukkola, koktélparadicsom, pármai sonka, parmezán"], ["Inferno", 4090, "pizzaszósz, mozzarella, olasz pikáns szalámi, pepperóni paprika"], ["BBQ Pizza", 4190, "Bbq alap, mozzarella, csirkemell, lilahagyma, füstölt sajt, csemegeuborka"], ["Sonkás-sajtos pizzatekercs", 3990, "sonka, mozzarella feltekerve, 2 szósszal"], ["Vespa", 4290, "fokhagymás tejföl, mozzarella, sonka, bacon, olasz szalámi, lilahagyma, hegyes erős"],
+            ["Carne", 4290, "pizzaszósz, mozzarella, bacon, sonka, olasz szalámi, lilahagyma, kolbász, hegyes erős"], ["Dolce Vita", 4590, "tejszín alap, mozzarella, dió, kecskesajt, füge, pármai sonka, méz"], ["Hawaii", 3690, "pizzaszósz, mozzarella, sonka, ananász"], ["Calzone", 3790, "pizzaszósz, mozzarella, sonka, gomba, félbe hajtva"], ["Verdu", 3790, "pizzaszósz, mozzarella, grillezett zöldségek, parmezán"]
         ]},
         { cat: "DESSZERTEK", items: [
-            ["Házi Tiramisu", 2190],
-            ["Palacsinta (2db/adag)", 1490, "kakaós, nutellás, ízes, túrókrémes"],
-            ["Házi készítésű Sajttorta", 2190, "karamell vagy eper öntettel"],
-            ["Habos Gesztenyepüré", 2190]
+            ["Házi Tiramisu", 2190], ["Palacsinta (2db/adag)", 1490, "kakaós, nutellás, ízes, túrókrémes"], ["Házi készítésű Sajttorta", 2190, "karamell vagy eper öntettel"], ["Habos Gesztenyepüré", 2190]
         ]}
     ];
 
@@ -252,12 +188,10 @@
     function render() {
         const div = document.getElementById('main-menu');
         const isFebruary = (new Date().getMonth() === 1); 
-
         div.innerHTML = menuData.map((section, sIdx) => {
             const isPizza = section.cat.includes("PIZZÁK");
             const isMain = ["SERTÉS/MARHA ÉTELEK", "SZÁRNYAS ÉTELEK", "FŐÉTELEK"].includes(section.cat);
             const isPasta = section.cat === "TÉSZTÁK";
-            
             return `<h2>${section.cat} ${isPasta && isFebruary ? '<span style="color:var(--orange); font-size:0.8rem;"> - FEBRUÁRI AKCIÓ!</span>' : ''}</h2>
             <div class="menu-grid">${section.items.map((p, pIdx) => {
                 let pr = (isPasta && isFebruary) ? 3000 : p[1];
@@ -265,10 +199,8 @@
                 let extraHTML = isMain ? `<select id="${sId}" class="side-select">${sidesData.map(s=>`<option value="${s.n}|${s.p}">${s.n} (+${s.p} Ft)</option>`).join('')}</select><button class="add-btn" onclick="addS('${p[0]}',${pr},'${sId}')">Kosárba</button>` :
                                 (isPizza ? `<select id="${sId}" class="side-select"><option value="">Nincs extra</option>${extraFeltetek.map(f=>`<option value="${f}">${f} (+450 Ft)</option>`).join('')}</select><button class="add-btn" onclick="addPizza('${p[0]}',${pr},'${sId}')">Kosárba</button>` :
                                 `<button class="add-btn" onclick="add('${p[0]}',${pr})">Kosárba</button>`);
-
                 return `<div class="card" ${isPasta && isFebruary ? 'style="border: 1px solid var(--orange);"' : ''}>
-                            <h3>${p[0]}</h3>
-                            <p>${p[2]||''}</p>
+                            <h3>${p[0]}</h3><p>${p[2]||''}</p>
                             <div class="price">${pr} Ft ${isPasta && isFebruary ? '<span style="text-decoration:line-through;color:#666;font-size:0.7rem;">'+p[1]+' Ft helyett</span>' : ''}</div>
                             ${extraHTML}
                         </div>`;
@@ -276,20 +208,26 @@
         }).join('');
     }
 
+    function check() {
+        const n = new Date();
+        const t = n.getHours() * 60 + n.getMinutes();
+        const d = n.getDay();
+        const b = document.querySelector('.order-btn');
+        const s = document.getElementById('open-status');
+        
+        // MAI SPECIÁLIS SZABÁLY: Vasárnap (0) 12:00-kor nyitunk (720 perc)
+        let openTime = (d === 0) ? 720 : 660; // Vasárnap 12:00, amúgy 11:00
+        const isOpen = (d !== 1 && t >= openTime && t < 1290);
+        
+        if (b) b.disabled = !isOpen;
+        if (s) s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : 
+                          (d === 1 ? '<span style="color:#ff4444">● ZÁRVA (Hétfő)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: 12:00)</span>');
+    }
+
     function updateMenuVisibility() {
         const hrs = new Date().getHours();
         const menuContainer = document.getElementById('weekly-menu-container');
         if (menuContainer) { menuContainer.style.display = (hrs >= 11 && hrs < 16) ? 'block' : 'none'; }
-    }
-
-    function check() {
-        const n = new Date();
-        const t = n.getHours() * 60 + n.getMinutes();
-        const b = document.querySelector('.order-btn');
-        const s = document.getElementById('open-status');
-        const isOpen = (n.getDay() !== 1 && t >= 660 && t < 1290);
-        if (b) b.disabled = !isOpen;
-        if (s) s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : '<span style="color:#ff4444">● ZÁRVA</span>';
     }
 
     function add(n,p){cart.push({n,p});up();}
@@ -318,10 +256,7 @@
         window.location.href = `mailto:infernoetterem@gmail.com?subject=Rendelés&body=${encodeURIComponent(uzenet)}`;
     }
 
-    checkPromoBanner();
-    render(); 
-    check();
-    updateMenuVisibility();
+    checkPromoBanner(); render(); check(); updateMenuVisibility();
     setInterval(() => { check(); updateMenuVisibility(); }, 60000);
 </script>
 </body>
