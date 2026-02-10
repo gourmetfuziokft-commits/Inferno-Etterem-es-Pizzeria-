@@ -83,9 +83,10 @@
         <input type="tel" id="user-tel" placeholder="Telefon">
         <input type="text" id="user-comm" placeholder="Megjegyzés">
         <select id="payment-method">
-            <option value="Készpénz">Készpénz (Házhozszállításnál csak ez érhető el)</option>
-            <option value="Bankkártya - Helyszínen">Bankkártya (Csak helyben átvételkor!)</option>
-        </select>
+    <option value="Bankkártya">Bankkártya</option>
+    <option value="Készpénz">Készpénz</option>
+</select>
+
         <button class="order-btn" onclick="send()">RENDELÉS LEADÁSA</button>
     </div>
 </div>
@@ -214,13 +215,16 @@
     }
 
     function send() {
-        const d = document.getElementById('delivery-option').value, p = document.getElementById('payment-method').value;
-        const n = document.getElementById('user-name').value, a = document.getElementById('user-addr').value, t = document.getElementById('user-tel').value;
-        if (d !== "0" && p.includes("Bankkártya")) return alert("Házhozszállításnál csak készpénz!");
-        if(!n || !a || !t || !cart.length) return alert("Hiányzó adatok!");
-        const msg = `RENDELÉS:\n${cart.map(i=>"- "+i.n).join('\n')}\n\nFizetés: ${p}\nDobozdíj: ${document.getElementById('box-fee').innerText} Ft\nÖsszesen: ${document.getElementById('total-price').innerText} Ft\n\nNév: ${n}\nCím: ${a}\nTel: ${t}`;
-        window.location.href = `mailto:infernoetterem@gmail.com?subject=Rendelés&body=${encodeURIComponent(msg)}`;
-    }
+    const d = document.getElementById('delivery-option').value, p = document.getElementById('payment-method').value;
+    const n = document.getElementById('user-name').value, a = document.getElementById('user-addr').value, t = document.getElementById('user-tel').value, comm = document.getElementById('user-comm').value;
+    
+    if(!n || !a || !t || !cart.length) return alert("Kérlek adj meg minden adatot a rendeléshez!");
+    
+    const msg = `RENDELÉS:\n${cart.map(i=>"- "+i.n).join('\n')}\n\nMegjegyzés: ${comm}\nFizetés: ${p}\nDobozdíj: ${document.getElementById('box-fee').innerText} Ft\nÖsszesen: ${document.getElementById('total-price').innerText} Ft\n\nNév: ${n}\nCím: ${a}\nTel: ${t}`;
+    
+    window.location.href = `mailto:infernoetterem@gmail.com?subject=Rendelés&body=${encodeURIComponent(msg)}`;
+}
+
 
     if (new Date().getMonth() === 1) document.getElementById('february-promo').style.display = 'block';
     render(); check(); setInterval(check, 60000);
