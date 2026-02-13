@@ -32,6 +32,7 @@
         .order-btn { background: #28a745; color: white; width: 100%; border: none; padding: 18px; margin-top: 15px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; }
         input, select { width: 100%; padding: 12px; margin-top: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 6px; box-sizing: border-box; }
         .side-select { border: 1px solid var(--red); font-family: 'Oswald', sans-serif; margin-bottom: 10px; }
+        .pizza-options { display: flex; flex-direction: column; gap: 2px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -83,10 +84,9 @@
         <input type="tel" id="user-tel" placeholder="Telefon">
         <input type="text" id="user-comm" placeholder="Megjegyzés">
         <select id="payment-method">
-    <option value="Bankkártya">Bankkártya</option>
-    <option value="Készpénz">Készpénz</option>
-</select>
-
+            <option value="Bankkártya">Bankkártya (Futárnál is!)</option>
+            <option value="Készpénz">Készpénz</option>
+        </select>
         <button class="order-btn" onclick="send()">RENDELÉS LEADÁSA</button>
     </div>
 </div>
@@ -133,8 +133,8 @@
             ["Pomodori secchi", 3990, "aszalt paradicsomos, fűszeres gnocchi"]
         ]},
         { cat: "FŐÉTELEK", items: [
-            ["Rántott Mozzarella sajt", 3100], ["Juhtúrós sztrapacska", 3990], ["Juhtúrós sztrapacska füstölt-sült csülökkel", 4990], ["Lazac steak", 5790],
-            ["Brassói aprópecsenye", 4090,], ["Aranchini", 3590], ["Csirkepaprikás", 4190], ["Harcsapaprikás", 5490]
+            ["Rántott Mozzarella sajt", 3100], ["Juhtúrós sztrapacska", 3990], ["Juhtúrós sztrapacska füstölt-sült csülökkel", 4990], ["Lazac steak parajos-tejszínes gnocchi-val", 5790],
+            ["Brassói aprópecsenye", 4090, "sertés szűzpecsenyéből, sült burgonyával"], ["Aranchini", 3590], ["Csirkepaprikás gnocchi-val", 4190], ["Harcsapaprikás túrógombóccal", 5490]
         ]},
         { cat: "SZÁRNYAS ÉTELEK", items: [
             ["Parmezános bundában sült csirkemell", 3890], ["Kapros juhtúróval töltött csirkemell", 4190], ["Caprese csirkemell", 3390, "paradicsomkarika, házi pesto, sajt"],
@@ -145,14 +145,14 @@
             ["Milánói sertésborda", 3590], ["Marhapörkölt", 4590], ["Hátszín steak sajtmártással", 5590]
         ]},
         { cat: "PIZZÁK (32 cm)", items: [
-            ["Margherita", 3290, "pizzaszósz, mozzarella, friss bazsalikom"], ["Prosciutto", 3590, "pizzaszósz, mozzarella, sonka"], ["Funghi", 3290, "pizzaszósz, mozzarella, gomba"], ["Prosciutto e Funghi", 3650, "sonka, gomba"], ["Mais", 3790, "sonka, gomba, kukorica, petrezselyem, fokhagyma"],
-            ["Bolognese", 4190, "pizzaszósz, mozzarella, bolognai ragu"], ["Spinaci e Ricotta", 3690, "pizzaszósz, mozzarella, spenót, ricotta"], ["Tonno", 3990, "pizzaszósz, mozzarella, tonhal, lilahagyma, olivabogyó"], ["Salame", 3890, "pizzaszósz, mozzarella, olasz pikáns szalámi"], ["Quattro Formaggi", 4190, "pizzaszósz, mozzarella, gorgonzola, parmezán, füstölt sajt"],
-            ["Beatriche", 4490, "fokhagymás-tejföl alap, mozzarella, csirkemell, kapor, kaliforniai paprika"], ["Pizza ala Pesto", 3990, "pizzaszósz, mozzarella, házi pesto, rukkola, koktélparadicsom"], ["Lucifer", 4390, "pizzaszósz, mozzarella, bacon, bolognai ragu, kukorica, bab, lilahagyma"], ["Capriciosa", 4190, "pizzaszósz, mozzarella, sonka, gomba, articsóka, olivabogyó"], ["Luna", 4190, "fokhagymás-tejföl alap, mozzarella, bacon, csirkemell, friss spenót, fokhagyma"],
-            ["Parma di Ruccola", 4390, "pizzaszósz, mozzarella, rukkola, koktélparadicsom, pármai sonka, parmezánsajt"], ["Inferno", 4090, "pizzaszósz, mozzarella, olasz szalámi, pepperóni"], ["BBQ Pizza", 4190, "pizzaszósz, mozzarella, bacon, csirkemell, bbq szósz"], ["Sonkás-sajtos pizzatekercs", 3990], ["Vespa", 4290, " fokhagymás alap, mozzarella, kolbász, sonka, bacon, lilahagyma, hegyeserős paprika"],
-            ["Carne", 4290, "pizzaszósz, mozzarella, kolbász, bacon, sonka, olasz szalámi, lilahagyma, hegyeserős paprika"], ["Dolce Vita", 4590, "tejszín alap, mozzarella, kecskesajt, füge, dió, pármai sonka, méz"], ["Hawaii", 3690, "pizzaszósz, mozzarella, sonka, ananász"], ["Calzone", 3790, "pizzaszósz, mozzarella, sonka, gomba (félbe hajtva)"], ["Verdu", 3790, "pizzaszósz, mozzarella, grill zöldségek"], ["Pizza Christina", 3790, "mustáros alap, kolbász, póréhagyma, friss paradicsom"]
+            ["Margherita", 3290, "pizzaszósz, mozzarella, friss bazsalikom"], ["Prosciutto", 3590, "pizzaszósz, mozzarella, sonka"], ["Funghi", 3290, "pizzaszósz, mozzarella, gomba"], ["Prosciutto e Funghi", 3650, "sonka, gomba"], ["Mais", 3790, "sonka, gomba, kukorica"],
+            ["Bolognese", 4190], ["Spinaci e Ricotta", 3690], ["Tonno", 3990], ["Salame", 3890], ["Quattro Formaggi", 4190],
+            ["Beatriche", 4490], ["Pizza ala Pesto", 3990], ["Lucifer", 4390], ["Capriciosa", 4190], ["Luna", 4190],
+            ["Parma di Ruccola", 4390], ["Inferno", 4090], ["BBQ Pizza", 4190], ["Sonkás-sajtos pizzatekercs", 3990], ["Vespa", 4290],
+            ["Carne", 4290], ["Dolce Vita", 4590], ["Hawaii", 3690], ["Calzone", 3790], ["Verdu", 3790]
         ]},
         { cat: "DESSZERTEK", items: [
-            ["Házi Tiramisu", 2190], ["Palacsinta (2db)", 1490, "nutellás, lekváros, túrókrémes, kakaós"], ["Sajttorta", 2190], ["Gesztenyepüré", 2190]
+            ["Házi Tiramisu", 2190], ["Palacsinta (2db)", 1490], ["Sajttorta", 2190], ["Gesztenyepüré", 2190]
         ]}
     ];
 
@@ -174,11 +174,22 @@
             return sectionHeader + `<div class="menu-grid">${section.items.map((p, pIdx) => {
                 let pr = p[1];
                 if (isPasta && isFeb) pr = 3000;
-                if (isPizza && isSunday) pr = 2500; // Pizza-Mánia érvényesítése
+                if (isPizza && isSunday) pr = 2500;
 
                 let sId = `s-${sIdx}-${pIdx}`;
                 let ex = isMain ? `<select id="${sId}" class="side-select">${sidesData.map(s=>`<option value="${s.n}|${s.p}">${s.n} (+${s.p} Ft)</option>`).join('')}</select><button class="add-btn" onclick="addS('${p[0]}',${pr},'${sId}')">Kosárba</button>` :
-                         (isPizza ? `<select id="${sId}" class="side-select"><option value="">Nincs extra</option>${extraFeltetek.map(f=>`<option value="${f}">${f} (+450 Ft)</option>`).join('')}</select><button class="add-btn" onclick="addPizza('${p[0]}',${pr},'${sId}')">Kosárba</button>` :
+                         (isPizza ? `
+                            <div class="pizza-options">
+                                <select id="${sId}-teszta" class="side-select">
+                                    <option value="Sima|0">Sima tészta</option>
+                                    <option value="Gluténmentes|1200">Gluténmentes tészta (+1200 Ft)</option>
+                                </select>
+                                <select id="${sId}-extra" class="side-select">
+                                    <option value="">Nincs extra feltét</option>
+                                    ${extraFeltetek.map(f=>`<option value="${f}">${f} (+450 Ft)</option>`).join('')}
+                                </select>
+                            </div>
+                            <button class="add-btn" onclick="addPizza('${p[0]}',${pr},'${sId}')">Kosárba</button>` :
                          `<button class="add-btn" onclick="add('${p[0]}',${pr})">Kosárba</button>`);
                 
                 return `<div class="card" ${isPizza && isSunday ? 'style="border: 1px solid var(--orange);"' : ''}>
@@ -194,7 +205,7 @@
     function check() {
         const n = new Date(), t = n.getHours() * 60 + n.getMinutes(), d = n.getDay();
         const b = document.querySelector('.order-btn'), s = document.getElementById('open-status');
-        let start = (d === 0) ? 720 : 660; // Vasárnap 12:00, amúgy 11:00
+        let start = (d === 0) ? 720 : 660; 
         const isOpen = (d !== 1 && t >= start && t < 1290);
         if (b) b.disabled = !isOpen;
         if (s) s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : 
@@ -203,7 +214,16 @@
 
     function add(n,p){cart.push({n,p});up();}
     function addS(n,p,id){const v=document.getElementById(id).value.split('|'); add(`${n} (${v[0]})`, p+parseInt(v[1]));}
-    function addPizza(nev, ar, id) { const ex = document.getElementById(id).value; add(ex ? `${nev} (+${ex})` : nev, ex ? ar+450 : ar); }
+    
+    function addPizza(nev, ar, id) {
+        const tesztaVal = document.getElementById(id + '-teszta').value.split('|');
+        const extraVal = document.getElementById(id + '-extra').value;
+        let finalAr = ar + parseInt(tesztaVal[1]);
+        let finalNev = nev;
+        if (tesztaVal[0] !== "Sima") finalNev += " (" + tesztaVal[0] + ")";
+        if (extraVal) { finalAr += 450; finalNev += " +" + extraVal; }
+        add(finalNev, finalAr);
+    }
 
     function up() {
         const ship = parseInt(document.getElementById('delivery-option').value) || 0;
@@ -215,16 +235,27 @@
     }
 
     function send() {
-    const d = document.getElementById('delivery-option').value, p = document.getElementById('payment-method').value;
-    const n = document.getElementById('user-name').value, a = document.getElementById('user-addr').value, t = document.getElementById('user-tel').value, comm = document.getElementById('user-comm').value;
-    
-    if(!n || !a || !t || !cart.length) return alert("Kérlek adj meg minden adatot a rendeléshez!");
-    
-    const msg = `RENDELÉS:\n${cart.map(i=>"- "+i.n).join('\n')}\n\nMegjegyzés: ${comm}\nFizetés: ${p}\nDobozdíj: ${document.getElementById('box-fee').innerText} Ft\nÖsszesen: ${document.getElementById('total-price').innerText} Ft\n\nNév: ${n}\nCím: ${a}\nTel: ${t}`;
-    
-    window.location.href = `mailto:infernoetterem@gmail.com?subject=Rendelés&body=${encodeURIComponent(msg)}`;
-}
+        const d = document.getElementById('delivery-option').value, p = document.getElementById('payment-method').value;
+        const n = document.getElementById('user-name').value, a = document.getElementById('user-addr').value, t = document.getElementById('user-tel').value, comm = document.getElementById('user-comm').value;
+        if(!n || !a || !t || !cart.length) return alert("Kérlek adj meg minden adatot a rendeléshez!");
+        
+        const msg = `RENDELÉS:\n${cart.map(i=>"- "+i.n).join('\n')}\n\nMegjegyzés: ${comm}\nFizetés: ${p}\nDobozdíj: ${document.getElementById('box-fee').innerText} Ft\nÖSSZESEN: ${document.getElementById('total-price').innerText} Ft\n\nNév: ${n}\nCím: ${a}\nTel: ${t}`;
 
+        const formData = new FormData();
+        formData.append('uzenet', msg);
+
+        fetch('rendeles.php', { method: 'POST', body: formData })
+        .then(response => response.text())
+        .then(data => {
+            if(data.trim() === "OK") {
+                alert("Köszönjük! A rendelésedet megkaptuk.");
+                cart = []; up();
+            } else {
+                alert("Hiba történt a küldéskor. Kérjük, próbáld meg telefonon: +3670/743-00-49");
+            }
+        })
+        .catch(error => alert("Hálózati hiba! Kérjük, rendelj telefonon."));
+    }
 
     if (new Date().getMonth() === 1) document.getElementById('february-promo').style.display = 'block';
     render(); check(); setInterval(check, 60000);
