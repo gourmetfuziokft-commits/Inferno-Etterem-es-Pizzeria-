@@ -35,10 +35,7 @@
         .pizza-options { display: flex; flex-direction: column; gap: 2px; margin-bottom: 10px; }
     </style>
 </head>
-<body>
-    <div style="background: #bc0000; color: white; text-align: center; padding: 15px; font-family: 'Oswald', sans-serif; font-size: 1.3rem; font-weight: bold; text-transform: uppercase; border-bottom: 4px solid #000;">
-    ⚠️ MA BETEGSÉG MIATT ZÁRVA VAGYUNK! MEGÉRTÉSETEKET KÖSZÖNJÜK! ⚠️
-</div>
+
 
 
 <header>
@@ -205,17 +202,27 @@
             }).join('')}</div>`;
         }).join('');
     }
-
-    function check() {
-    const s = document.getElementById('open-status');
-    const b = document.getElementById('submit-btn');
+function check() {
+    const n = new Date(), t = n.getHours() * 60 + n.getMinutes(), d = n.getDay();
+    const b = document.getElementById('submit-btn'), s = document.getElementById('open-status');
     
-    // Gomb letiltása és felirat módosítása
-    if(b) {
-        b.disabled = true;
-        b.innerText = "MA BETEGSÉG MIATT ZÁRVA";
-        b.style.background = "#444";
+    // Kedd-Szombat 11:00-tól, Vasárnap 12:00-tól nyitunk
+    let start = (d === 0) ? 720 : 660; 
+    const isOpen = (d !== 1 && t >= start && t < 1290);
+    
+    if (b) {
+        b.disabled = !isOpen;
+        b.innerText = isOpen ? "RENDELÉS LEADÁSA" : "ZÁRVA";
+        b.style.background = isOpen ? "#28a745" : "#444";
     }
+    
+    if (s) {
+        s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : 
+                      (d === 1 ? '<span style="color:#ff4444">● ZÁRVA (Hétfő)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: ' + (d===0?'12:00':'11:00') + ')</span>');
+    }
+}
+
+    
     
     // Állapotjelző szöveg
     if(s) {
