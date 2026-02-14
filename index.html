@@ -30,10 +30,14 @@
         .cart-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; padding: 8px 0; border-bottom: 1px solid #222; }
         .remove-btn { color: #ff4444; cursor: pointer; font-weight: bold; border: 1px solid #444; padding: 2px 8px; border-radius: 4px; }
         .order-btn { background: #28a745; color: white; width: 100%; border: none; padding: 18px; margin-top: 15px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; }
+        .order-btn:disabled { background: #444; cursor: not-allowed; }
         input, select { width: 100%; padding: 12px; margin-top: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 6px; box-sizing: border-box; }
         .side-select { border: 1px solid var(--red); font-family: 'Oswald', sans-serif; margin-bottom: 10px; }
         .pizza-options { display: flex; flex-direction: column; gap: 2px; margin-bottom: 10px; }
     </style>
+</head>
+<body>
+
 <header>
     <div class="business-info">
         <strong>Gourmet Fúzió Kft.</strong><br>
@@ -84,7 +88,7 @@
             <option value="Bankkártya">Bankkártya (Futárnál is!)</option>
             <option value="Készpénz">Készpénz</option>
         </select>
-        <button class="order-btn" onclick="send()">RENDELÉS LEADÁSA</button>
+        <button class="order-btn" id="submit-btn" onclick="send()">RENDELÉS LEADÁSA</button>
     </div>
 </div>
 
@@ -170,7 +174,7 @@
             ["Verdu", 3790, "pizzaszósz, mozzarella, grillezett zöldségek, parmezán"]
         ]},
         { cat: "DESSZERTEK", items: [
-            ["Házi Tiramisu", 2190], ["Palacsinta (2db)", 1490], ["Sajttorta", 2190], ["Gesztenyepüré", 2190]
+            ["Házi Tiramisu", 2190], ["Palacsinta (2db)", 1490 "ízes, kakaós, nutellás, túrókrémes"], ["Sajttorta", 2190], ["Gesztenyepüré", 2190]
         ]}
     ];
 
@@ -219,34 +223,25 @@
             }).join('')}</div>`;
         }).join('');
     }
-function check() {
-    const n = new Date(), t = n.getHours() * 60 + n.getMinutes(), d = n.getDay();
-    const b = document.getElementById('submit-btn'), s = document.getElementById('open-status');
-    
-    // Kedd-Szombat 11:00-tól, Vasárnap 12:00-tól nyitunk
-    let start = (d === 0) ? 720 : 660; 
-    const isOpen = (d !== 1 && t >= start && t < 1290);
-    
-    if (b) {
-        b.disabled = !isOpen;
-        b.innerText = isOpen ? "RENDELÉS LEADÁSA" : "ZÁRVA";
-        b.style.background = isOpen ? "#28a745" : "#444";
-    }
-    
-    if (s) {
-        s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : 
-                      (d === 1 ? '<span style="color:#ff4444">● ZÁRVA (Hétfő)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: ' + (d===0?'12:00':'11:00') + ')</span>');
-    }
-}
 
-    
-    
-    // Állapotjelző szöveg
-    if(s) {
-        s.innerHTML = '<span style="color:#ff4444">● MA BETEGSÉG MIATT ZÁRVA VAGYUNK</span>';
+    function check() {
+        const n = new Date(), t = n.getHours() * 60 + n.getMinutes(), d = n.getDay();
+        const b = document.getElementById('submit-btn'), s = document.getElementById('open-status');
+        
+        let start = (d === 0) ? 720 : 660; 
+        const isOpen = (d !== 1 && t >= start && t < 1290);
+        
+        if (b) {
+            b.disabled = !isOpen;
+            b.innerText = isOpen ? "RENDELÉS LEADÁSA" : "ZÁRVA";
+            b.style.background = isOpen ? "#28a745" : "#444";
+        }
+        
+        if (s) {
+            s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : 
+                          (d === 1 ? '<span style="color:#ff4444">● ZÁRVA (Hétfő)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: ' + (d===0?'12:00':'11:00') + ')</span>');
+        }
     }
-}
-
 
     function add(n,p){cart.push({n,p});up();}
     function addS(n,p,id){const v=document.getElementById(id).value.split('|'); add(`${n} (${v[0]})`, p+parseInt(v[1]));}
