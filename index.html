@@ -273,27 +273,44 @@
     }
 
     function send() {
-        const d = document.getElementById('delivery-option').value, p = document.getElementById('payment-method').value;
-        const n = document.getElementById('user-name').value, a = document.getElementById('user-addr').value, t = document.getElementById('user-tel').value, comm = document.getElementById('user-comm').value;
-        if(!n || !a || !t || !cart.length) return alert("Kérlek adj meg minden adatot a rendeléshez!");
-        
-        const msg = `RENDELÉS:\n${cart.map(i=>"- "+i.n).join('\n')}\n\nMegjegyzés: ${comm}\nFizetés: ${p}\nDobozdíj: ${document.getElementById('box-fee').innerText} Ft\nÖSSZESEN: ${document.getElementById('total-price').innerText} Ft\n\nNév: ${n}\nCím: ${a}\nTel: ${t}`;
+    const d = document.getElementById('delivery-option').value;
+    const p = document.getElementById('payment-method').value;
+    const n = document.getElementById('user-name').value;
+    const a = document.getElementById('user-addr').value;
+    const t = document.getElementById('user-tel').value;
+    const comm = document.getElementById('user-comm').value;
+    const boxFee = document.getElementById('box-fee').innerText;
+    const total = document.getElementById('total-price').innerText;
 
-        const formData = new FormData();
-        formData.append('uzenet', msg);
-
-        fetch('rendeles.php', { method: 'POST', body: formData })
-        .then(response => response.text())
-        .then(data => {
-            if(data.trim() === "OK") {
-                alert("Köszönjük! A rendelésedet megkaptuk.");
-                cart = []; up();
-            } else {
-                alert("Hiba történt a küldéskor. Kérjük, próbáld meg telefonon: +3670/743-00-49");
-            }
-        })
-        .catch(error => alert("Hálózati hiba! Kérjük, rendelj telefonon."));
+    if(!n || !a || !t || !cart.length) {
+        return alert("Kérlek adj meg minden adatot a rendeléshez!");
     }
+    
+    // A rendelés szövegének összeállítása
+    const msg = `RENDELÉS:\n${cart.map(i=>"- "+i.n).join('\n')}\n\n` +
+                `Megjegyzés: ${comm}\n` +
+                `Fizetés: ${p}\n` +
+                `Dobozdíj: ${boxFee} Ft\n` +
+                `ÖSSZESEN: ${total} Ft\n\n` +
+                `Név: ${n}\n` +
+                `Cím: ${a}\n` +
+                `Tel: ${t}`;
+
+    // Az email cím, ahová a rendelés megy
+    const email = "infernoetterem@gmail.com"; 
+    const subject = encodeURIComponent("Új rendelés - Inferno Étterem");
+    const body = encodeURIComponent(msg);
+
+    // Megnyitja a látogató levelezőjét a kitöltött adatokkal
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+
+    alert("A levelezőprogramod megnyílt. Kérlek, kattints a KÜLDÉS gombra az e-mailben a rendelés véglegesítéséhez!");
+    
+    // Kosár ürítése a küldés után (opcionális)
+    cart = []; 
+    up();
+}
+
 
     if (new Date().getMonth() === 1) document.getElementById('february-promo').style.display = 'block';
     render(); check(); setInterval(check, 60000);
