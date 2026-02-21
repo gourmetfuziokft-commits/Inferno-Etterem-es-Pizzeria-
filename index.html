@@ -225,23 +225,30 @@
     }
 
     function check() {
-        const n = new Date(), t = n.getHours() * 60 + n.getMinutes(), d = n.getDay();
-        const b = document.getElementById('submit-btn'), s = document.getElementById('open-status');
-        
-        let start = (d === 0) ? 720 : 660; 
-        const isOpen = (d !== 1 && t >= start && t < 1290);
-        
-        if (b) {
-            b.disabled = !isOpen;
-            b.innerText = isOpen ? "RENDELÉS LEADÁSA" : "ZÁRVA";
-            b.style.background = isOpen ? "#28a745" : "#444";
-        }
-        
-        if (s) {
-            s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : 
-                          (d === 1 ? '<span style="color:#ff4444">● ZÁRVA (Hétfő)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: ' + (d===0?'12:00':'11:00') + ')</span>');
-        }
+    const n = new Date(), t = n.getHours() * 60 + n.getMinutes(), d = n.getDay();
+    const b = document.getElementById('submit-btn'), s = document.getElementById('open-status');
+    
+    // Kedd-Szombat 11:00-tól (660 perc), Vasárnap 12:00-tól (720 perc) nyitunk
+    let start = (d === 0) ? 720 : 660; 
+    // Nyitvatartás vége: 21:30-ig fogadunk rendelést (1290 perc)
+    // d !== 1 jelentése: nem hétfő (mivel hétfőn zárva)
+    const isOpen = (d !== 1 && t >= start && t < 1290);
+    
+    if (b) {
+        b.disabled = !isOpen;
+        b.innerText = isOpen ? "RENDELÉS LEADÁSA" : "ZÁRVA";
+        b.style.background = isOpen ? "#28a745" : "#444";
     }
+    
+    if (s) {
+        s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : 
+                      (d === 1 ? '<span style="color:#ff4444">● ZÁRVA (Hétfő)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: ' + (d===0?'12:00':'11:00') + ')</span>');
+    }
+}
+
+// Töröld ki a kódodból azt a részt, ami ezután következett:
+// "if(s) { s.innerHTML = '<span style="color:#ff4444">● MA BETEGSÉG MIATT ZÁRVA VAGYUNK</span>'; }"
+
 
     function add(n,p){cart.push({n,p});up();}
     function addS(n,p,id){const v=document.getElementById(id).value.split('|'); add(`${n} (${v[0]})`, p+parseInt(v[1]));}
