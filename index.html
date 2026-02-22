@@ -218,26 +218,26 @@
     }
 
     function check() {
-    const n = new Date(), t = n.getHours() * 60 + n.getMinutes(), d = n.getDay();
-    const b = document.getElementById('submit-btn'), s = document.getElementById('open-status');
+    const b = document.getElementById('submit-btn');
+    const s = document.getElementById('open-status');
     
-    // Kedd-Szombat 11:00-tól (660 perc), Vasárnap 12:00-tól (720 perc) nyitunk
-    let start = (d === 0) ? 720 : 660; 
-    // Nyitvatartás vége: 21:30-ig fogadunk rendelést (1290 perc)
-    // d !== 1 jelentése: nem hétfő (mivel hétfőn zárva)
-    const isOpen = (d !== 1 && t >= start && t < 1290);
-    
+    // Minden esetben letiltjuk a gombot
     if (b) {
-        b.disabled = !isOpen;
-        b.innerText = isOpen ? "RENDELÉS LEADÁSA" : "ZÁRVA";
-        b.style.background = isOpen ? "#28a745" : "#444";
+        b.disabled = true;
+        b.innerText = "RENDELÉS SZÜNETEL";
+        b.style.background = "#444";
     }
     
+    // Kiírjuk a hiba okát a státuszhoz
     if (s) {
-        s.innerHTML = isOpen ? '<span style="color:#28a745">● NYITVA (Rendelés 21:30-ig)</span>' : 
-                      (d === 1 ? '<span style="color:#ff4444">● ZÁRVA (Hétfő)</span>' : '<span style="color:#ff4444">● ZÁRVA (Nyitás: ' + (d===0?'12:00':'11:00') + ')</span>');
+        s.innerHTML = '<span style="color:#ff4444; font-size: 1.4rem;">● TECHNIKAI OKOK MIATT ZÁRVA VAGYUNK</span><br>' +
+                      '<span style="color:#aaa; font-size: 0.9rem;">Rendelésfelvétel átmenetileg csak telefonon!</span>';
     }
 }
+
+// A kód többi részében is hívd meg a check-et, hogy azonnal érvényesüljön
+check();
+
 
 // Töröld ki a kódodból azt a részt, ami ezután következett:
 // "if(s) { s.innerHTML = '<span style="color:#ff4444">● MA BETEGSÉG MIATT ZÁRVA VAGYUNK</span>'; }"
