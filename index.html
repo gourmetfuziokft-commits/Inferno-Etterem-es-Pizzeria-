@@ -12,11 +12,6 @@
         h1 { font-family: 'Oswald', sans-serif; color: var(--red); text-transform: uppercase; margin: 10px 0; font-size: 2.5rem; }
         .business-info { font-size: 0.9rem; color: #aaa; margin-bottom: 15px; line-height: 1.4; }
         .opening-hours { background: #111; padding: 10px; border-radius: 8px; border: 1px solid #333; display: inline-block; margin: 10px 0; }
-        .partners-bar { background: #050505; padding: 15px; border-bottom: 1px solid #222; text-align: center; }
-        .partners-bar h4 { font-family: 'Oswald', sans-serif; font-size: 0.8rem; color: #555; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 1px; }
-        .partner-links { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-        .partner-links a { color: #888; text-decoration: none; font-size: 0.75rem; border: 1px solid #333; padding: 5px 12px; border-radius: 20px; transition: 0.3s; }
-        .partner-links a:hover { color: #bc0000; border-color: #bc0000; }
         .container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 380px; gap: 30px; padding: 20px; }
         @media (max-width: 950px) { .container { grid-template-columns: 1fr; } }
         h2 { font-family: 'Oswald', sans-serif; border-left: 5px solid var(--red); padding-left: 15px; margin-top: 40px; text-transform: uppercase; color: #eee; }
@@ -52,7 +47,6 @@
     <div id="open-status" style="font-weight: bold; margin-top: 10px; font-size: 1.2rem;"></div>
 </header>
 
-
 <div id="february-promo" style="display: none; background: linear-gradient(90deg, #ff4500, #bc0000); color: white; text-align: center; padding: 15px; font-family: 'Oswald', sans-serif; font-size: 1.2rem; border-bottom: 3px solid #000; box-shadow: 0 4px 10px rgba(0,0,0,0.3); text-transform: uppercase; letter-spacing: 1px;">
     🔥 Februári Tészta-Láz! Minden tésztaétel <span style="font-size: 1.5rem; text-decoration: underline;">3000 Ft</span>! 🔥
 </div>
@@ -71,8 +65,9 @@
             <div class="cart-item">Dobozdíj (200 Ft/étel): <span id="box-fee">0</span> Ft</div>
             <h3 style="color:var(--orange)">Összesen: <span id="total-price">0</span> Ft</h3>
         </div>
+        <input type="number" id="user-zip" placeholder="Irányítószám (Pl. 1042)">
         <input type="text" id="user-name" placeholder="Név">
-        <input type="text" id="user-addr" placeholder="Cím">
+        <input type="text" id="user-addr" placeholder="Utca, házszám">
         <input type="tel" id="user-tel" placeholder="Telefon">
         <input type="text" id="user-comm" placeholder="Megjegyzés">
         <select id="payment-method">
@@ -103,8 +98,7 @@
         { cat: "LEVESEK", items: [
             ["Húsleves gazdagon", 2590, "levesbetét, csirke, zöldségek"],
             ["Toszkán Paradicsomleves", 2590, "mozzarella golyóval"],
-            ["Gulyásleves (marhahúsból)", 3700],
-            
+            ["Gulyásleves (marhahúsból)", 3700]
         ]},
         { cat: "SALÁTÁK", items: [
             ["Cézár saláta", 2990], ["Cézár saláta csirkével", 3900], ["Cézár saláta garnélarákkal", 4500], ["Görögsaláta", 3190, "kerti zöldségek, olivaolaj, fetasajt"]
@@ -218,27 +212,17 @@
     }
 
     function check() {
-    const b = document.getElementById('submit-btn');
-    const s = document.getElementById('open-status');
-    
-    // A gombot mindig engedélyezzük, nem nézünk időpontot
-    if (b) {
-        b.disabled = false;
-        b.innerText = "RENDELÉS LEADÁSA";
-        b.style.background = "#28a745"; // Visszaállítjuk zöldre
+        const b = document.getElementById('submit-btn');
+        const s = document.getElementById('open-status');
+        if (b) {
+            b.disabled = false;
+            b.innerText = "RENDELÉS LEADÁSA";
+            b.style.background = "#28a745";
+        }
+        if (s) {
+            s.innerHTML = '<span style="color:#28a745">● ONLINE RENDELÉS ELÉRHETŐ</span>';
+        }
     }
-    
-    // A státuszhoz csak egy fix üzenetet írunk ki
-    if (s) {
-        s.innerHTML = '<span style="color:#28a745">● ONLINE RENDELÉS ELÉRHETŐ</span>';
-    }
-}
-
-// Azonnal lefuttatjuk
-check();
-
-// A setInterval-t kivehetjük vagy benthagyhatjuk, 
-// de mivel már nem számol semmit, nem oszt, nem szoroz.
 
     function add(n,p){cart.push({n,p});up();}
     function addS(n,p,id){const v=document.getElementById(id).value.split('|'); add(`${n} (${v[0]})`, p+parseInt(v[1]));}
@@ -263,90 +247,53 @@ check();
     }
 
     function send() {
-    // A térkép alapján engedélyezett irányítószámok:
-    // IV. kerület (1041-1048), XV. kerület (1151-1158), XIII. kerület északi része (1131, 1138)
-    const engedelyezettIrsz = [
-        1041, 1042, 1043, 1044, 1045, 1046, 1047, 1048, 
-        1151, 1152, 1153, 1154, 1155, 1156, 1157, 1158,
-        1131, 1138
-    ];
-    
-    const zip = parseInt(document.getElementById('user-zip').value);
-    const n = document.getElementById('user-name').value;
-    const a = document.getElementById('user-addr').value;
-    const t = document.getElementById('user-tel').value;
-    const szallitas = document.getElementById('delivery-option').value;
+        const engedelyezettIrsz = [1041, 1042, 1043, 1044, 1045, 1046, 1047, 1048, 1151, 1152, 1153, 1154, 1155, 1156, 1157, 1158, 1131, 1138];
+        const zip = parseInt(document.getElementById('user-zip').value);
+        const n = document.getElementById('user-name').value;
+        const a = document.getElementById('user-addr').value;
+        const t = document.getElementById('user-tel').value;
+        const szallitas = document.getElementById('delivery-option').value;
+        const p = document.getElementById('payment-method').value;
+        const comm = document.getElementById('user-comm').value;
+        const boxFee = document.getElementById('box-fee').innerText;
+        const total = document.getElementById('total-price').innerText;
 
-    // Adatok ellenőrzése
-    if(!zip || !n || !a || !t || !cart.length) {
-        return alert("Kérlek adj meg minden adatot (irányítószám, név, cím, telefon)!");
-    }
-
-    // Kiszállítási terület ellenőrzése (csak ha Házhozszállítást választott)
-    if(szallitas !== "0") { 
-        if(!engedelyezettIrsz.includes(zip)) {
-            return alert("Sajnos a " + zip + " körzetbe nem vállalunk kiszállítást. Kérlek válassz 'Helyben átvételt', vagy egyeztessünk telefonon!");
+        if(!zip || !n || !a || !t || !cart.length) {
+            return alert("Kérlek adj meg minden adatot (irányítószám, név, cím, telefon)!");
         }
+
+        if(szallitas !== "0") { 
+            if(!engedelyezettIrsz.includes(zip)) {
+                return alert("Sajnos a " + zip + " körzetbe nem vállalunk kiszállítást. Kérlek válassz 'Helyben átvételt', vagy egyeztessünk telefonon!");
+            }
+        }
+
+        const msg = `ÚJ RENDELÉS\n------------------\n` +
+                    `Irányítószám: ${zip}\n` +
+                    `Név: ${n}\n` +
+                    `Cím: ${a}\n` +
+                    `Telefon: ${t}\n` +
+                    `------------------\n` +
+                    `Ételek:\n${cart.map(i=>"- "+i.n).join('\n')}\n` +
+                    `------------------\n` +
+                    `Megjegyzés: ${comm}\n` +
+                    `Fizetés: ${p}\n` +
+                    `Dobozdíj: ${boxFee} Ft\n` +
+                    `ÖSSZESEN: ${total} Ft`;
+
+        const email = "infernoetterem@gmail.com"; 
+        const subject = encodeURIComponent("Webes rendelés - " + n);
+        const body = encodeURIComponent(msg);
+
+        window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        alert("A levelezőprogramod megnyílt! Kérlek kattints a KÜLDÉS gombra az e-mailben.");
+        
+        cart = []; 
+        up();
     }
-
-    // Rendelés összeállítása
-    const p = document.getElementById('payment-method').value;
-    const comm = document.getElementById('user-comm').value;
-    const boxFee = document.getElementById('box-fee').innerText;
-    const total = document.getElementById('total-price').innerText;
-
-    const msg = `ÚJ RENDELÉS\n------------------\n` +
-                `Irányítószám: ${zip}\n` +
-                `Név: ${n}\n` +
-                `Cím: ${a}\n` +
-                `Telefon: ${t}\n` +
-                `------------------\n` +
-                `Ételek:\n${cart.map(i=>"- "+i.n).join('\n')}\n` +
-                `------------------\n` +
-                `Megjegyzés: ${comm}\n` +
-                `Fizetés: ${p}\n` +
-                `Dobozdíj: ${boxFee} Ft\n` +
-                `ÖSSZESEN: ${total} Ft`;
-
-    const email = "infernoetterem@gmail.com"; 
-    const subject = encodeURIComponent("Webes rendelés - " + n);
-    const body = encodeURIComponent(msg);
-
-    // E-mail küldő megnyitása
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-    
-    alert("A rendelésed összeállt! Kérlek, az e-mail ablakban kattints a KÜLDÉS gombra a véglegesítéshez!");
-}
-
-    
-    // A rendelés szövegének összeállítása
-    const msg = `RENDELÉS:\n${cart.map(i=>"- "+i.n).join('\n')}\n\n` +
-                `Megjegyzés: ${comm}\n` +
-                `Fizetés: ${p}\n` +
-                `Dobozdíj: ${boxFee} Ft\n` +
-                `ÖSSZESEN: ${total} Ft\n\n` +
-                `Név: ${n}\n` +
-                `Cím: ${a}\n` +
-                `Tel: ${t}`;
-
-    // Az email cím, ahová a rendelés megy
-    const email = "infernoetterem@gmail.com"; 
-    const subject = encodeURIComponent("Új rendelés - Inferno Étterem");
-    const body = encodeURIComponent(msg);
-
-    // Megnyitja a látogató levelezőjét a kitöltött adatokkal
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-
-    alert("A levelezőprogramod megnyílt. Kérlek, kattints a KÜLDÉS gombra az e-mailben a rendelés véglegesítéséhez!");
-    
-    // Kosár ürítése a küldés után (opcionális)
-    cart = []; 
-    up();
-}
-
 
     if (new Date().getMonth() === 1) document.getElementById('february-promo').style.display = 'block';
-    render(); check(); setInterval(check, 60000);
+    render(); check();
 </script>
 </body>
 </html>
