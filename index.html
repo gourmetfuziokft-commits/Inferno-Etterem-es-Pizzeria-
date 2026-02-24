@@ -221,27 +221,24 @@
     const b = document.getElementById('submit-btn');
     const s = document.getElementById('open-status');
     
-    // Minden esetben letiltjuk a gombot
+    // A gombot mindig engedélyezzük, nem nézünk időpontot
     if (b) {
-        b.disabled = true;
-        b.innerText = "RENDELÉS SZÜNETEL";
-        b.style.background = "#444";
+        b.disabled = false;
+        b.innerText = "RENDELÉS LEADÁSA";
+        b.style.background = "#28a745"; // Visszaállítjuk zöldre
     }
     
-    // Kiírjuk a hiba okát a státuszhoz
+    // A státuszhoz csak egy fix üzenetet írunk ki
     if (s) {
-        s.innerHTML = '<span style="color:#ff4444; font-size: 1.4rem;">● TECHNIKAI OKOK MIATT ZÁRVA VAGYUNK</span><br>' +
-                      '<span style="color:#aaa; font-size: 0.9rem;">Rendelésfelvétel átmenetileg csak telefonon!</span>';
+        s.innerHTML = '<span style="color:#28a745">● ONLINE RENDELÉS ELÉRHETŐ</span>';
     }
 }
 
-// A kód többi részében is hívd meg a check-et, hogy azonnal érvényesüljön
+// Azonnal lefuttatjuk
 check();
 
-
-// Töröld ki a kódodból azt a részt, ami ezután következett:
-// "if(s) { s.innerHTML = '<span style="color:#ff4444">● MA BETEGSÉG MIATT ZÁRVA VAGYUNK</span>'; }"
-
+// A setInterval-t kivehetjük vagy benthagyhatjuk, 
+// de mivel már nem számol semmit, nem oszt, nem szoroz.
 
     function add(n,p){cart.push({n,p});up();}
     function addS(n,p,id){const v=document.getElementById(id).value.split('|'); add(`${n} (${v[0]})`, p+parseInt(v[1]));}
