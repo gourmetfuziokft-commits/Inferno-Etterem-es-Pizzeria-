@@ -47,10 +47,6 @@
     <div id="open-status" style="font-weight: bold; margin-top: 10px; font-size: 1.2rem;"></div>
 </header>
 
-<div id="february-promo" style="display: none; background: linear-gradient(90deg, #ff4500, #bc0000); color: white; text-align: center; padding: 15px; font-family: 'Oswald', sans-serif; font-size: 1.2rem; border-bottom: 3px solid #000; box-shadow: 0 4px 10px rgba(0,0,0,0.3); text-transform: uppercase; letter-spacing: 1px;">
-    🔥 Februári Tészta-Láz! Minden tésztaétel <span style="font-size: 1.5rem; text-decoration: underline;">3000 Ft</span>! 🔥
-</div>
-
 <div class="container">
     <div id="main-menu"></div>
 
@@ -169,24 +165,13 @@
 
     function render() {
         const div = document.getElementById('main-menu');
-        const now = new Date();
-        const isFeb = (now.getMonth() === 1);
-        const isSunday = (now.getDay() === 0);
-
         div.innerHTML = menuData.map((section, sIdx) => {
             const isPizza = section.cat.includes("PIZZÁK");
             const isMain = ["SERTÉS/MARHA ÉTELEK", "SZÁRNYAS ÉTELEK", "FŐÉTELEK"].includes(section.cat);
-            const isPasta = section.cat === "TÉSZTÁK";
             
-            let sectionHeader = `<h2>${section.cat} ${isPizza && isSunday ? '<span style="color:var(--orange); font-size:0.8rem; vertical-align:middle;"> - 🔥 PIZZA-MÁNIA: MA 2500 FT!</span>' : ''}</h2>`;
-            
-            return sectionHeader + `<div class="menu-grid">${section.items.map((p, pIdx) => {
-                let pr = p[1];
-                if (isPasta && isFeb) pr = 3000;
-                if (isPizza && isSunday) pr = 2500;
-
+            return `<h2>${section.cat}</h2><div class="menu-grid">${section.items.map((p, pIdx) => {
                 let sId = `s-${sIdx}-${pIdx}`;
-                let ex = isMain ? `<select id="${sId}" class="side-select">${sidesData.map(s=>`<option value="${s.n}|${s.p}">${s.n} (+${s.p} Ft)</option>`).join('')}</select><button class="add-btn" onclick="addS('${p[0]}',${pr},'${sId}')">Kosárba</button>` :
+                let ex = isMain ? `<select id="${sId}" class="side-select">${sidesData.map(s=>`<option value="${s.n}|${s.p}">${s.n} (+${s.p} Ft)</option>`).join('')}</select><button class="add-btn" onclick="addS('${p[0]}',${p[1]},'${sId}')">Kosárba</button>` :
                          (isPizza ? `
                             <div class="pizza-options">
                                 <select id="${sId}-teszta" class="side-select">
@@ -198,13 +183,13 @@
                                     ${extraFeltetek.map(f=>`<option value="${f}">${f} (+450 Ft)</option>`).join('')}
                                 </select>
                             </div>
-                            <button class="add-btn" onclick="addPizza('${p[0]}',${pr},'${sId}')">Kosárba</button>` :
-                         `<button class="add-btn" onclick="add('${p[0]}',${pr})">Kosárba</button>`);
+                            <button class="add-btn" onclick="addPizza('${p[0]}',${p[1]},'${sId}')">Kosárba</button>` :
+                         `<button class="add-btn" onclick="add('${p[0]}',${p[1]})">Kosárba</button>`);
                 
-                return `<div class="card" ${isPizza && isSunday ? 'style="border: 1px solid var(--orange);"' : ''}>
+                return `<div class="card">
                             <h3>${p[0]}</h3>
                             <p>${p[2]||''}</p>
-                            <div class="price">${pr} Ft ${isPizza && isSunday ? '<span style="text-decoration:line-through;color:#666;font-size:0.7rem;display:block;">'+p[1]+' Ft helyett</span>' : ''}</div>
+                            <div class="price">${p[1]} Ft</div>
                             ${ex}
                         </div>`;
             }).join('')}</div>`;
@@ -212,27 +197,17 @@
     }
 
     function check() {
-    function check() {
-    const b = document.getElementById('submit-btn');
-    const s = document.getElementById('open-status');
-    
-    // A gomb letiltása és felirat módosítása
-    if (b) {
-        b.disabled = true;
-        b.innerText = "MAI NAPON ZÁRVA";
-        b.style.background = "#444"; // Szürke szín a tiltás jelzésére
+        const b = document.getElementById('submit-btn');
+        const s = document.getElementById('open-status');
+        if (b) {
+            b.disabled = true;
+            b.innerText = "MAI NAPON ZÁRVA";
+            b.style.background = "#444";
+        }
+        if (s) {
+            s.innerHTML = '<span style="color:#ff4444; font-size: 1.3rem;">● A MAI NAPON ZÁRVA VAGYUNK</span><br><span style="color:#aaa; font-size: 0.9rem;">Nyitás a szokásos rend szerint!</span>';
+        }
     }
-    
-    // Státusz üzenet frissítése piros színnel
-    if (s) {
-        s.innerHTML = '<span style="color:#ff4444; font-size: 1.3rem;">● A MAI NAPON ZÁRVA VAGYUNK</span><br>' +
-                      '<span style="color:#aaa; font-size: 0.9rem;">Nyitás a szokásos rend szerint!</span>';
-    }
-}
-
-// Azonnal futtassuk le a betöltéskor
-check();
-
 
     function add(n,p){cart.push({n,p});up();}
     function addS(n,p,id){const v=document.getElementById(id).value.split('|'); add(`${n} (${v[0]})`, p+parseInt(v[1]));}
@@ -265,44 +240,22 @@ check();
         const szallitas = document.getElementById('delivery-option').value;
         const p = document.getElementById('payment-method').value;
         const comm = document.getElementById('user-comm').value;
-        const boxFee = document.getElementById('box-fee').innerText;
         const total = document.getElementById('total-price').innerText;
 
         if(!zip || !n || !a || !t || !cart.length) {
-            return alert("Kérlek adj meg minden adatot (irányítószám, név, cím, telefon)!");
+            return alert("Kérlek adj meg minden adatot!");
         }
 
-        if(szallitas !== "0") { 
-            if(!engedelyezettIrsz.includes(zip)) {
-                return alert("Sajnos a " + zip + " körzetbe nem vállalunk kiszállítást. Kérlek válassz 'Helyben átvételt', vagy egyeztessünk telefonon!");
-            }
+        if(szallitas !== "0" && !engedelyezettIrsz.includes(zip)) {
+            return alert("Sajnos ebbe a körzetbe nem vállalunk kiszállítást.");
         }
 
-        const msg = `ÚJ RENDELÉS\n------------------\n` +
-                    `Irányítószám: ${zip}\n` +
-                    `Név: ${n}\n` +
-                    `Cím: ${a}\n` +
-                    `Telefon: ${t}\n` +
-                    `------------------\n` +
-                    `Ételek:\n${cart.map(i=>"- "+i.n).join('\n')}\n` +
-                    `------------------\n` +
-                    `Megjegyzés: ${comm}\n` +
-                    `Fizetés: ${p}\n` +
-                    `Dobozdíj: ${boxFee} Ft\n` +
-                    `ÖSSZESEN: ${total} Ft`;
-
-        const email = "infernoetterem@gmail.com"; 
-        const subject = encodeURIComponent("Webes rendelés - " + n);
-        const body = encodeURIComponent(msg);
-
-        window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-        alert("A levelezőprogramod megnyílt! Kérlek kattints a KÜLDÉS gombra az e-mailben.");
+        const msg = `ÚJ RENDELÉS\n------------------\nNév: ${n}\nCím: ${zip}, ${a}\nTel: ${t}\n------------------\nÉtelek:\n${cart.map(i=>"- "+i.n).join('\n')}\n------------------\nMegjegyzés: ${comm}\nFizetés: ${p}\nÖSSZESEN: ${total} Ft`;
+        window.location.href = `mailto:infernoetterem@gmail.com?subject=Webes rendelés&body=${encodeURIComponent(msg)}`;
         
-        cart = []; 
-        up();
+        cart = []; up();
     }
 
-    if (new Date().getMonth() === 1) document.getElementById('february-promo').style.display = 'block';
     render(); check();
 </script>
 </body>
