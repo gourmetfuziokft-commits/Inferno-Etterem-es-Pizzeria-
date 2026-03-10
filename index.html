@@ -212,17 +212,27 @@
     }
 
     function check() {
-        const b = document.getElementById('submit-btn');
-        const s = document.getElementById('open-status');
-        if (b) {
-            b.disabled = false;
-            b.innerText = "RENDELÉS LEADÁSA";
-            b.style.background = "#28a745";
-        }
-        if (s) {
-            s.innerHTML = '<span style="color:#28a745">● ONLINE RENDELÉS ELÉRHETŐ</span>';
-        }
+    function check() {
+    const b = document.getElementById('submit-btn');
+    const s = document.getElementById('open-status');
+    
+    // A gomb letiltása és felirat módosítása
+    if (b) {
+        b.disabled = true;
+        b.innerText = "MAI NAPON ZÁRVA";
+        b.style.background = "#444"; // Szürke szín a tiltás jelzésére
     }
+    
+    // Státusz üzenet frissítése piros színnel
+    if (s) {
+        s.innerHTML = '<span style="color:#ff4444; font-size: 1.3rem;">● A MAI NAPON ZÁRVA VAGYUNK</span><br>' +
+                      '<span style="color:#aaa; font-size: 0.9rem;">Nyitás a szokásos rend szerint!</span>';
+    }
+}
+
+// Azonnal futtassuk le a betöltéskor
+check();
+
 
     function add(n,p){cart.push({n,p});up();}
     function addS(n,p,id){const v=document.getElementById(id).value.split('|'); add(`${n} (${v[0]})`, p+parseInt(v[1]));}
