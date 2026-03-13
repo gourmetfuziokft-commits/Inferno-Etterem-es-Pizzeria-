@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -41,7 +42,7 @@
     </div>
     <h1>Inferno Étterem és Pizzéria</h1>
     <div class="opening-hours">
-        Hétfő: ZÁRVA | Kedd - Vasárnap: 11:00 - 22:00 (Vasárnap: 12:00 nyitás)<br>
+        Hétfő: ZÁRVA | Kedd - Vasárnap: 11:00 - 21:30<br>
         <strong>Rendelésfelvétel: +3670/743-00-49 </strong>
     </div>
     <div id="open-status" style="font-weight: bold; margin-top: 10px; font-size: 1.2rem;"></div>
@@ -196,16 +197,17 @@
         }).join('');
     }
 
+    // A gomb újra engedélyezése és a státusz frissítése
     function check() {
         const b = document.getElementById('submit-btn');
         const s = document.getElementById('open-status');
         if (b) {
-            b.disabled = true;
-            b.innerText = "MAI NAPON ZÁRVA";
-            b.style.background = "#444";
+            b.disabled = false;
+            b.innerText = "RENDELÉS LEADÁSA";
+            b.style.background = "#28a745"; 
         }
         if (s) {
-            s.innerHTML = '<span style="color:#ff4444; font-size: 1.3rem;">● A MAI NAPON ZÁRVA VAGYUNK</span><br><span style="color:#aaa; font-size: 0.9rem;">Nyitás a szokásos rend szerint!</span>';
+            s.innerHTML = '<span style="color:#28a745; font-size: 1.3rem;">● NYITVA VAGYUNK</span>';
         }
     }
 
