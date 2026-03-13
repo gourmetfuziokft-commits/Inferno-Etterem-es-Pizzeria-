@@ -198,18 +198,49 @@
     }
 
     // A gomb újra engedélyezése és a státusz frissítése
-    function check() {
-        const b = document.getElementById('submit-btn');
-        const s = document.getElementById('open-status');
+    
+function check() {
+    const b = document.getElementById('submit-btn');
+    const s = document.getElementById('open-status');
+    
+    const most = new Date();
+    const nap = most.getDay(); // 0: Vasárnap, 1: Hétfő, stb.
+    const ora = most.getHours();
+    const perc = most.getMinutes();
+    const idoPercben = ora * 60 + perc;
+
+    const nyitas = 11 * 60;          // 11:00
+    const zaras = 21 * 60 + 30;      // 21:30
+    
+    // Hétfőn (1) zárva, vagy ha az idő a nyitvatartáson kívül esik
+    const zárvaVan = (nap === 1) || (idoPercben < nyitas) || (idoPercben >= zaras);
+
+    if (zárvaVan) {
+        if (b) {
+            b.disabled = true;
+            b.innerText = "JELENLEG ZÁRVA";
+            b.style.background = "#444";
+        }
+        if (s) {
+            s.innerHTML = '<span style="color:#ff4444; font-size: 1.3rem;">● JELENLEG ZÁRVA VAGYUNK</span><br>' +
+                          '<span style="color:#aaa; font-size: 0.9rem;">Nyitás: Kedd-Vasárnap 11:00-tól</span>';
+        }
+    } else {
         if (b) {
             b.disabled = false;
             b.innerText = "RENDELÉS LEADÁSA";
-            b.style.background = "#28a745"; 
+            b.style.background = "#28a745";
         }
         if (s) {
             s.innerHTML = '<span style="color:#28a745; font-size: 1.3rem;">● NYITVA VAGYUNK</span>';
         }
     }
+}
+
+// 1 percenként ellenőrizze le magától is
+setInterval(check, 60000);
+render(); 
+check();
 
     function add(n,p){cart.push({n,p});up();}
     function addS(n,p,id){const v=document.getElementById(id).value.split('|'); add(`${n} (${v[0]})`, p+parseInt(v[1]));}
