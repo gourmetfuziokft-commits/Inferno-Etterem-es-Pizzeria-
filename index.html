@@ -204,26 +204,29 @@ function check() {
     const s = document.getElementById('open-status');
     
     const most = new Date();
-    const nap = most.getDay(); // 0: Vasárnap, 1: Hétfő, stb.
+    const nap = most.getDay(); // 0: Vasárnap, 1: Hétfő, 2: Kedd...
     const ora = most.getHours();
     const perc = most.getMinutes();
     const idoPercben = ora * 60 + perc;
 
-    const nyitas = 12 * 60;          // 11:00
-    const zaras = 21 * 60 + 30;      // 21:30
+    // Dinamikus nyitvatartás: Vasárnap (0) 12:00, amúgy 11:00
+    const nyitas = (nap === 0) ? (12 * 60) : (11 * 60);
+    const zaras = 21 * 60 + 30; // 21:30
     
-    // Hétfőn (1) zárva, vagy ha az idő a nyitvatartáson kívül esik
     const zárvaVan = (nap === 1) || (idoPercben < nyitas) || (idoPercben >= zaras);
 
     if (zárvaVan) {
+        let nyitasSzoveg = (nap === 0 || nap === 1) ? "Kedd 11:00" : "Holnap 11:00";
+        if (nap === 0 && idoPercben < nyitas) nyitasSzoveg = "Ma 12:00";
+
         if (b) {
             b.disabled = true;
             b.innerText = "JELENLEG ZÁRVA";
             b.style.background = "#444";
         }
         if (s) {
-            s.innerHTML = '<span style="color:#ff4444; font-size: 1.3rem;">● JELENLEG ZÁRVA VAGYUNK</span><br>' +
-                          '<span style="color:#aaa; font-size: 0.9rem;">Nyitás: Kedd-Vasárnap 11:00-tól</span>';
+            s.innerHTML = `<span style="color:#ff4444; font-size: 1.3rem;">● JELENLEG ZÁRVA VAGYUNK</span><br>` +
+                          `<span style="color:#aaa; font-size: 0.9rem;">Nyitás: ${nyitasSzoveg}</span>`;
         }
     } else {
         if (b) {
