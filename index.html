@@ -210,7 +210,7 @@ function check() {
     const idoPercben = ora * 60 + perc;
 
     // Dinamikus nyitvatartás: Vasárnap (0) 12:00, amúgy 11:00
-    const nyitas = (nap === 0) ? (12 * 60) : (11 * 60);
+    const nyitas = (nap === 0) ? (12 * 60 + 30) : (11 * 60);
     const zaras = 21 * 60 + 30; // 21:30
     
     const zárvaVan = (nap === 1) || (idoPercben < nyitas) || (idoPercben >= zaras);
