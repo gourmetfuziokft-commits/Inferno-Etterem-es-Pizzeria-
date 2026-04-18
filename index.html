@@ -35,7 +35,7 @@
 <body>
 
 <div id="promo-banner" class="promo-banner">
-    🔥 Áprilisi Pizza-Ünnep! Április 17-ig minden 32cm-es pizza csak <span style="font-size: 1.5rem; text-decoration: underline;">3000 Ft</span>! 🔥
+    🔥 Áprilisi Pizza-Ünnep! ÁPRILIS HÓNAPBAN minden 32cm-es pizza csak <span style="font-size: 1.5rem; text-decoration: underline;">3000 Ft</span>! 🔥
 </div>
 
 <header>
@@ -185,7 +185,7 @@
         const end = 21*60 + 30;
 
         if (day === 1 || min < start || min >= end) {
-            b.disabled = true; b.innerText = "JELENLEG ZÁRVA"; b.style.background = "#444";
+            b.disabled = false; b.innerText = "JELENLEG ZÁRVA"; b.style.background = "#444";
             s.innerHTML = `<span style="color:#ff4444;">● JELENLEG ZÁRVA</span><br><small>Nyitás: ${day === 0 ? 'Kedd 11:00' : (day === 1 ? 'Kedd 11:00' : 'Holnap 11:00')}</small>`;
         } else {
             b.disabled = false; b.innerText = "RENDELÉS LEADÁSA"; b.style.background = "#28a745";
