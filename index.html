@@ -26,6 +26,7 @@
         .order-btn:disabled { background: #444; cursor: not-allowed; }
         input, select { width: 100%; padding: 12px; margin-top: 10px; background: #222; border: 1px solid #444; color: white; border-radius: 6px; box-sizing: border-box; }
         .opt-label { font-size: 0.75rem; color: #888; margin-top: 10px; display: block; }
+        .delivery-warning { color: #ff4444; font-size: 0.85rem; margin-top: 5px; font-weight: bold; display: block; background: rgba(255,68,68,0.1); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,68,68,0.3); text-align: center; }
     </style>
 </head>
 <body>
@@ -44,10 +45,7 @@
 
     <div class="cart-box">
         <h3>🛒 Kosarad</h3>
-        <select id="delivery-option" onchange="up()">
-            <option value="590">Házhozszállítás (590 Ft)</option>
-            <option value="0">Helyben átvétel (0 Ft)</option>
-        </select>
+        <div class="delivery-warning">⚠️ JELENLEG CSAK HELYBEN ÁTVÉTEL LEHETSÉGES!</div>
         
         <div id="cart-content">Üres...</div>
         <div style="margin-top:15px; border-top: 1px solid #444; padding-top:10px;">
@@ -63,7 +61,7 @@
         </select>
 
         <input type="text" id="user-name" placeholder="Név">
-        <input type="text" id="user-addr" placeholder="Cím (Irsz, Város, Utca, Házszám)">
+        <input type="text" id="user-addr" value="Helyben átvétel" disabled style="opacity: 0.5;">
         <input type="tel" id="user-tel" placeholder="Telefon">
         <button class="order-btn" id="submit-btn" onclick="send()">RENDELÉS LEADÁSA</button>
     </div>
@@ -160,13 +158,12 @@
     }
 
     function up() {
-        const ship = parseInt(document.getElementById('delivery-option').value) || 0;
         let sub = 0; cart.forEach(i => sub += i.p);
         const box = cart.length * 200;
         
         document.getElementById('cart-content').innerHTML = cart.length ? cart.map((it,i)=>`<div class="cart-item">${it.n} (${it.p} Ft) <span style="cursor:pointer" onclick="cart.splice(${i},1);up()">❌</span></div>`).join('') : 'Üres...';
         document.getElementById('box-fee').innerText = box;
-        document.getElementById('total-price').innerText = sub + ship + box;
+        document.getElementById('total-price').innerText = sub + box; // Nincs szállítási díj hozzáadva
     }
 
     function check() {
@@ -188,18 +185,13 @@
 
     function send() {
         const n = document.getElementById('user-name').value;
-        const a = document.getElementById('user-addr').value;
         const t = document.getElementById('user-tel').value;
         const p = document.getElementById('payment-method').value;
-        const d = document.getElementById('delivery-option').value === "0" ? "Helyben átvétel" : "Házhozszállítás";
         
         if(!n || !t || !cart.length) return alert("Kérlek töltsd ki a nevet, telefont és válassz ételt!");
-        if(d === "Házhozszállítás" && !a) return alert("Házhozszállításhoz add meg a címedet is!");
         
-        const finalAddr = d === "Helyben átvétel" ? "Helyben átvétel" : a;
-        
-        const msg = `RENDELÉS\nNév: ${n}\nTípus: ${d}\nCím: ${finalAddr}\nTel: ${t}\nFizetési mód: ${p}\nÉtelek:\n${cart.map(i=>"- "+i.n).join('\n')}\nÖsszesen: ${document.getElementById('total-price').innerText} Ft`;
-        window.location.href = `mailto:infernoetterem@gmail.com?subject=Rendelés (${d} - ${p})&body=${encodeURIComponent(msg)}`;
+        const msg = `RENDELÉS (HELYBEN ÁTVÉTEL)\nNév: ${n}\nTípus: Helyben átvétel\nTel: ${t}\nFizetési mód: ${p}\nÉtelek:\n${cart.map(i=>"- "+i.n).join('\n')}\nÖsszesen: ${document.getElementById('total-price').innerText} Ft`;
+        window.location.href = `mailto:infernoetterem@gmail.com?subject=Elviteles Rendelés (${p})&body=${encodeURIComponent(msg)}`;
     }
 
     render(); check(); up();
